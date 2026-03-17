@@ -1,0 +1,46 @@
+name: Deploy Frontend
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'frontend/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: cd frontend && npm install
+
+      - name: Build
+        run: cd frontend && npm run build
+
+      - name: Deploy to ECS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: 8.210.161.159
+          username: root
+          key: ${{ secrets.ECS_SSH_KEY }}
+          source: frontend/dist/*
+          target: /var/www/gamehot/
+          strip_components: 2
+
+      - name: Reload Nginx
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 8.210.161.159
+          username: root
+          key: ${{ secrets.ECS_SSH_KEY }}
+          script: |
+            nginx -t && systemctl reload nginx
+            echo "✅ 前端部署完成"
