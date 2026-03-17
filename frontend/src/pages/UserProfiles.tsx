@@ -316,13 +316,13 @@ function PaymentTimeline({ userId }: { userId: string }) {
                 </div>
                 <span className="text-xs font-semibold text-foreground">{month}</span>
                 <span className="text-[10px] text-muted-foreground">
-                  ({items.length}笔 / ${items.filter((p: any) => p.status === "COMPLETED").reduce((s: number, p: any) => s + Number(p.amountUsd), 0).toFixed(2)})
+                  ({items.length}笔 / ${(items ?? []).filter((p: Record<string,unknown>) => p.status === "COMPLETED").reduce((s: number, p: any) => s + Number(p.amountUsd), 0).toFixed(2)})
                 </span>
               </div>
 
               {/* Payment items */}
               <div className="ml-7 space-y-1.5">
-                {items.map((payment: any) => {
+                {(items ?? []).map((payment: Record<string,unknown>) => {
                   const typeCfg = PAYMENT_TYPE_CONFIG[payment.paymentType] || { label: payment.paymentType, color: "bg-gray-500", bgLight: "", icon: CreditCard };
                   const statusCfg = STATUS_CONFIG[payment.status] || { label: payment.status, variant: "outline" as const };
                   const Icon = typeCfg.icon;
@@ -633,7 +633,7 @@ export default function UserProfiles() {
                       ))}</TableRow>
                     ))
                   ) : usersData?.data?.length ? (
-                    usersData?.data?.map((user: any) => (
+                    usersData?.data?.map((user: Record<string,unknown>) => (
                       <TableRow key={user.id} className={selectedUserId === user.userId ? "bg-accent" : ""}>
                         <TableCell className="font-mono text-xs">{user.userId.substring(0, 16)}...</TableCell>
                         <TableCell className="text-sm">{user.deviceType || "-"}</TableCell>

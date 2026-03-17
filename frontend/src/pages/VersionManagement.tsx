@@ -54,8 +54,7 @@ export default function VersionManagement() {
     const list = versions.data ?? [];
     if (!search) return list;
     const q = search.toLowerCase();
-    return list.filter(
-      (v: any) => v.versionCode?.toLowerCase().includes(q) || v.releaseNotes?.toLowerCase().includes(q)
+    return (list ?? []).filter((v: Record<string,unknown>) => v.versionCode?.toLowerCase().includes(q) || v.releaseNotes?.toLowerCase().includes(q)
     );
   }, [versions.data, search]);
 
@@ -97,7 +96,7 @@ export default function VersionManagement() {
               ) : filteredVersions.length === 0 ? (
                 <Card><CardContent className="py-8 text-center text-muted-foreground">暂无版本记录</CardContent></Card>
               ) : (
-                filteredVersions.map((v: any) => {
+                filteredVersions.map((v: Record<string,unknown>) => {
                   const vStatus = verificationLabels[v.verificationStatus || "pending"] || verificationLabels.pending;
                   const StatusIcon = vStatus.icon;
                   return (

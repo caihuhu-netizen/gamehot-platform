@@ -33,7 +33,7 @@ const getLayerColor = (layerId: number) => {
 const formatFrequency = (freq: any) => {
   const arr = typeof freq === 'string' ? JSON.parse(freq) : freq;
   if (!Array.isArray(arr)) return '-';
-  return arr.map((f: any) => {
+  return arr.map((f: Record<string,unknown>) => {
     const to = f.to >= 99999999 ? '∞' : f.to;
     return `${f.from}-${to}关: 每${f.interval}关`;
   }).join(' | ');
@@ -338,7 +338,7 @@ function DiffSection({ title, items, renderItem, renderChanges }: {
   renderChanges: (d: { type: string; changes?: Array<{ field: string; oldVal: unknown; newVal: unknown }>; [key: string]: unknown }) => React.ReactNode;
 }) {
   const [expanded, setExpanded] = useState<Set<number>>(new Set());
-  const changedItems = items.filter(d => d.type !== 'unchanged');
+  const changedItems = (items ?? []).filter(d => d.type !== 'unchanged');
 
   if (changedItems.length === 0) return null;
 
@@ -730,7 +730,7 @@ function LayerLogicTab() {
           <CardContent className="py-4">
             <h4 className="text-sm font-semibold mb-3">用户分布预览 <span className="text-muted-foreground font-normal">（共 {totalUsers.toLocaleString()} 用户）</span></h4>
             <div className="flex gap-1 h-8 rounded-md overflow-hidden">
-              {distribution.map((d: any) => {
+              {distribution.map((d: Record<string,unknown>) => {
                 const pct = totalUsers > 0 ? (Number(d.userCount) / totalUsers * 100) : 0;
                 return pct > 0 ? (
                   <div key={d.segmentLevel} className={`${getLayerColor(d.segmentLevel)} flex items-center justify-center text-[10px] font-bold transition-all`} style={{ width: `${Math.max(pct, 2)}%` }} title={`Layer ${d.segmentLevel}: ${Number(d.userCount).toLocaleString()} (${pct.toFixed(1)}%)`}>
@@ -740,7 +740,7 @@ function LayerLogicTab() {
               })}
             </div>
             <div className="flex flex-wrap gap-2 mt-2">
-              {distribution.map((d: any) => (
+              {distribution.map((d: Record<string,unknown>) => (
                 <span key={d.segmentLevel} className="text-[10px] text-muted-foreground">
                   L{d.segmentLevel}: {Number(d.userCount).toLocaleString()} ({totalUsers > 0 ? (Number(d.userCount) / totalUsers * 100).toFixed(1) : 0}%)
                 </span>
@@ -756,7 +756,7 @@ function LayerLogicTab() {
             <Card key={i}><CardContent className="py-4"><div className="h-16 bg-muted animate-pulse rounded" /></CardContent></Card>
           ))
         ) : layers?.length ? (
-          layers.map((layer: any) => (
+          layers.map((layer: Record<string,unknown>) => (
             <Card key={layer.id} className="hover:shadow-sm transition-shadow">
               <CardContent className="py-4">
                 <div className="flex items-start justify-between">
@@ -920,7 +920,7 @@ function BehaviorStrategyTab() {
   const grouped = useMemo(() => {
     if (!strategies) return {};
     const map: Record<number, any[]> = {};
-    strategies.forEach((s: any) => {
+    (strategies ?? []).forEach((s: any) => {
       if (!map[s.layerId]) map[s.layerId] = [];
       map[s.layerId].push(s);
     });
@@ -969,7 +969,7 @@ function BehaviorStrategyTab() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {items.map((s: any) => {
+                  {(items ?? []).map((s: Record<string,unknown>) => {
                     const gt = giftTypeLabels[s.giftType] || { label: s.giftType, icon: "📦" };
                     return (
                       <TableRow key={s.id}>
@@ -1048,8 +1048,8 @@ function CalcRulesTab() {
     updateMutation.mutate({ id, ...data });
   };
 
-  const upgradeRules = useMemo(() => (rules || []).filter((r: any) => r.ruleType === 1), [rules]);
-  const downgradeRules = useMemo(() => (rules || []).filter((r: any) => r.ruleType === 2), [rules]);
+  const upgradeRules = useMemo(() => (rules || []).filter((r: Record<string,unknown>) => r.ruleType === 1), [rules]);
+  const downgradeRules = useMemo(() => (rules || []).filter((r: Record<string,unknown>) => r.ruleType === 2), [rules]);
 
   const renderRuleTable = (ruleList: any[], isUpgrade: boolean) => (
     <Card>
@@ -1078,7 +1078,7 @@ function CalcRulesTab() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {ruleList.map((r: any) => (
+            {ruleList.map((r: Record<string,unknown>) => (
               <TableRow key={r.id}>
                 <TableCell><Badge variant="secondary" className="text-xs">Layer {r.targetLayer}</Badge></TableCell>
                 <TableCell className={isUpgrade ? "font-medium text-emerald-600" : ""}>{r.purchaseAmount ? `${isUpgrade ? '≥' : '<'} $${r.purchaseAmount}` : '-'}</TableCell>
@@ -1223,7 +1223,7 @@ function UserSegmentDataTab() {
                   ))}</TableRow>
                 ))
               ) : segmentData?.data?.length ? (
-                segmentData?.data?.map((seg: any) => (
+                segmentData?.data?.map((seg: Record<string,unknown>) => (
                   <TableRow key={seg.id}>
                     <TableCell className="font-mono text-xs">{seg.userId.substring(0, 16)}...</TableCell>
                     <TableCell><Badge variant="secondary" className="text-xs">{seg.segmentLevel}</Badge></TableCell>
@@ -1322,7 +1322,7 @@ function SegmentTemplatesTab() {
         {isLoading ? (
           Array.from({ length: 2 }).map((_, i) => <Card key={i}><CardContent className="py-4"><div className="h-20 bg-muted animate-pulse rounded" /></CardContent></Card>)
         ) : templates?.length ? (
-          templates.map((t: any) => (
+          (templates ?? []).map((t: Record<string,unknown>) => (
             <Card key={t.id} className="hover:shadow-sm transition-shadow">
               <CardContent className="py-4">
                 <div className="flex items-start justify-between">

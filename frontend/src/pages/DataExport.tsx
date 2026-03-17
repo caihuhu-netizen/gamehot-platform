@@ -198,7 +198,7 @@ export default function DataExport() {
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-2 gap-3">
-                    {dataSources?.map((ds: any) => {
+                    {dataSources?.map((ds: Record<string,unknown>) => {
                       const isSelected = selectedSource === ds.id;
                       return (
                         <div
@@ -335,7 +335,7 @@ export default function DataExport() {
                 </div>
               ) : (
                 <div className="space-y-2">
-                  {exportHistory.map((item: any) => (
+                  {exportHistory.map((item: Record<string,unknown>) => (
                     <div key={item.id} className="flex items-center justify-between p-3 rounded-lg border">
                       <div className="flex items-center gap-3">
                         {formatIcon(item.format)}
@@ -405,7 +405,7 @@ export default function DataExport() {
                 </div>
               ) : (
                 <div className="space-y-3">
-                  {schedules.map((sch: any) => (
+                  {(schedules ?? []).map((sch: Record<string,unknown>) => (
                     <div key={sch.id} className="flex items-center justify-between p-4 rounded-lg border">
                       <div className="flex items-center gap-3">
                         {formatIcon(sch.format)}
@@ -482,7 +482,7 @@ export default function DataExport() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {dataSources?.map((ds: any) => (
+                  {dataSources?.map((ds: Record<string,unknown>) => (
                     <SelectItem key={ds.id} value={ds.id}>{ds.label}</SelectItem>
                   ))}
                 </SelectContent>
@@ -640,7 +640,7 @@ function MaskingRulesTab() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {(rules as Record<string, unknown>[])?.map((r: any) => (
+                {(rules as Record<string, unknown>[])?.map((r: Record<string,unknown>) => (
                   <TableRow key={r.id}>
                     <TableCell className="font-medium">{r.rule_name}</TableCell>
                     <TableCell><Badge variant="outline">{r.data_source}</Badge></TableCell>
@@ -685,7 +685,7 @@ function MaskingRulesTab() {
             <SelectTrigger className="w-[200px]"><SelectValue placeholder="选择数据源" /></SelectTrigger>
             <SelectContent>
               <SelectItem value="none">选择数据源</SelectItem>
-              {dataSources?.map((ds: any) => <SelectItem key={ds.id} value={ds.id}>{ds.label}</SelectItem>)}
+              {dataSources?.map((ds: Record<string,unknown>) => <SelectItem key={ds.id} value={ds.id}>{ds.label}</SelectItem>)}
             </SelectContent>
           </Select>
           {preview && preview.rulesApplied > 0 && (
@@ -722,7 +722,7 @@ function MaskingRulesTab() {
               <div className="space-y-2">
                 <Label>数据源</Label>
                 <Select value={form.dataSource} onValueChange={v => setForm({...form, dataSource: v})}><SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>{dataSources?.map((ds: any) => <SelectItem key={ds.id} value={ds.id}>{ds.label}</SelectItem>)}</SelectContent>
+                  <SelectContent>{dataSources?.map((ds: Record<string,unknown>) => <SelectItem key={ds.id} value={ds.id}>{ds.label}</SelectItem>)}</SelectContent>
                 </Select>
               </div>
               <div className="space-y-2"><Label>字段名</Label><Input placeholder="如：phone, email" value={form.fieldName} onChange={e => setForm({...form, fieldName: e.target.value})} /></div>

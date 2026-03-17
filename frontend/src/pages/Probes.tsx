@@ -64,8 +64,8 @@ export default function Probes() {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {PROBE_TYPES.map((pt) => {
-          const count = probes?.filter((p: any) => p.probeType === pt.value).length || 0;
-          const active = probes?.filter((p: any) => p.probeType === pt.value && p.isActive).length || 0;
+          const count = probes?.filter((p: Record<string,unknown>) => p.probeType === pt.value).length || 0;
+          const active = probes?.filter((p: Record<string,unknown>) => p.probeType === pt.value && p.isActive).length || 0;
           return (
             <Card key={pt.value}>
               <CardContent className="pt-4 pb-3">
@@ -112,7 +112,7 @@ export default function Probes() {
                   </TableRow>
                 ))
               ) : probes?.length ? (
-                probes.map((probe: any) => {
+                (probes ?? []).map((probe: Record<string,unknown>) => {
                   const typeInfo = PROBE_TYPES.find(t => t.value === probe.probeType);
                   return (
                     <TableRow key={probe.id}>

@@ -204,7 +204,7 @@ export default function ChurnPrediction() {
               <div className="flex justify-center py-12"><Loader2 className="h-6 w-6 animate-spin text-primary/60" /></div>
             ) : usersData.length === 0 ? (
               <Card><CardContent className="py-8 text-center text-muted-foreground">暂无高危用户数据</CardContent></Card>
-            ) : usersData.map((u: any) => {
+            ) : usersData.map((u: Record<string,unknown>) => {
               const selected = selectedUsers.includes(u.user_id);
               const riskLevel = u.churn_risk_score >= 0.8 ? "high" : u.churn_risk_score >= 0.5 ? "medium" : "low";
               const c = riskColors[riskLevel];
@@ -324,7 +324,7 @@ export default function ChurnPrediction() {
         {/* 生命周期分布 */}
         <TabsContent value="phase">
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {((ov?.phaseDistribution ?? []) as any[]).map((p: any) => {
+            {((ov?.phaseDistribution ?? []) as any[]).map((p: Record<string,unknown>) => {
               const label = phaseLabels[p.engagement_phase] ?? { label: p.engagement_phase, color: "bg-muted" };
               return (
                 <Card key={p.engagement_phase}>

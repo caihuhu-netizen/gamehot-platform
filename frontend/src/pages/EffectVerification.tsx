@@ -57,7 +57,7 @@ export default function EffectVerification() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {Object.entries(verdictLabels).map(([key, v]) => {
               const VIcon = v.icon;
-              const count = reports.data?.filter((r: any) => r.verdict === key).length ?? 0;
+              const count = reports.data?.filter((r: Record<string,unknown>) => r.verdict === key).length ?? 0;
               return (
                 <Card key={key}>
                   <CardContent className="p-4 flex items-center gap-3">
@@ -85,7 +85,7 @@ export default function EffectVerification() {
             </Card>
           ) : (
             <div className="space-y-3">
-              {(reports.data ?? []).map((r: any) => {
+              {(reports.data ?? []).map((r: Record<string,unknown>) => {
                 const v = verdictLabels[r.verdict] || verdictLabels.inconclusive;
                 const VIcon = v.icon;
                 return (
@@ -162,7 +162,7 @@ function GenerateReportDialog({ open, onClose, gameId, versions, onSuccess }: {
               <Select value={baseVersionId} onValueChange={setBaseVersionId}>
                 <SelectTrigger><SelectValue placeholder="选择版本" /></SelectTrigger>
                 <SelectContent>
-                  {versions.map((v: any) => (
+                  {(versions ?? []).map((v: Record<string,unknown>) => (
                     <SelectItem key={v.id} value={String(v.id)}>v{v.versionCode}</SelectItem>
                   ))}
                 </SelectContent>
@@ -173,7 +173,7 @@ function GenerateReportDialog({ open, onClose, gameId, versions, onSuccess }: {
               <Select value={compareVersionId} onValueChange={setCompareVersionId}>
                 <SelectTrigger><SelectValue placeholder="选择版本" /></SelectTrigger>
                 <SelectContent>
-                  {versions.map((v: any) => (
+                  {(versions ?? []).map((v: Record<string,unknown>) => (
                     <SelectItem key={v.id} value={String(v.id)}>v{v.versionCode}</SelectItem>
                   ))}
                 </SelectContent>

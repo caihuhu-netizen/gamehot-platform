@@ -201,7 +201,7 @@ export default function PushCenter() {
   const selection = useTableSelection(tasks as { id: number }[]);
 
   const handleBatchSend = async () => {
-    const draftItems = selection.selectedItems.filter((t: any) => t.status === "draft");
+    const draftItems = selection.selectedItems.filter((t: Record<string,unknown>) => t.status === "draft");
     if (draftItems.length === 0) { toast.error("选中的任务中没有草稿状态的任务"); return; }
     let success = 0, fail = 0;
     for (const item of draftItems) {
@@ -212,7 +212,7 @@ export default function PushCenter() {
   };
 
   const handleBatchDelete = async () => {
-    const deletable = selection.selectedItems.filter((t: any) => t.status === "draft" || t.status === "failed");
+    const deletable = selection.selectedItems.filter((t: Record<string,unknown>) => t.status === "draft" || t.status === "failed");
     if (deletable.length === 0) { toast.error("选中的任务中没有可删除的任务（仅草稿/失败可删除）"); return; }
     let success = 0, fail = 0;
     for (const item of deletable) {
@@ -254,7 +254,7 @@ export default function PushCenter() {
                   icon: <Send className="h-3 w-3" />,
                   needsConfirm: true,
                   confirmTitle: "批量发送推送",
-                  confirmDescription: `将发送选中的 ${selection.selectedItems.filter((t: any) => t.status === "draft").length} 条草稿推送任务。`,
+                  confirmDescription: `将发送选中的 ${selection.selectedItems.filter((t: Record<string,unknown>) => t.status === "draft").length} 条草稿推送任务。`,
                   onClick: handleBatchSend,
                 },
                 {
@@ -263,7 +263,7 @@ export default function PushCenter() {
                   variant: "destructive",
                   needsConfirm: true,
                   confirmTitle: "批量删除推送",
-                  confirmDescription: `将删除选中的 ${selection.selectedItems.filter((t: any) => t.status === "draft" || t.status === "failed").length} 条可删除任务（仅草稿/失败状态）。`,
+                  confirmDescription: `将删除选中的 ${selection.selectedItems.filter((t: Record<string,unknown>) => t.status === "draft" || t.status === "failed").length} 条可删除任务（仅草稿/失败状态）。`,
                   onClick: handleBatchDelete,
                 },
               ]}
@@ -298,7 +298,7 @@ export default function PushCenter() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {tasks.map((t: any) => {
+                    {(tasks ?? []).map((t: Record<string,unknown>) => {
                       const st = statusMap[t.status] || statusMap.draft;
                       return (
                         <TableRow key={t.id} className={selection.isSelected(t.id) ? "bg-primary/5" : ""}>
@@ -365,7 +365,7 @@ export default function PushCenter() {
           {/* Category summary */}
           {tplCategories.length > 0 && tplCategory === "all" && (
             <div className="flex gap-2 flex-wrap">
-              {tplCategories.map((c: any) => {
+              {tplCategories.map((c: Record<string,unknown>) => {
                 const cat = categoryMap[c.category] || categoryMap.custom;
                 return (
                   <button
@@ -393,7 +393,7 @@ export default function PushCenter() {
             </CardContent></Card>
           ) : (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {templates.map((tpl: any) => {
+              {(templates ?? []).map((tpl: Record<string,unknown>) => {
                 const cat = categoryMap[tpl.category] || categoryMap.custom;
                 const vars: TemplateVariable[] = Array.isArray(tpl.variables) ? tpl.variables : [];
                 return (

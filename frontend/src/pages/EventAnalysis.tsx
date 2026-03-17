@@ -175,7 +175,7 @@ export default function EventAnalysis() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {events.map((e: any) => (
+                  {(events ?? []).map((e: Record<string,unknown>) => (
                     <TableRow key={e.id}>
                       <TableCell className="font-mono text-sm">{e.eventCode}</TableCell>
                       <TableCell className="font-medium">{e.eventName}</TableCell>
@@ -210,7 +210,7 @@ export default function EventAnalysis() {
             </CardContent></Card>
           ) : (
             <div className="grid gap-4 md:grid-cols-2">
-              {configs.map((c: any) => {
+              {(configs ?? []).map((c: Record<string,unknown>) => {
                 const aType = analysisTypeMap[c.analysisType] || analysisTypeMap.funnel;
                 const Icon = aType.icon;
                 return (
@@ -273,7 +273,7 @@ export default function EventAnalysis() {
                     <Select value={step.eventCode} onValueChange={v => updateFunnelStep(i, v)}>
                       <SelectTrigger className="flex-1"><SelectValue placeholder="选择事件..." /></SelectTrigger>
                       <SelectContent>
-                        {events.map((e: any) => (
+                        {(events ?? []).map((e: Record<string,unknown>) => (
                           <SelectItem key={e.eventCode} value={e.eventCode}>{e.eventName} ({e.eventCode})</SelectItem>
                         ))}
                       </SelectContent>
@@ -355,7 +355,7 @@ export default function EventAnalysis() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {funnelResult.steps?.map((step: any) => (
+                    {funnelResult.steps?.map((step: Record<string,unknown>) => (
                       <TableRow key={step.step}>
                         <TableCell className="font-bold">{step.step}</TableCell>
                         <TableCell>
@@ -406,7 +406,7 @@ export default function EventAnalysis() {
                   <Select value={retStartEvent} onValueChange={setRetStartEvent}>
                     <SelectTrigger><SelectValue placeholder="选择起始事件..." /></SelectTrigger>
                     <SelectContent>
-                      {events.map((e: any) => (
+                      {(events ?? []).map((e: Record<string,unknown>) => (
                         <SelectItem key={e.eventCode} value={e.eventCode}>{e.eventName}</SelectItem>
                       ))}
                     </SelectContent>
@@ -417,7 +417,7 @@ export default function EventAnalysis() {
                   <Select value={retReturnEvent} onValueChange={setRetReturnEvent}>
                     <SelectTrigger><SelectValue placeholder="选择回访事件..." /></SelectTrigger>
                     <SelectContent>
-                      {events.map((e: any) => (
+                      {(events ?? []).map((e: Record<string,unknown>) => (
                         <SelectItem key={e.eventCode} value={e.eventCode}>{e.eventName}</SelectItem>
                       ))}
                     </SelectContent>
@@ -497,7 +497,7 @@ export default function EventAnalysis() {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {retentionResult.cohorts.map((cohort: any) => (
+                        {retentionResult.cohorts.map((cohort: Record<string,unknown>) => (
                           <TableRow key={cohort.date}>
                             <TableCell className="sticky left-0 bg-background z-10 font-medium whitespace-nowrap">{cohort.date}</TableCell>
                             <TableCell className="text-right">{cohort.cohortSize.toLocaleString()}</TableCell>
@@ -582,7 +582,7 @@ export default function EventAnalysis() {
             <div className="space-y-2">
               <label className="text-sm font-medium">选择事件 *</label>
               <div className="flex flex-wrap gap-2 max-h-40 overflow-auto">
-                {events.map((e: any) => (
+                {(events ?? []).map((e: Record<string,unknown>) => (
                   <Badge key={e.id} variant={configForm.eventIds.includes(e.id) ? "default" : "outline"} className="cursor-pointer" onClick={() => toggleEventId(e.id)}>
                     {e.eventName}
                   </Badge>

@@ -95,7 +95,7 @@ export default function Monetize() {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">活跃规则</p>
-              <p className="text-xl font-bold">{rules?.filter((r: any) => r.isActive).length ?? 0}</p>
+              <p className="text-xl font-bold">{rules?.filter((r: Record<string,unknown>) => r.isActive).length ?? 0}</p>
             </div>
           </CardContent>
         </Card>
@@ -146,7 +146,7 @@ export default function Monetize() {
                       ))}</TableRow>
                     ))
                   ) : rules?.length ? (
-                    rules.map((rule: any) => (
+                    (rules ?? []).map((rule: Record<string,unknown>) => (
                       <TableRow key={rule.id}>
                         <TableCell className="font-mono text-xs">{rule.ruleCode}</TableCell>
                         <TableCell className="text-sm">{rule.ruleName}</TableCell>
@@ -219,7 +219,7 @@ export default function Monetize() {
                       ))}</TableRow>
                     ))
                   ) : templates?.length ? (
-                    templates.map((t: any) => (
+                    (templates ?? []).map((t: Record<string,unknown>) => (
                       <TableRow key={t.id}>
                         <TableCell className="font-mono text-xs">{t.templateCode}</TableCell>
                         <TableCell><Badge variant="secondary" className="text-xs">{POPUP_TYPES.find(p => p.value === t.popupType)?.label || t.popupType}</Badge></TableCell>

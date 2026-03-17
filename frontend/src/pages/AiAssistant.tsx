@@ -122,8 +122,8 @@ export default function AiAssistant() {
         : currentSession.messages;
       setMessages(
         (msgs as Record<string, unknown>[])
-          .filter((m: any) => m.role === "user" || m.role === "assistant")
-          .map((m: any) => ({
+          .filter((m: Record<string,unknown>) => m.role === "user" || m.role === "assistant")
+          .map((m: Record<string,unknown>) => ({
             role: m.role,
             content: m.content,
             queryResult: m.queryResult,
@@ -309,7 +309,7 @@ export default function AiAssistant() {
               </div>
             ) : (
               <div className="space-y-1">
-                {sessions.map((s: any) => (
+                {sessions.map((s: Record<string,unknown>) => (
                   <div
                     key={s.id}
                     className={`group flex items-center gap-2 rounded-md px-2.5 py-2 cursor-pointer transition-colors ${

@@ -277,15 +277,15 @@ export default function SchedulerCenter() {
   const filteredTasks = useMemo(() => {
     if (!search) return tasks;
     const q = search.toLowerCase();
-    return tasks.filter((t: any) =>
+    return (tasks ?? []).filter((t: Record<string,unknown>) =>
       t.name?.toLowerCase().includes(q) ||
       t.taskType?.toLowerCase().includes(q) ||
       t.description?.toLowerCase().includes(q)
     );
   }, [tasks, search]);
 
-  const enabledCount = tasks.filter((t: any) => t.enabled).length;
-  const runningCount = tasks.filter((t: any) => t.lastStatus === "running").length;
+  const enabledCount = (tasks ?? []).filter((t: Record<string,unknown>) => t.enabled).length;
+  const runningCount = (tasks ?? []).filter((t: Record<string,unknown>) => t.lastStatus === "running").length;
 
   return (
     <div className="space-y-6">
@@ -387,7 +387,7 @@ export default function SchedulerCenter() {
             </Card>
           ) : (
             <div className="space-y-3">
-              {filteredTasks.map((task: any) => (
+              {filteredTasks.map((task: Record<string,unknown>) => (
                 <Card key={task.id} className={`transition-all ${!task.enabled ? "opacity-60" : ""}`}>
                   <CardContent className="py-4">
                     <div className="flex flex-col sm:flex-row sm:items-center gap-3">
@@ -445,7 +445,7 @@ export default function SchedulerCenter() {
               <SelectTrigger className="w-48"><SelectValue placeholder="全部任务" /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">全部任务</SelectItem>
-                {tasks.map((t: any) => (
+                {(tasks ?? []).map((t: Record<string,unknown>) => (
                   <SelectItem key={t.id} value={t.id.toString()}>{t.name}</SelectItem>
                 ))}
               </SelectContent>
@@ -479,7 +479,7 @@ export default function SchedulerCenter() {
           ) : (
             <div className="space-y-2">
               <p className="text-sm text-muted-foreground">共 {logsData.total} 条记录</p>
-              {logsData.logs.map((log: any) => {
+              {(logsData.logs ?? []).map((log: Record<string,unknown>) => {
                 const taskName = tasks.find((t: any) => t.id === log.taskId)?.name ?? `Task #${log.taskId}`;
                 const isExpanded = expandedLog === log.id;
                 return (

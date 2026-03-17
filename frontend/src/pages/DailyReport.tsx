@@ -115,7 +115,7 @@ function ReportCard({ report }: { report: any }) {
               <div>
                 <h4 className="text-sm font-semibold flex items-center gap-1 mb-2"><Lightbulb className="w-3.5 h-3.5 text-blue-500" /> 运营建议</h4>
                 <div className="space-y-1">
-                  {recommendations.map((r: any, i: number) => (
+                  {(recommendations ?? []).map((r: any, i: number) => (
                     <div key={i} className="p-2 rounded-lg border flex items-center justify-between">
                       <div>
                         <div className="text-sm font-medium">{r.title}</div>
@@ -193,7 +193,7 @@ export default function DailyReportPage() {
         </CardContent></Card>
       ) : (
         <div className="space-y-3">
-          {reports.map((r: any) => (
+          {(reports ?? []).map((r: Record<string,unknown>) => (
             <ReportCard key={r.id} report={r} />
           ))}
         </div>

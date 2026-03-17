@@ -31,7 +31,7 @@ function AdDailyReport() {
   const { data: rawData = [], isLoading } = trpc.reports.adDailySummary.useQuery({ ...adDateParams, limit: 90,
   gameId: currentGameId ?? undefined,
 });
-  const data = (rawData as unknown as unknown as Record<string, unknown>[]).map((d: any) => ({
+  const data = (rawData as unknown as unknown as Record<string, unknown>[]).map((d: Record<string,unknown>) => ({
     ...d,
     dau: Number(d.dau || 0),
     newUsers: Number(d.new_users || d.newUsers || 0),
@@ -57,7 +57,7 @@ function AdDailyReport() {
   const prev = data[1];
   const diff = (a: number, b: number) => b ? ((a - b) / b * 100) : 0;
   const handleExportAd = () => {
-    exportToCsv("投放日报", data.map(d => ({
+    exportToCsv("投放日报", (data ?? []).map(d => ({
       "日期": d.reportDate, "DAU": d.dau, "新增用户": d.newUsers,
       "D1留存%": d.retentionD1, "D7留存%": d.retentionD7,
       "IAP收入": d.iapRevenue, "广告花费": d.adSpend,
@@ -195,7 +195,7 @@ function AdDailyReport() {
               <th className="text-right">ROI</th><th className="text-right">时长(分)</th>
             </tr></thead>
             <tbody>
-              {data.map((row: any) => (
+              {(data ?? []).map((row: Record<string,unknown>) => (
                 <tr key={row.reportDate} className="border-b hover:bg-muted/50">
                   <td className="py-1.5">{row.reportDate}</td>
                   <td className="text-right">{(row.dau ?? 0).toLocaleString()}</td>
@@ -290,7 +290,7 @@ function ChannelManagement() {
         </CardContent></Card>
       ) : (
         <div className="grid gap-3">
-          {channels.map((ch: any) => (
+          {(channels ?? []).map((ch: Record<string,unknown>) => (
             <Card key={ch.id} className="hover:shadow-md transition-shadow">
               <CardContent className="py-3 flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -396,7 +396,7 @@ function ROIAnalysis() {
                   </tr>
                 </thead>
                 <tbody>
-                  {roiData.map((ch: any) => (
+                  {roiData.map((ch: Record<string,unknown>) => (
                     <tr key={ch.channelId} className="border-b hover:bg-muted/50">
                       <td className="py-2">
                         <div className="font-medium">{ch.channelName}</div>
@@ -432,7 +432,7 @@ function ROIAnalysis() {
           <CardContent>
             <div className="h-48 flex items-end gap-1">
               {costTrend.slice(-30).map((d: any, i: number) => {
-                const maxSpend = Math.max(...costTrend.map((x: any) => parseFloat(x.totalSpend) || 0));
+                const maxSpend = Math.max(...costTrend.map((x: Record<string,unknown>) => parseFloat(x.totalSpend) || 0));
                 const height = maxSpend > 0 ? ((parseFloat(d.totalSpend) || 0) / maxSpend) * 100 : 0;
                 return (
                   <div key={i} className="flex-1 flex flex-col items-center gap-1" title={`${d.costDate}: ${formatCurrency(parseFloat(d.totalSpend) || 0)}`}>
@@ -472,7 +472,7 @@ function CostImport() {
             <Select value={form.channelId} onValueChange={v => setForm(p => ({ ...p, channelId: v }))}>
               <SelectTrigger><SelectValue placeholder="选择渠道" /></SelectTrigger>
               <SelectContent>
-                {channels.map((ch: any) => (
+                {(channels ?? []).map((ch: Record<string,unknown>) => (
                   <SelectItem key={ch.id} value={String(ch.id)}>{ch.channelName}</SelectItem>
                 ))}
               </SelectContent>
@@ -729,7 +729,7 @@ function AppsFlyerSync() {
             <Select value={syncType} onValueChange={setSyncType}>
               <SelectTrigger><SelectValue placeholder="选择报表类型" /></SelectTrigger>
               <SelectContent>
-                {reportTypes.map((rt: any) => (
+                {reportTypes.map((rt: Record<string,unknown>) => (
                   <SelectItem key={rt.value} value={rt.value} disabled={rt.disabled}>
                     {rt.label}
                   </SelectItem>
@@ -817,7 +817,7 @@ function AppsFlyerSync() {
                   </tr>
                 </thead>
                 <tbody>
-                  {syncLogs.map((log: any) => (
+                  {syncLogs.map((log: Record<string,unknown>) => (
                     <tr key={log.id} className="border-b hover:bg-muted/50">
                       <td className="py-2 text-muted-foreground">{log.id}</td>
                       <td className="py-2">

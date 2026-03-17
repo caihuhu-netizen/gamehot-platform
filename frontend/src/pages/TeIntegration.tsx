@@ -74,7 +74,7 @@ function ConnectionsTab() {
         </Card>
       ) : (
         <div className="grid gap-4">
-          {connections.map((conn: any) => (
+          {(connections ?? []).map((conn: Record<string,unknown>) => (
             <Card key={conn.id} className="hover:shadow-md transition-shadow">
               <CardContent className="p-4">
                 <div className="flex items-start justify-between">
@@ -182,7 +182,7 @@ function ConnectionsTab() {
 function SyncTasksTab() {
   const [selectedConn, setSelectedConn] = useState<number | null>(null);
   const { data: connections } = trpc.teIntegration.listConnections.useQuery({});
-  const activeConns = useMemo(() => (connections || []).filter((c: any) => c.status === 'ACTIVE'), [connections]);
+  const activeConns = useMemo(() => (connections || []).filter((c: Record<string,unknown>) => c.status === 'ACTIVE'), [connections]);
 
   const connId = selectedConn || activeConns?.[0]?.id;
   const { data: tasks, refetch } = trpc.teIntegration.listSyncTasks.useQuery(
@@ -240,7 +240,7 @@ function SyncTasksTab() {
           <Select value={String(connId)} onValueChange={v => setSelectedConn(Number(v))}>
             <SelectTrigger className="w-[240px]"><SelectValue placeholder="选择连接" /></SelectTrigger>
             <SelectContent>
-              {activeConns.map((c: any) => (
+              {activeConns.map((c: Record<string,unknown>) => (
                 <SelectItem key={c.id} value={String(c.id)}>{c.connectionName}</SelectItem>
               ))}
             </SelectContent>
@@ -268,7 +268,7 @@ function SyncTasksTab() {
               <p>暂无同步任务记录</p>
             </CardContent>
           </Card>
-        ) : tasks.map((task: any) => {
+        ) : (tasks ?? []).map((task: Record<string,unknown>) => {
           const tt = taskTypeLabels[task.taskType] || taskTypeLabels.USER_SYNC;
           return (
             <Card key={task.id} className="hover:shadow-sm transition-shadow">
@@ -389,7 +389,7 @@ function LinkageRulesTab() {
         </Card>
       ) : (
         <div className="space-y-3">
-          {rules.map((rule: any) => {
+          {(rules ?? []).map((rule: Record<string,unknown>) => {
             const rt = ruleTypeLabels[rule.ruleType] || ruleTypeLabels.SCHEDULED;
             const actions = (rule.actions as Record<string, unknown>[]) || [];
             return (
@@ -572,7 +572,7 @@ function LinkageRulesTab() {
         <DialogContent className="max-w-lg max-h-[70vh] overflow-y-auto">
           <DialogHeader><DialogTitle>执行历史</DialogTitle></DialogHeader>
           <div className="space-y-2">
-            {executions?.map((exec: any) => (
+            {executions?.map((exec: Record<string,unknown>) => (
               <Card key={exec.id}>
                 <CardContent className="p-3">
                   <div className="flex items-center justify-between">

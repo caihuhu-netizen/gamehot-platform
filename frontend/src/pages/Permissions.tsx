@@ -66,7 +66,7 @@ function formatDetail(detail: any): string {
     const obj = typeof detail === "object" ? detail : JSON.parse(str);
     if (typeof obj === "object" && obj !== null) {
       const entries = Object.entries(obj).slice(0, 4);
-      return entries.map(([k, v]) => {
+      return (entries ?? []).map(([k, v]) => {
         const val = typeof v === "object" ? JSON.stringify(v) : String(v);
         return `${k}: ${val.length > 30 ? val.slice(0, 30) + "..." : val}`;
       }).join(" | ");
@@ -220,7 +220,7 @@ export default function Permissions() {
   // Populate user roles when data loads
   useMemo(() => {
     if (userRolesData) {
-      setUserSelectedRoles(userRolesData.map((r: any) => r.roleId));
+      setUserSelectedRoles(userRolesData.map((r: Record<string,unknown>) => r.roleId));
     }
   }, [userRolesData]);
 
@@ -265,7 +265,7 @@ export default function Permissions() {
             </Button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {roles?.map((role: any) => {
+            {roles?.map((role: Record<string,unknown>) => {
               const Icon = ROLE_ICONS[role.roleCode] || Shield;
               const colorClass = ROLE_COLORS[role.roleCode] || ROLE_COLORS.viewer;
               return (
@@ -331,7 +331,7 @@ export default function Permissions() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {allUsers?.map((user: any) => (
+                    {allUsers?.map((user: Record<string,unknown>) => (
                       <TableRow key={user.id}>
                         <TableCell>
                           <div className="flex items-center gap-2">
@@ -393,7 +393,7 @@ export default function Permissions() {
             <CardContent>
               {myPerms?.permissions?.length ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {myPerms.permissions.map((perm: any) => (
+                  {(myPerms.permissions ?? []).map((perm: Record<string,unknown>) => (
                     <div key={perm.menuCode} className="p-3 rounded-lg border bg-card">
                       <div className="flex items-center justify-between mb-2">
                         <p className="text-sm font-medium">{perm.menuName}</p>
@@ -449,7 +449,7 @@ export default function Permissions() {
                         ))}</TableRow>
                       ))
                     ) : logs?.data?.length ? (
-                      logs?.data?.map((log: any) => (
+                      logs?.data?.map((log: Record<string,unknown>) => (
                         <TableRow key={log.id}>
                           <TableCell className="text-xs whitespace-nowrap">{log.createdAt ? new Date(log.createdAt).toLocaleString() : "-"}</TableCell>
                           <TableCell className="text-sm">{log.userName || `User #${log.userId}`}</TableCell>
@@ -548,7 +548,7 @@ export default function Permissions() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {menuPerms?.map((menu: any) => (
+                {menuPerms?.map((menu: Record<string,unknown>) => (
                   <TableRow key={menu.id}>
                     <TableCell className="text-sm">
                       {menu.parentMenuCode && <span className="text-muted-foreground mr-1">└</span>}
@@ -583,7 +583,7 @@ export default function Permissions() {
             <DialogTitle>{isEn ? "Assign Roles" : "分配角色"}</DialogTitle>
           </DialogHeader>
           <div className="space-y-3">
-            {roles?.map((role: any) => (
+            {roles?.map((role: Record<string,unknown>) => (
               <label key={role.id} className="flex items-center gap-3 p-3 rounded-lg border cursor-pointer hover:bg-accent/50">
                 <Checkbox
                   checked={userSelectedRoles.includes(role.id)}

@@ -217,7 +217,7 @@ export default function KnowledgeBase() {
         <Card>
           <CardContent className="pt-4 pb-3 px-4">
             <div className="text-2xl font-bold">
-              {Array.from(new Set((displayData as Record<string, unknown>[]).map((d: any) => d.category))).length}
+              {Array.from(new Set((displayData as Record<string, unknown>[]).map((d: Record<string,unknown>) => d.category))).length}
             </div>
             <div className="text-xs text-muted-foreground">分类数</div>
           </CardContent>
@@ -255,7 +255,7 @@ export default function KnowledgeBase() {
         </Card>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {(displayData as Record<string, unknown>[]).map((item: any) => {
+          {(displayData as Record<string, unknown>[]).map((item: Record<string,unknown>) => {
             let tags: string[] = [];
             try { tags = JSON.parse(item.tags || "[]"); } catch { tags = []; }
             return (

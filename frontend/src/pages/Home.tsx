@@ -48,13 +48,13 @@ export default function Home() {
   const { data: approvalStats } = trpc.dashboard.approvalDashboard.useQuery({ gameId: currentGameId ?? undefined });
   const [, setLocation] = useLocation();
 
-  const segmentData = stats?.segmentDistribution?.map((s: any) => ({
+  const segmentData = stats?.segmentDistribution?.map((s: Record<string,unknown>) => ({
     name: SEGMENT_LABELS[s.segmentLevel] || s.segmentLevel,
     value: Number(s.count),
     level: s.segmentLevel,
   })) || [];
 
-  const timelineData = (timeline || []).map((t: any) => ({
+  const timelineData = (timeline || []).map((t: Record<string,unknown>) => ({
     date: fmtDateShort(t.statDate),
     revenue: Number(t.totalRevenue || 0),
     users: Number(t.uniqueUsers || 0),
@@ -194,7 +194,7 @@ export default function Home() {
           <CardContent>
             {healthTrend.length > 0 ? (
               <ResponsiveContainer width="100%" height={280}>
-                <LineChart data={healthTrend.map((h: any) => ({
+                <LineChart data={healthTrend.map((h: Record<string,unknown>) => ({
                   date: fmtDateShort(h.metricDate),
                   健康度: Number(h.overallHealthScore),
                   分层覆盖: Number(h.segmentCoverage) * 100,

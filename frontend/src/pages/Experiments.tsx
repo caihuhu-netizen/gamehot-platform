@@ -101,15 +101,15 @@ export default function Experiments() {
     onError: (err: unknown) => toast.error((err as Error).message),
   });
 
-  const runningCount = experiments?.filter((e: any) => e.status === "RUNNING").length ?? 0;
-  const draftCount = experiments?.filter((e: any) => e.status === "DRAFT").length ?? 0;
-  const graduatedCount = experiments?.filter((e: any) => e.status === "GRADUATED").length ?? 0;
+  const runningCount = experiments?.filter((e: Record<string,unknown>) => e.status === "RUNNING").length ?? 0;
+  const draftCount = experiments?.filter((e: Record<string,unknown>) => e.status === "DRAFT").length ?? 0;
+  const graduatedCount = experiments?.filter((e: Record<string,unknown>) => e.status === "GRADUATED").length ?? 0;
 
   // Batch selection
   const selection = useTableSelection((experiments || []) as { id: number }[]);
 
   const handleBatchStart = async () => {
-    const drafts = selection.selectedItems.filter((e: any) => e.status === "DRAFT");
+    const drafts = selection.selectedItems.filter((e: Record<string,unknown>) => e.status === "DRAFT");
     if (drafts.length === 0) { toast.error("选中的实验中没有草稿状态的实验"); return; }
     let success = 0, fail = 0;
     for (const item of drafts) {
@@ -120,7 +120,7 @@ export default function Experiments() {
   };
 
   const handleBatchPause = async () => {
-    const running = selection.selectedItems.filter((e: any) => e.status === "RUNNING");
+    const running = selection.selectedItems.filter((e: Record<string,unknown>) => e.status === "RUNNING");
     if (running.length === 0) { toast.error("选中的实验中没有运行中的实验"); return; }
     let success = 0, fail = 0;
     for (const item of running) {
@@ -228,7 +228,7 @@ export default function Experiments() {
                   icon: <Play className="h-3 w-3" />,
                   needsConfirm: true,
                   confirmTitle: "批量启动实验",
-                  confirmDescription: `将启动选中的 ${selection.selectedItems.filter((e: any) => e.status === "DRAFT").length} 个草稿实验。`,
+                  confirmDescription: `将启动选中的 ${selection.selectedItems.filter((e: Record<string,unknown>) => e.status === "DRAFT").length} 个草稿实验。`,
                   onClick: handleBatchStart,
                 },
                 {
@@ -237,7 +237,7 @@ export default function Experiments() {
                   variant: "secondary",
                   needsConfirm: true,
                   confirmTitle: "批量暂停实验",
-                  confirmDescription: `将暂停选中的 ${selection.selectedItems.filter((e: any) => e.status === "RUNNING").length} 个运行中实验。`,
+                  confirmDescription: `将暂停选中的 ${selection.selectedItems.filter((e: Record<string,unknown>) => e.status === "RUNNING").length} 个运行中实验。`,
                   onClick: handleBatchPause,
                 },
                 {
@@ -282,7 +282,7 @@ export default function Experiments() {
                         ))}</TableRow>
                       ))
                     ) : experiments?.length ? (
-                      experiments.map((exp: any) => {
+                      (experiments ?? []).map((exp: Record<string,unknown>) => {
                         const status = STATUS_MAP[exp.status] || STATUS_MAP.DRAFT;
                         return (
                           <TableRow key={exp.id} className={`${selectedExp === exp.id ? "bg-accent" : ""} ${selection.isSelected(exp.id) ? "bg-primary/5" : ""}`}>
@@ -362,7 +362,7 @@ export default function Experiments() {
                       <p className="text-xs text-muted-foreground mb-2">变体列表</p>
                       {expDetail.variants?.length ? (
                         <div className="space-y-2">
-                          {expDetail.variants.map((v: any) => (
+                          {(expDetail.variants ?? []).map((v: Record<string,unknown>) => (
                             <div key={v.id} className="p-2 rounded border text-sm">
                               <div className="flex items-center justify-between">
                                 <span className="font-medium">{v.variantName}</span>
@@ -514,7 +514,7 @@ export default function Experiments() {
                     <CardContent className="space-y-4">
                       {/* Conversion Rate Comparison */}
                       <div className="space-y-3">
-                        {analysis.variants.map((v: any) => (
+                        {(analysis.variants ?? []).map((v: Record<string,unknown>) => (
                           <div key={v.variantId} className={`p-3 rounded-lg border ${v.isControl ? 'border-gray-300 dark:border-gray-600' : 'border-blue-300 dark:border-blue-600'}`}>
                             <div className="flex items-center justify-between mb-2">
                               <div className="flex items-center gap-2">
@@ -655,7 +655,7 @@ export default function Experiments() {
               <CardContent>
                 {allRunningChecks?.length ? (
                   <div className="space-y-3">
-                    {allRunningChecks.map((check: any) => (
+                    {allRunningChecks.map((check: Record<string,unknown>) => (
                       <div key={check.experimentId} className={`p-4 rounded-lg border ${
                         check.recommendation === 'GRADUATE' ? 'border-emerald-300 dark:border-emerald-700 bg-emerald-50/50 dark:bg-emerald-950/50' :
                         check.recommendation === 'ABORT' ? 'border-red-300 dark:border-red-700 bg-red-50/50 dark:bg-red-950/50' :

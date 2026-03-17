@@ -91,15 +91,15 @@ export default function CustomReport() {
   }, [schema, adHocTable, form.table]);
 
   const aggregatableColumns = useMemo(() => {
-    return selectedTableSchema?.columns?.filter((c: any) => c.aggregatable) || [];
+    return selectedTableSchema?.columns?.filter((c: Record<string,unknown>) => c.aggregatable) || [];
   }, [selectedTableSchema]);
 
   const dimensionableColumns = useMemo(() => {
-    return selectedTableSchema?.columns?.filter((c: any) => c.dimensionable) || [];
+    return selectedTableSchema?.columns?.filter((c: Record<string,unknown>) => c.dimensionable) || [];
   }, [selectedTableSchema]);
 
   const filterableColumns = useMemo(() => {
-    return selectedTableSchema?.columns?.filter((c: any) => c.filterable) || [];
+    return selectedTableSchema?.columns?.filter((c: Record<string,unknown>) => c.filterable) || [];
   }, [selectedTableSchema]);
 
   const handleCreate = () => {
@@ -134,7 +134,7 @@ export default function CustomReport() {
   const exportToCSV = (data: any) => {
     if (!data?.rows?.length) return;
     const headers = data.columns.join(",");
-    const rows = data.rows.map((r: any) => data.columns.map((c: string) => {
+    const rows = (data.rows ?? []).map((r: Record<string,unknown>) => data.columns.map((c: string) => {
       const val = r[c];
       if (val === null || val === undefined) return "";
       const str = String(val);
@@ -180,7 +180,7 @@ export default function CustomReport() {
             </CardContent></Card>
           ) : (
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {reports.map((r: any) => {
+              {(reports ?? []).map((r: Record<string,unknown>) => {
                 const st = statusMap[r.status] || statusMap.draft;
                 const config = r.config as Record<string, unknown> & { metrics?: Array<{ label?: string; key?: string }>; dimensions?: Array<{ label?: string; key?: string }> };
                 return (
@@ -191,12 +191,12 @@ export default function CustomReport() {
                         <Badge variant={st.variant}>{st.label}</Badge>
                       </div>
                       <CardDescription>
-                        指标: {(config?.metrics || []).map((m: any) => m.label || m.key || m).join(", ") || "未配置"}
+                        指标: {(config?.metrics || []).map((m: Record<string,unknown>) => m.label || m.key || m).join(", ") || "未配置"}
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
                       <div className="text-sm text-muted-foreground mb-3">
-                        <div>维度: {(config?.dimensions || []).map((d: any) => d.label || d.key || d).join(", ") || "无"}</div>
+                        <div>维度: {(config?.dimensions || []).map((d: Record<string,unknown>) => d.label || d.key || d).join(", ") || "无"}</div>
                         <div>创建于: {new Date(r.createdAt).toLocaleDateString()}</div>
                         {r.lastRunAt && <div>上次运行: {new Date(r.lastRunAt).toLocaleString()}</div>}
                       </div>
@@ -231,7 +231,7 @@ export default function CustomReport() {
                 <Select value={adHocTable} onValueChange={(v) => { setAdHocTable(v); setAdHocMetrics([]); setAdHocDimensions([]); setAdHocFilters([]); }}>
                   <SelectTrigger><SelectValue placeholder="选择要查询的数据表..." /></SelectTrigger>
                   <SelectContent>
-                    {schema.map((t: any) => (
+                    {schema.map((t: Record<string,unknown>) => (
                       <SelectItem key={t.table} value={t.table}>
                         <span className="font-medium">{t.label}</span>
                         <span className="text-muted-foreground ml-2 text-xs">({t.table})</span>
@@ -269,7 +269,7 @@ export default function CustomReport() {
                           }}>
                             <SelectTrigger className="flex-1"><SelectValue /></SelectTrigger>
                             <SelectContent>
-                              {aggregatableColumns.map((c: any) => (
+                              {aggregatableColumns.map((c: Record<string,unknown>) => (
                                 <SelectItem key={c.column} value={c.column}>{c.label} ({c.column})</SelectItem>
                               ))}
                             </SelectContent>
@@ -289,7 +289,7 @@ export default function CustomReport() {
                   <div className="space-y-2">
                     <label className="text-sm font-medium flex items-center gap-1"><Columns className="h-3.5 w-3.5" />选择维度（分组）</label>
                     <div className="flex flex-wrap gap-2">
-                      {dimensionableColumns.map((c: any) => (
+                      {dimensionableColumns.map((c: Record<string,unknown>) => (
                         <Badge
                           key={c.column}
                           variant={adHocDimensions.includes(c.column) ? "default" : "outline"}
@@ -319,7 +319,7 @@ export default function CustomReport() {
                           }}>
                             <SelectTrigger className="w-40"><SelectValue placeholder="选择列" /></SelectTrigger>
                             <SelectContent>
-                              {filterableColumns.map((c: any) => (
+                              {filterableColumns.map((c: Record<string,unknown>) => (
                                 <SelectItem key={c.column} value={c.column}>{c.label}</SelectItem>
                               ))}
                             </SelectContent>
@@ -403,7 +403,7 @@ export default function CustomReport() {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {adHocResult.rows.map((row: any, i: number) => (
+                        {(adHocResult.rows ?? []).map((row: any, i: number) => (
                           <TableRow key={i}>
                             {adHocResult.columns.map((c: string) => (
                               <TableCell key={c} className="whitespace-nowrap">
@@ -438,7 +438,7 @@ export default function CustomReport() {
               <Select value={form.table} onValueChange={v => setForm({ ...form, table: v, metrics: [], dimensions: [] })}>
                 <SelectTrigger><SelectValue placeholder="选择数据表..." /></SelectTrigger>
                 <SelectContent>
-                  {schema.map((t: any) => (
+                  {schema.map((t: Record<string,unknown>) => (
                     <SelectItem key={t.table} value={t.table}>{t.label}</SelectItem>
                   ))}
                 </SelectContent>
@@ -449,7 +449,7 @@ export default function CustomReport() {
                 <div className="space-y-2">
                   <label className="text-sm font-medium">选择指标 *</label>
                   <div className="flex flex-wrap gap-2">
-                    {(schema.find((t: any) => t.table === form.table)?.columns?.filter((c: any) => c.aggregatable) || []).map((c: any) => (
+                    {(schema.find((t: any) => t.table === form.table)?.columns?.filter((c: Record<string,unknown>) => c.aggregatable) || []).map((c: Record<string,unknown>) => (
                       <Badge
                         key={c.column}
                         variant={form.metrics.some(m => m.key === c.column) ? "default" : "outline"}
@@ -471,7 +471,7 @@ export default function CustomReport() {
                 <div className="space-y-2">
                   <label className="text-sm font-medium">选择维度</label>
                   <div className="flex flex-wrap gap-2">
-                    {(schema.find((t: any) => t.table === form.table)?.columns?.filter((c: any) => c.dimensionable) || []).map((c: any) => (
+                    {(schema.find((t: any) => t.table === form.table)?.columns?.filter((c: Record<string,unknown>) => c.dimensionable) || []).map((c: Record<string,unknown>) => (
                       <Badge
                         key={c.column}
                         variant={form.dimensions.some(d => d.key === c.column) ? "default" : "outline"}
@@ -545,7 +545,7 @@ export default function CustomReport() {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {resultData.rows.map((row: any, i: number) => (
+                        {(resultData.rows ?? []).map((row: any, i: number) => (
                           <TableRow key={i}>
                             {resultData.columns.map((c: string) => (
                               <TableCell key={c} className="whitespace-nowrap">

@@ -140,7 +140,7 @@ export default function AudienceTemplates() {
   const filteredTemplates = useMemo(() => {
     if (!searchQuery.trim()) return templates;
     const q = searchQuery.toLowerCase();
-    return templates.filter((t: any) =>
+    return (templates ?? []).filter((t: Record<string,unknown>) =>
       t.name.toLowerCase().includes(q) ||
       t.description?.toLowerCase().includes(q) ||
       (t.tags as string[] || []).some((tag: string) => tag.toLowerCase().includes(q))
@@ -222,7 +222,7 @@ export default function AudienceTemplates() {
             <LayoutGrid className="mr-1.5 h-3.5 w-3.5" />
             全部
           </Button>
-          {categories.map((cat) => {
+          {(categories ?? []).map((cat) => {
             const colors = CATEGORY_COLORS[cat.category] || { bg: "bg-muted", text: "text-foreground", border: "border-border" };
             const CatIcon = CATEGORY_ICONS[cat.category] || Sparkles;
             return (
@@ -273,7 +273,7 @@ export default function AudienceTemplates() {
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {categoryTemplates.map((template: any) => {
+                {categoryTemplates.map((template: Record<string,unknown>) => {
                   const IconComp = ICON_MAP[template.icon] || Sparkles;
                   const conditions = (template.conditions || []) as AudienceCondition[];
                   const preview = previewCounts[template.id];

@@ -179,7 +179,7 @@ export default function DecisionLogs() {
             </CardContent>
           </Card>
         ) : (
-          logs.map((log: any) => {
+          (logs ?? []).map((log: Record<string,unknown>) => {
             const source = sourceLabels[log.sourceType as SourceType];
             const action = actionLabels[log.humanAction as HumanActionAll];
             const effect = effectLabels[(log.effectEvaluation || "pending") as EffectEval];

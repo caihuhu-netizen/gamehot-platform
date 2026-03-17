@@ -132,7 +132,7 @@ function DepartmentTreeNode({ node, level = 0, expandedIds, toggleExpand, onSele
             className="absolute top-0 bottom-0 border-l border-border/50"
             style={{ left: `${level * 24 + 24}px` }}
           />
-          {node.children.map((child: any) => (
+          {node.children.map((child: Record<string,unknown>) => (
             <DepartmentTreeNode
               key={child.departmentId}
               node={child}
@@ -205,7 +205,7 @@ function DepartmentDetail({ dept, onClose }: { dept: any; onClose: () => void })
             <p className="text-sm text-muted-foreground py-2">暂无人员</p>
           ) : (
             <div className="space-y-1.5 max-h-64 overflow-y-auto">
-              {users.data?.map((user: any) => (
+              {users.data?.map((user: Record<string,unknown>) => (
                 <div key={user.id} className="flex items-center gap-2 py-1.5 px-2 rounded hover:bg-accent/30 text-sm">
                   {user.avatar ? (
                     <img src={user.avatar} className="h-7 w-7 rounded-full" alt="" />
@@ -285,7 +285,7 @@ function DepartmentTab() {
   // 统计数据
   const totalDepts = flatDepts.data?.length ?? 0;
   const totalMembers = flatDepts.data?.reduce((sum: number, d: any) => sum + (d.memberCount || 0), 0) ?? 0;
-  const activeDepts = flatDepts.data?.filter((d: any) => d.status === "ACTIVE").length ?? 0;
+  const activeDepts = flatDepts.data?.filter((d: Record<string,unknown>) => d.status === "ACTIVE").length ?? 0;
 
   return (
     <div className="space-y-4">
@@ -370,7 +370,7 @@ function DepartmentTab() {
               </div>
             ) : (
               <div className="space-y-0.5">
-                {deptTree?.data?.map((root: any) => (
+                {deptTree?.data?.map((root: Record<string,unknown>) => (
                   <DepartmentTreeNode
                     key={root.departmentId}
                     node={root}
@@ -415,7 +415,7 @@ function UserTab() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">全部部门</SelectItem>
-            {departments.data?.map((dept: any) => (
+            {departments.data?.map((dept: Record<string,unknown>) => (
               <SelectItem key={dept.departmentId} value={dept.departmentId}>
                 {dept.name}
               </SelectItem>
@@ -447,7 +447,7 @@ function UserTab() {
                   </TableCell>
                 </TableRow>
               )}
-              {users.data?.map((user: any) => (
+              {users.data?.map((user: Record<string,unknown>) => (
                 <TableRow key={user.id}>
                   <TableCell className="font-medium">
                     <div className="flex items-center gap-2">
@@ -508,13 +508,13 @@ function AssignRoleButton({ userId, userName }: { userId: number | null; userNam
     <Dialog open={open} onOpenChange={(v) => {
       setOpen(v);
       if (v && userRoles.data) {
-        setSelectedRoles(userRoles?.data?.map((r: any) => r.roleId));
+        setSelectedRoles(userRoles?.data?.map((r: Record<string,unknown>) => r.roleId));
       }
     }}>
       <DialogTrigger asChild>
         <Button variant="ghost" size="sm" className="h-7 text-xs gap-1">
           <UserPlus className="h-3 w-3" />
-          {userRoles.data?.length ? userRoles?.data?.map((r: any) => r.roleName).join(", ") : "分配角色"}
+          {userRoles.data?.length ? userRoles?.data?.map((r: Record<string,unknown>) => r.roleName).join(", ") : "分配角色"}
         </Button>
       </DialogTrigger>
       <DialogContent>
@@ -522,7 +522,7 @@ function AssignRoleButton({ userId, userName }: { userId: number | null; userNam
           <DialogTitle>分配角色 - {userName}</DialogTitle>
         </DialogHeader>
         <div className="space-y-3 py-4">
-          {roles.data?.map((role: any) => (
+          {roles.data?.map((role: Record<string,unknown>) => (
             <div key={role.id} className="flex items-center gap-3">
               <Checkbox
                 checked={selectedRoles.includes(role.id)}
@@ -614,7 +614,7 @@ function RoleTab() {
       )}
 
       <div className="grid gap-3">
-        {roles.data?.map((role: any) => (
+        {roles.data?.map((role: Record<string,unknown>) => (
           <Card key={role.id}>
             <CardContent className="flex items-center justify-between py-4">
               <div className="flex items-center gap-4">
@@ -692,7 +692,7 @@ function PermissionConfigTab() {
     if (!menu.parentMenuCode) {
       acc.push({
         ...menu,
-        children: menus.data?.filter((m: any) => m.parentMenuCode === menu.menuCode) ?? [],
+        children: menus.data?.filter((m: Record<string,unknown>) => m.parentMenuCode === menu.menuCode) ?? [],
       });
     }
     return acc;
@@ -715,7 +715,7 @@ function PermissionConfigTab() {
             <SelectValue placeholder="选择角色" />
           </SelectTrigger>
           <SelectContent>
-            {roles.data?.map((role: any) => (
+            {roles.data?.map((role: Record<string,unknown>) => (
               <SelectItem key={role.id} value={role.id.toString()}>
                 {role.roleName}
               </SelectItem>
@@ -761,14 +761,14 @@ function PermissionConfigTab() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {menuTree.map((group: any) => (
+                {menuTree.map((group: Record<string,unknown>) => (
                   <>
                     <TableRow key={group.id} className="bg-muted/30">
                       <TableCell colSpan={6} className="font-medium text-sm">
                         {group.menuName}
                       </TableCell>
                     </TableRow>
-                    {group.children.map((menu: any) => {
+                    {group.children.map((menu: Record<string,unknown>) => {
                       const currentActions = editPerms.get(menu.id) ?? [];
                       return (
                         <TableRow key={menu.id}>

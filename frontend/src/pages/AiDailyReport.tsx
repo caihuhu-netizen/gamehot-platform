@@ -86,7 +86,7 @@ export default function AiDailyReport() {
                 </div>
               ) : (
                 <div className="space-y-1 max-h-[600px] overflow-y-auto">
-                  {(reports as Record<string, unknown>[]).map((report: any) => (
+                  {(reports as Record<string, unknown>[]).map((report: Record<string,unknown>) => (
                     <button
                       key={report.id}
                       onClick={() => setSelectedReport(report)}

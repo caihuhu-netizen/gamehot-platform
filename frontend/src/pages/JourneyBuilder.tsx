@@ -93,7 +93,7 @@ function CanvasNodeCard({
 
 // ── SVG Edge connector ────────────────────────────────────────
 function EdgeConnector({ nodes, edges }: { nodes: CanvasNode[]; edges: CanvasEdge[] }) {
-  const nodeMap = Object.fromEntries(nodes.map(n => [n.id, n]));
+  const nodeMap = Object.fromEntries((nodes ?? []).map(n => [n.id, n]));
   return (
     <svg className="absolute inset-0 pointer-events-none" style={{ width: "100%", height: "100%", overflow: "visible" }}>
       <defs>
@@ -150,7 +150,7 @@ function JourneyCanvas({
   const addNode = (type: string) => {
     const nt = NODE_TYPES[type];
     const id = `n${Date.now()}`;
-    const existingX = nodes.map(n => n.x);
+    const existingX = (nodes ?? []).map(n => n.x);
     const maxX = existingX.length ? Math.max(...existingX) : 80;
     const newNode: CanvasNode = { id, type, label: nt.label, x: maxX + 160, y: 200 };
     const newNodes = [...nodes, newNode];
@@ -167,7 +167,7 @@ function JourneyCanvas({
   };
 
   const deleteNode = (id: string) => {
-    const newNodes = nodes.filter(n => n.id !== id);
+    const newNodes = (nodes ?? []).filter(n => n.id !== id);
     const newEdges = edges.filter(e => e.source !== id && e.target !== id);
     setNodes(newNodes);
     setEdges(newEdges);
@@ -233,7 +233,7 @@ function JourneyCanvas({
           </div>
         )}
         <EdgeConnector nodes={nodes} edges={edges} />
-        {nodes.map(node => (
+        {(nodes ?? []).map(node => (
           <div key={node.id}
             onMouseDown={(e) => onMouseDown(e, node.id)}
             style={{ position: "absolute", left: node.x, top: node.y, transform: "translate(-50%,-50%)" }}
@@ -259,7 +259,7 @@ function JourneyCanvas({
                 className="mt-1 h-7 text-xs"
                 value={selectedNode.label}
                 onChange={e => {
-                  const newNodes = nodes.map(n => n.id === selectedNode.id ? { ...n, label: e.target.value } : n);
+                  const newNodes = (nodes ?? []).map(n => n.id === selectedNode.id ? { ...n, label: e.target.value } : n);
                   setNodes(newNodes);
                 }}
                 onBlur={() => onSave({ nodes, edges })}
@@ -416,7 +416,7 @@ export default function JourneyBuilder() {
         </Card>
       ) : (
         <div className="space-y-3">
-          {journeyList.map((j: any) => {
+          {journeyList.map((j: Record<string,unknown>) => {
             const st = STATUS_MAP[j.status] ?? STATUS_MAP.draft;
             const convRate = j.enrolled_count > 0
               ? ((j.converted_count / j.enrolled_count) * 100).toFixed(1)

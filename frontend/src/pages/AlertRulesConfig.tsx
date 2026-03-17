@@ -138,7 +138,7 @@ function AlertRulesTab() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {(rules as Record<string, unknown>[])?.map((r: any) => (
+              {(rules as Record<string, unknown>[])?.map((r: Record<string,unknown>) => (
                 <TableRow key={r.id}>
                   <TableCell className="font-medium">{r.rule_name || r.ruleName}</TableCell>
                   <TableCell><Badge variant="outline">{RULE_TYPES.find(t => t.value === (r.rule_type || r.ruleType))?.label}</Badge></TableCell>
@@ -265,7 +265,7 @@ function AggregationTab() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {(rules as Record<string, unknown>[])?.map((r: any) => (
+                {(rules as Record<string, unknown>[])?.map((r: Record<string,unknown>) => (
                   <TableRow key={r.id}>
                     <TableCell className="font-medium">{r.rule_name}</TableCell>
                     <TableCell><Badge variant="outline">{ALERT_TYPES.find(t => t.value === r.alert_type)?.label || r.alert_type}</Badge></TableCell>
@@ -392,7 +392,7 @@ function SilenceTab() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {(rules as Record<string, unknown>[])?.map((r: any) => (
+                {(rules as Record<string, unknown>[])?.map((r: Record<string,unknown>) => (
                   <TableRow key={r.id}>
                     <TableCell className="font-medium">{r.rule_name}</TableCell>
                     <TableCell className="text-xs">
@@ -536,7 +536,7 @@ function EscalationTab() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {(rules as Record<string, unknown>[])?.map((r: any) => (
+                {(rules as Record<string, unknown>[])?.map((r: Record<string,unknown>) => (
                   <TableRow key={r.id}>
                     <TableCell className="font-medium">{r.rule_name}</TableCell>
                     <TableCell>

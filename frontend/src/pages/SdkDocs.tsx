@@ -1710,7 +1710,7 @@ function SdkVerificationTool() {
                     <span className="text-emerald-600">有效: {eventResult?.data?.validCount}</span>
                     {eventResult?.data?.invalidCount > 0 && <span className="text-red-600">无效: {eventResult?.data?.invalidCount}</span>}
                   </div>
-                  {eventResult?.data?.results?.filter((r: any) => !r.valid).map((r: any, i: number) => (
+                  {eventResult?.data?.results?.filter((r: Record<string,unknown>) => !r.valid).map((r: any, i: number) => (
                     <div key={i} className="text-xs text-red-600 bg-red-100/50 dark:bg-red-900/20 rounded px-2 py-1 mt-1">
                       事件[{r.index}] {r.eventType}: {r.errors.join('; ')}
                     </div>

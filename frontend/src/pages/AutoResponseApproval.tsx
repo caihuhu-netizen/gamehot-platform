@@ -202,7 +202,7 @@ function ApprovalTab({ gameId, feishuAction, onFeishuActionHandled }: { gameId: 
         <Card><CardContent className="py-12 text-center text-muted-foreground"><ShieldCheck className="h-12 w-12 mx-auto mb-3 opacity-30" /><p>暂无审批记录</p></CardContent></Card>
       ) : (
         <div className="space-y-3">
-          {rows.map((item: any) => {
+          {(rows ?? []).map((item: Record<string,unknown>) => {
             const sc = APPROVAL_STATUS[item.status] || APPROVAL_STATUS.pending;
             const SI = sc.icon;
             return (
@@ -313,7 +313,7 @@ function EffectTrackingTab({ gameId }: { gameId: number | null }) {
         <Card><CardContent className="py-12 text-center text-muted-foreground"><BarChart3 className="h-12 w-12 mx-auto mb-3 opacity-30" /><p>暂无效果追踪记录</p></CardContent></Card>
       ) : (
         <div className="space-y-3">
-          {rows.map((item: any) => {
+          {(rows ?? []).map((item: Record<string,unknown>) => {
             const sc = EFFECT_STATUS[item.effect_status] || EFFECT_STATUS.tracking;
             const SI = sc.icon;
             const baseline = Number(item.baseline_value);
@@ -386,7 +386,7 @@ function PolicyTab({ gameId }: { gameId: number | null }) {
         <Card><CardContent className="py-12 text-center text-muted-foreground"><Settings2 className="h-12 w-12 mx-auto mb-3 opacity-30" /><p>暂无审批策略</p><p className="text-xs mt-1">创建策略以配置自动审批和超时处理规则</p></CardContent></Card>
       ) : (
         <div className="grid gap-3">
-          {policyList.map((p: any) => {
+          {policyList.map((p: Record<string,unknown>) => {
             const rc = RISK_LABEL[p.risk_level] || RISK_LABEL.medium;
             return (
               <Card key={p.id} className="hover:shadow-md transition-shadow">

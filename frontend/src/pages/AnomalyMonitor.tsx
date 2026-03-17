@@ -49,12 +49,12 @@ export default function AnomalyMonitor() {
   const filteredAlerts = useMemo(() => {
     const list = alerts as unknown as unknown as Record<string, unknown>[];
     if (filter === "all") return list;
-    return list.filter((a: any) => (a.alert_type || a.alertType) === filter);
+    return (list ?? []).filter((a: Record<string,unknown>) => (a.alert_type || a.alertType) === filter);
   }, [alerts, filter]);
 
   const severityPie = useMemo(() => {
     if (!stats?.bySeverity) return [];
-    return (stats.bySeverity as unknown as unknown as Record<string, unknown>[]).map((s: any) => ({
+    return (stats.bySeverity as unknown as unknown as Record<string, unknown>[]).map((s: Record<string,unknown>) => ({
       name: s.severity === "critical" ? "严重" : s.severity === "warning" ? "警告" : "信息",
       value: Number(s.count),
     }));
@@ -62,7 +62,7 @@ export default function AnomalyMonitor() {
 
   const typePie = useMemo(() => {
     if (!stats?.byType) return [];
-    return (stats.byType as unknown as unknown as Record<string, unknown>[]).map((t: any) => ({
+    return (stats.byType as unknown as unknown as Record<string, unknown>[]).map((t: Record<string,unknown>) => ({
       name: TYPE_CONFIG[t.alert_type]?.label || t.alert_type,
       value: Number(t.count),
     }));
@@ -177,7 +177,7 @@ export default function AnomalyMonitor() {
             </div>
           ) : (
             <div className="space-y-2">
-              {filteredAlerts.map((alert: any) => {
+              {filteredAlerts.map((alert: Record<string,unknown>) => {
                 const type = alert.alert_type || alert.alertType;
                 const severity = alert.severity;
                 const status = alert.status;

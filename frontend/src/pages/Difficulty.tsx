@@ -128,7 +128,7 @@ export default function Difficulty() {
                   </TableRow>
                 ))
               ) : templates?.length ? (
-                templates.map((t: any) => (
+                (templates ?? []).map((t: Record<string,unknown>) => (
                   <TableRow key={t.id}>
                     <TableCell className="font-mono text-xs">{t.templateCode}</TableCell>
                     <TableCell><Badge variant="secondary" className="text-xs">{t.segmentLevel}</Badge></TableCell>

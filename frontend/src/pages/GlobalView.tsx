@@ -208,7 +208,7 @@ export default function GlobalView() {
   // 折线图数据（地区按 region 堆叠，这里用 regionBreakdown 的 regions 数据展示）
   const chartData = useMemo(() => {
     const regions: any[] = regionData?.regions ?? [];
-    return regions.map((r: any) => ({
+    return regions.map((r: Record<string,unknown>) => ({
       name: REGION_LABELS[r.region] ?? r.region,
       region: r.region,
       用户数: r.userCount ?? 0,
@@ -327,7 +327,7 @@ export default function GlobalView() {
               </div>
             ) : (
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-                {regionStats.map((r: any) => (
+                {regionStats.map((r: Record<string,unknown>) => (
                   <RegionCard
                     key={r.region}
                     region={r.region}
@@ -452,7 +452,7 @@ export default function GlobalView() {
               <Globe className="w-4 h-4" /> 各地区时区信息
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
-              {(tzData?.regions ?? getDefaultTimezonesFallback()).map((r: any) => (
+              {(tzData?.regions ?? getDefaultTimezonesFallback()).map((r: Record<string,unknown>) => (
                 <div key={r.code} className="text-center bg-muted/30 rounded-lg p-2">
                   <div className="font-medium text-xs">{r.name ?? r.code}</div>
                   <div className="text-muted-foreground text-xs mt-0.5">{r.utcOffset}</div>

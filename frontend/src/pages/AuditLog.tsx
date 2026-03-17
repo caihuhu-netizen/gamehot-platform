@@ -136,7 +136,7 @@ export default function AuditLog() {
   // 从日志数据中提取唯一资源列表
   const uniqueResources = useMemo(() => {
     if (!logsData?.logs) return [];
-    const resources = new Set(logsData.logs.map((l: any) => l.resource));
+    const resources = new Set((logsData.logs ?? []).map((l: Record<string,unknown>) => l.resource));
     return Array.from(resources).sort();
   }, [logsData?.logs]);
 
@@ -303,7 +303,7 @@ export default function AuditLog() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {logsData.logs.map((log: any) => (
+                    {(logsData.logs ?? []).map((log: Record<string,unknown>) => (
                       <TableRow key={log.id}>
                         <TableCell className="text-xs text-muted-foreground whitespace-nowrap">
                           {formatTime(log.createdAt)}

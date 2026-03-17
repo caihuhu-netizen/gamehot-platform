@@ -37,7 +37,7 @@ function RetentionHeatmap() {
     { key: "d30_retained", label: "D30" },
   ];
   const avgRetention = retentionDays.map(d => {
-    const validRows = rows.filter((r: any) => Number(r.cohort_size) > 0);
+    const validRows = (rows ?? []).filter((r: Record<string,unknown>) => Number(r.cohort_size) > 0);
     const avg = validRows.length > 0
       ? validRows.reduce((sum: number, r: any) => sum + (Number(r[d.key]) / Number(r.cohort_size)) * 100, 0) / validRows.length : 0;
     return { label: d.label, avg: avg.toFixed(1) };
@@ -111,7 +111,7 @@ function RetentionTrendChart() {
   const { data: cohorts, isLoading } = trpc.analytics.cohortRetention.useQuery({ gameId: currentGameId ?? undefined });
   if (isLoading) return <div className="h-[300px] flex items-center justify-center text-muted-foreground text-sm">加载中...</div>;
   const rows = ((cohorts as unknown as unknown as Record<string, unknown>[]) || []).slice(0, 14).reverse();
-  const chartData = rows.map((r: any) => {
+  const chartData = (rows ?? []).map((r: Record<string,unknown>) => {
     const size = Number(r.cohort_size) || 1;
     return {
       date: r.cohort_date?.slice(5) || "",
@@ -154,7 +154,7 @@ function LTVCohortTab() {
   const { data: ltvData, isLoading } = trpc.analytics.cohortLTV.useQuery({ gameId: currentGameId ?? undefined });
   if (isLoading) return <div className="h-[400px] flex items-center justify-center text-muted-foreground text-sm">加载中...</div>;
   const rows = ((ltvData as unknown as unknown as Record<string, unknown>[]) || []).slice(0, 14).reverse();
-  const chartData = rows.map((r: any) => {
+  const chartData = (rows ?? []).map((r: Record<string,unknown>) => {
     const size = Number(r.cohort_size) || 1;
     return {
       date: r.cohort_date?.slice(5) || "",
@@ -273,12 +273,12 @@ function LifecycleJourneyTab() {
   const maxCount = journeySteps[0]?.count || 1;
   const segmentPhaseData = (bySegment as unknown as unknown as Record<string, unknown>[]) || [];
   const allPhases = ["new", "exploring", "engaged", "paying", "loyal", "churning", "churned"];
-  const allSegments = Array.from(new Set(segmentPhaseData.map((r: any) => r.segment_level))).sort();
+  const allSegments = Array.from(new Set(segmentPhaseData.map((r: Record<string,unknown>) => r.segment_level))).sort();
 
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2">
-        {stages.map((s: any, i: number) => {
+        {(stages ?? []).map((s: any, i: number) => {
           const phase = s.phase || "unknown";
           return (
             <Card key={i} className="border-none shadow-sm">
@@ -348,7 +348,7 @@ function LifecycleJourneyTab() {
                 </thead>
                 <tbody>
                   {allSegments.map((seg: string) => {
-                    const segRows = segmentPhaseData.filter((r: any) => r.segment_level === seg);
+                    const segRows = segmentPhaseData.filter((r: Record<string,unknown>) => r.segment_level === seg);
                     const totalLTV = segRows.reduce((s: number, r: any) => s + Number(r.avg_ltv || 0) * Number(r.user_count || 0), 0);
                     const totalCount = segRows.reduce((s: number, r: any) => s + Number(r.user_count || 0), 0);
                     return (

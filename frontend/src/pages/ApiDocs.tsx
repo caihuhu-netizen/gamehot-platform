@@ -236,7 +236,7 @@ const mutation = trpc.pushCenter.create.useMutation({
           <TabsTrigger value="all" className="text-xs">
             全部 ({data.routers.length})
           </TabsTrigger>
-          {data.categories.map(cat => (
+          {(data.categories ?? []).map(cat => (
             <TabsTrigger key={cat} value={cat} className="text-xs flex items-center gap-1">
               {categoryIcons[cat]}
               {cat} ({data.routers.filter(r => r.category === cat).length})

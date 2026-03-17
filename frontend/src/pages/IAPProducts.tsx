@@ -166,7 +166,7 @@ export default function IAPProducts() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {products.map((p: any) => {
+                      {products.map((p: Record<string,unknown>) => {
                         const st = statusMap[p.status] || statusMap.active;
                         return (
                           <TableRow key={p.id} className={selection.isSelected(p.id) ? "bg-primary/5" : ""}>
@@ -208,7 +208,7 @@ export default function IAPProducts() {
                 <p className="text-center text-muted-foreground py-8">暂无商品数据</p>
               ) : (
                 <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-                  {products.map((p: any) => (
+                  {products.map((p: Record<string,unknown>) => (
                     <div key={p.id} className="p-4 border rounded-lg space-y-2">
                       <p className="font-medium">{p.productName}</p>
                       <div className="flex justify-between text-sm text-muted-foreground">
@@ -216,7 +216,7 @@ export default function IAPProducts() {
                         <span>收入: ${Number(p.totalRevenue || 0).toLocaleString()}</span>
                       </div>
                       <div className="w-full bg-muted rounded-full h-2">
-                        <div className="bg-primary rounded-full h-2" style={{ width: `${Math.min(((p.totalSales || 1) / Math.max(...products.map((x: any) => x.totalSales || 1))) * 100, 100)}%` }} />
+                        <div className="bg-primary rounded-full h-2" style={{ width: `${Math.min(((p.totalSales || 1) / Math.max(...products.map((x: Record<string,unknown>) => x.totalSales || 1))) * 100, 100)}%` }} />
                       </div>
                     </div>
                   ))}

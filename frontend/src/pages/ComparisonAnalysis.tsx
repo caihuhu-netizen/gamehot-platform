@@ -37,7 +37,7 @@ function VersionCompare() {
   );
 
   // Parse version metrics
-  const parseMetrics = (arr: unknown[]) => arr.map((d: any) => ({
+  const parseMetrics = (arr: unknown[]) => arr.map((d: Record<string,unknown>) => ({
     day: Number(d.days_after_release || 0),
     retentionD1: Number(d.retention_d1 || 0),
     retentionD7: Number(d.retention_d7 || 0),
@@ -88,7 +88,7 @@ function VersionCompare() {
         <Select value={vA} onValueChange={setVA}>
           <SelectTrigger className="w-48"><SelectValue placeholder="选择版本 A" /></SelectTrigger>
           <SelectContent>
-            {vList.map((v: any) => (
+            {vList.map((v: Record<string,unknown>) => (
               <SelectItem key={String(v.version_code ?? v.versionCode ?? v.id ?? Math.random())} value={String(v.version_code ?? v.versionCode ?? "")}>
                 {String(v.version_name ?? v.versionName ?? v.version_code ?? v.versionCode ?? "unknown")}
               </SelectItem>
@@ -99,7 +99,7 @@ function VersionCompare() {
         <Select value={vB} onValueChange={setVB}>
           <SelectTrigger className="w-48"><SelectValue placeholder="选择版本 B" /></SelectTrigger>
           <SelectContent>
-            {vList.map((v: any) => (
+            {vList.map((v: Record<string,unknown>) => (
               <SelectItem key={String(v.version_code ?? v.versionCode ?? v.id ?? Math.random())} value={String(v.version_code ?? v.versionCode ?? "")}>
                 {String(v.version_name ?? v.versionName ?? v.version_code ?? v.versionCode ?? "unknown")}
               </SelectItem>
@@ -218,7 +218,7 @@ function VersionCompare() {
                 <th className="text-left">发布日期</th><th className="text-left">平台</th><th className="text-left">状态</th>
               </tr></thead>
               <tbody>
-                {vList.map((v: any) => (
+                {vList.map((v: Record<string,unknown>) => (
                   <tr key={v.id} className="border-b hover:bg-muted/50">
                     <td className="py-1.5 font-mono">{v.version_code || v.versionCode}</td>
                     <td>{v.version_name || v.versionName || "-"}</td>
@@ -240,7 +240,7 @@ function VersionCompare() {
 function CountryCompare() {
   const { currentGameId } = useGame();
   const { data: rawData = [], isLoading } = trpc.comparison.countryComparison.useQuery({ gameId: currentGameId ?? undefined });
-  const data = useMemo(() => (Array.isArray(rawData) ? rawData : []).map((d: any) => ({
+  const data = useMemo(() => (Array.isArray(rawData) ? rawData : []).map((d: Record<string,unknown>) => ({
     country: d.country || "Unknown",
     users: Number(d.users || 0),
     avgPayScore: Number(d.avg_pay_score || 0),
@@ -344,7 +344,7 @@ function CountryCompare() {
 function CreativeCompare() {
   const { currentGameId } = useGame();
   const { data: rawData = [], isLoading } = trpc.comparison.creativeComparison.useQuery({ gameId: currentGameId ?? undefined });
-  const data = useMemo(() => (Array.isArray(rawData) ? rawData : []).map((d: any) => ({
+  const data = useMemo(() => (Array.isArray(rawData) ? rawData : []).map((d: Record<string,unknown>) => ({
     creativeId: d.creative_id || d.creativeId,
     creativeName: d.creative_name || d.creativeName,
     creativeType: d.creative_type || d.creativeType,
@@ -461,7 +461,7 @@ function CreativeCompare() {
 function SegmentCompare() {
   const { currentGameId } = useGame();
   const { data: rawData = [], isLoading } = trpc.comparison.segmentComparison.useQuery({ gameId: currentGameId ?? undefined });
-  const data = useMemo(() => (Array.isArray(rawData) ? rawData : []).map((d: any) => ({
+  const data = useMemo(() => (Array.isArray(rawData) ? rawData : []).map((d: Record<string,unknown>) => ({
     layerId: Number(d.layer_id || 0),
     layerName: `L${d.layer_name || d.layer_id}`,
     userCount: Number(d.user_count || 0),

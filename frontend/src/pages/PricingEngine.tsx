@@ -61,11 +61,11 @@ export default function PricingEngine() {
       toast.error("没有收入基线数据");
       return;
     }
-    const adjustments = revenueBaseline.map((b: any) => ({
+    const adjustments = revenueBaseline.map((b: Record<string,unknown>) => ({
       layerLevel: b.segmentLevel || "L0",
       layerName: b.layerName || b.segmentLevel || "Unknown",
       priceChangePercent: simAdjustments[b.segmentLevel] || 0,
-    })).filter((a: any) => a.priceChangePercent !== 0);
+    })).filter((a: Record<string,unknown>) => a.priceChangePercent !== 0);
     if (!adjustments.length) {
       toast.error("请至少调整一个层级的价格");
       return;
@@ -337,7 +337,7 @@ export default function PricingEngine() {
                 </div>
               ) : (
                 <div className="space-y-3">
-                  {strategies.map((s: any) => (
+                  {(strategies ?? []).map((s: Record<string,unknown>) => (
                     <div key={s.id} className="flex items-center justify-between p-3 rounded-lg border">
                       <div className="flex items-center gap-3">
                         <div className="h-8 w-8 rounded bg-primary/10 flex items-center justify-center">
@@ -400,7 +400,7 @@ export default function PricingEngine() {
                 <div className="text-center py-8 text-muted-foreground text-sm">暂无收入基线数据</div>
               ) : (
                 <div className="space-y-4">
-                  {revenueBaseline.map((b: any) => {
+                  {revenueBaseline.map((b: Record<string,unknown>) => {
                     const level = b.segmentLevel;
                     const val = simAdjustments[level] || 0;
                     return (
@@ -545,8 +545,8 @@ export default function PricingEngine() {
                           预测收入
                         </div>
                       </div>
-                      {simResult.monthlyProjection.map((mp: any) => {
-                        const maxVal = Math.max(...simResult.monthlyProjection.map((p: any) => Math.max(p.baselineRevenue, p.projectedRevenue)));
+                      {simResult.monthlyProjection.map((mp: Record<string,unknown>) => {
+                        const maxVal = Math.max(...simResult.monthlyProjection.map((p: Record<string,unknown>) => Math.max(p.baselineRevenue, p.projectedRevenue)));
                         const baseW = maxVal > 0 ? (mp.baselineRevenue / maxVal) * 100 : 0;
                         const projW = maxVal > 0 ? (mp.projectedRevenue / maxVal) * 100 : 0;
                         const diff = mp.projectedRevenue - mp.baselineRevenue;

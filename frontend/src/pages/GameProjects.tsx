@@ -261,7 +261,7 @@ function ServiceConfigPanel({ gameId }: { gameId: number }) {
       {/* 已配置的服务列表 */}
       {configs && configs.length > 0 ? (
         <div className="space-y-3">
-          {configs.map((config: any) => {
+          {(configs ?? []).map((config: Record<string,unknown>) => {
             const meta = serviceTypes?.find(t => t.value === config.serviceType);
             return (
               <div key={config.id} className="bg-muted/50 rounded-lg p-4">
@@ -612,7 +612,7 @@ function SdkAccessStats({ gameId }: { gameId: number }) {
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        {stats?.map((s: any) => (
+        {stats?.map((s: Record<string,unknown>) => (
           <Card key={s.endpoint} className="p-3">
             <div className="text-xs text-muted-foreground truncate">{s.endpoint}</div>
             <div className="text-lg font-bold mt-1">{s.count}</div>
@@ -639,7 +639,7 @@ function SdkAccessStats({ gameId }: { gameId: number }) {
                 </tr>
               </thead>
               <tbody>
-                {logs?.data?.map((log: any) => (
+                {logs?.data?.map((log: Record<string,unknown>) => (
                   <tr key={log.id} className="border-t">
                     <td className="px-3 py-2 font-mono text-xs">{log.endpoint}</td>
                     <td className="px-3 py-2 text-xs">{log.userId || '-'}</td>

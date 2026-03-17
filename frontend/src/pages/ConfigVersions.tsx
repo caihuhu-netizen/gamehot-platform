@@ -159,7 +159,7 @@ export default function ConfigVersions() {
               <Select value={String(selectedGameId)} onValueChange={v => setSelectedGameId(Number(v))}>
                 <SelectTrigger className="w-48"><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  {games?.map((g: any) => <SelectItem key={g.id} value={String(g.id)}>{g.gameName}</SelectItem>)}
+                  {games?.map((g: Record<string,unknown>) => <SelectItem key={g.id} value={String(g.id)}>{g.gameName}</SelectItem>)}
                 </SelectContent>
               </Select>
             </div>
@@ -348,7 +348,7 @@ function AuditLogTab({ gameId, configType }: { gameId: number; configType?: stri
               </TableRow>
             </TableHeader>
             <TableBody>
-              {(auditLogs?.data as Record<string, unknown>[])?.map((log: any) => {
+              {(auditLogs?.data as Record<string, unknown>[])?.map((log: Record<string,unknown>) => {
                 const ct = changeTypeLabel[log.change_type] || { label: log.change_type, color: 'bg-gray-100 text-gray-700' };
                 return (
                   <TableRow key={log.id}>
@@ -452,7 +452,7 @@ function AutoSnapshotTriggersTab() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {(triggers as Record<string, unknown>[])?.map((t: any) => (
+                {(triggers as Record<string, unknown>[])?.map((t: Record<string,unknown>) => (
                   <TableRow key={t.id}>
                     <TableCell><Badge variant="outline">{CONFIG_TYPES.find(c => c.value === t.config_type)?.label || t.config_type}</Badge></TableCell>
                     <TableCell>

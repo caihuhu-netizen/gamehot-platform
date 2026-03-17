@@ -127,8 +127,8 @@ function SyncOverview({ gameId }: { gameId: number }) {
   );
 
   const recentLogs = syncLogs.data ?? [];
-  const successCount = recentLogs.filter((l: any) => l.status === "success").length;
-  const failCount = recentLogs.filter((l: any) => l.status === "failed").length;
+  const successCount = recentLogs.filter((l: Record<string,unknown>) => l.status === "success").length;
+  const failCount = recentLogs.filter((l: Record<string,unknown>) => l.status === "failed").length;
   const configs = configList.data ?? [];
 
   return (
@@ -218,7 +218,7 @@ function SyncOverview({ gameId }: { gameId: number }) {
             </div>
           ) : (
             <div className="space-y-2">
-              {recentLogs.slice(0, 5).map((log: any) => (
+              {recentLogs.slice(0, 5).map((log: Record<string,unknown>) => (
                 <div key={log.id} className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
                   {log.status === "success" ? (
                     <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0" />
@@ -446,7 +446,7 @@ function SyncLogs({ gameId }: { gameId: number }) {
                 </tr>
               </thead>
               <tbody>
-                {logList.map((log: any) => (
+                {logList.map((log: Record<string,unknown>) => (
                   <tr key={log.id} className="border-b last:border-0 hover:bg-muted/30">
                     <td className="py-2 px-3">{statusIcon(log.status)}</td>
                     <td className="py-2 px-3">

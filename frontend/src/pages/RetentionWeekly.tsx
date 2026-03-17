@@ -15,7 +15,7 @@ export default function RetentionWeekly() {
   const [dateRange, setDateRange] = useState({ from: subDays(new Date(), 89), to: new Date() });
   const dateParams = useMemo(() => toDateParams(dateRange), [dateRange]);
   const { data: rawData = [], isLoading } = trpc.reports.retentionWeekly.useQuery(dateParams);
-  const data = useMemo(() => (rawData as unknown as unknown as Record<string, unknown>[]).map((d: any) => ({
+  const data = useMemo(() => (rawData as unknown as unknown as Record<string, unknown>[]).map((d: Record<string,unknown>) => ({
     weekKey: d.week_key,
     weekStart: d.week_start,
     newUsers: Number(d.new_users || 0),
@@ -41,7 +41,7 @@ export default function RetentionWeekly() {
   ] : [];
 
   const handleExport = () => {
-    exportToCsv("留存周报", data.map(d => ({
+    exportToCsv("留存周报", (data ?? []).map(d => ({
       "周起始日": d.weekStart,
       "新增用户": d.newUsers,
       "D1留存人数": d.d1Retained,

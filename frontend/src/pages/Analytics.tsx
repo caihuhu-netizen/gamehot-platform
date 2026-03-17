@@ -505,7 +505,7 @@ function SegmentsTab({ stats }: { stats: any }) {
           {segmentDist.length > 0 ? (
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
-                <Pie data={segmentDist.map((s: any) => ({ name: SEGMENT_LABELS[s.segmentLevel] || s.segmentLevel, value: Number(s.count), level: s.segmentLevel }))} cx="50%" cy="50%" innerRadius={60} outerRadius={110} dataKey="value" nameKey="name" label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>
+                <Pie data={segmentDist.map((s: Record<string,unknown>) => ({ name: SEGMENT_LABELS[s.segmentLevel] || s.segmentLevel, value: Number(s.count), level: s.segmentLevel }))} cx="50%" cy="50%" innerRadius={60} outerRadius={110} dataKey="value" nameKey="name" label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>
                   {segmentDist.map((s: any, i: number) => (
                     <Cell key={i} fill={SEGMENT_COLORS[s.segmentLevel] || "#94a3b8"} />
                   ))}
@@ -526,7 +526,7 @@ function SegmentsTab({ stats }: { stats: any }) {
         <CardContent>
           {segmentDist.length > 0 ? (
             <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={segmentDist.map((s: any) => ({
+              <BarChart data={segmentDist.map((s: Record<string,unknown>) => ({
                 name: SEGMENT_LABELS[s.segmentLevel] || s.segmentLevel,
                 付费: Number(s.avgPayScore || 0),
                 广告: Number(s.avgAdScore || 0),
@@ -740,7 +740,7 @@ export default function Analytics() {
 });
 
   const timelineData = useMemo(() =>
-    (timeline || []).map((t: any) => ({
+    (timeline || []).map((t: Record<string,unknown>) => ({
       date: fmtDate(t.statDate),
       revenue: Number(t.totalRevenue || 0),
       users: Number(t.uniqueUsers || 0),

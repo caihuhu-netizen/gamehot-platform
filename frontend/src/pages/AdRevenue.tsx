@@ -80,7 +80,7 @@ function NetworkManagement() {
         </CardContent></Card>
       ) : (
         <div className="grid gap-3 md:grid-cols-2">
-          {networks.map((n: any) => {
+          {(networks ?? []).map((n: Record<string,unknown>) => {
             const icon = networkIcons[n.networkCode.toLowerCase()] || { bg: "from-gray-500 to-gray-700", label: n.networkCode.slice(0, 2).toUpperCase() };
             return (
               <Card key={n.id} className="hover:shadow-md transition-shadow">
@@ -168,7 +168,7 @@ function RevenueReport() {
 
   const totalRev = total?.total || 0;
   // Enrich byNetwork with network names and ensure numeric types
-  const byNetwork = rawByNetwork.map((n: any) => {
+  const byNetwork = rawByNetwork.map((n: Record<string,unknown>) => {
     const net = networks.find((net: any) => net.id === n.networkId);
     return {
       ...n,
@@ -328,7 +328,7 @@ function PlacementManagement() {
         </CardContent></Card>
       ) : (
         <div className="grid gap-2">
-          {placements.map((p: any) => (
+          {(placements ?? []).map((p: Record<string,unknown>) => (
             <Card key={p.id}>
               <CardContent className="py-2 flex items-center justify-between">
                 <div className="flex items-center gap-3">

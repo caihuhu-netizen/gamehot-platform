@@ -17,7 +17,7 @@ export default function UserQualityDaily() {
   const [dateRange, setDateRange] = useState({ from: subDays(new Date(), 29), to: new Date() });
   const dateParams = useMemo(() => toDateParams(dateRange), [dateRange]);
   const { data: rawData = [], isLoading } = trpc.reports.userQualityDaily.useQuery(dateParams);
-  const data = useMemo(() => (rawData as unknown as unknown as Record<string, unknown>[]).map((d: any) => ({
+  const data = useMemo(() => (rawData as unknown as unknown as Record<string, unknown>[]).map((d: Record<string,unknown>) => ({
     reportDate: d.report_date instanceof Date ? d.report_date.toISOString().split('T')[0] : String(d.report_date || ''),
     newUsers: Number(d.new_users || 0),
     lowValue: Number(d.low_value || 0),
@@ -45,7 +45,7 @@ export default function UserQualityDaily() {
   const stackedData = data.slice(-14); // last 14 days
 
   const handleExport = () => {
-    exportToCsv("用户质量日报", data.map(d => ({
+    exportToCsv("用户质量日报", (data ?? []).map(d => ({
       "日期": d.reportDate,
       "新增用户": d.newUsers,
       "低价值用户": d.lowValue,

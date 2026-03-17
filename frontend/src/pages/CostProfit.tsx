@@ -68,7 +68,7 @@ function ProfitOverview() {
           <CardContent>
             <div className="h-48 flex items-end gap-1">
               {trend.map((d: any, i: number) => {
-                const maxVal = Math.max(...trend.map((x: any) => Math.max(Math.abs(x.profit || 0), x.totalRevenue || 0, x.totalCost || 0)));
+                const maxVal = Math.max(...trend.map((x: Record<string,unknown>) => Math.max(Math.abs(x.profit || 0), x.totalRevenue || 0, x.totalCost || 0)));
                 const revH = maxVal > 0 ? ((d.totalRevenue || 0) / maxVal) * 100 : 0;
                 const costH = maxVal > 0 ? ((d.totalCost || 0) / maxVal) * 100 : 0;
                 return (
@@ -180,7 +180,7 @@ function CostEntries() {
             <Select value={entryForm.categoryId} onValueChange={v => setEntryForm(p => ({ ...p, categoryId: v }))}>
               <SelectTrigger><SelectValue placeholder="选择分类" /></SelectTrigger>
               <SelectContent>
-                {categories.map((c: any) => (
+                {(categories ?? []).map((c: Record<string,unknown>) => (
                   <SelectItem key={c.id} value={String(c.id)}>{c.categoryName}</SelectItem>
                 ))}
               </SelectContent>
@@ -223,7 +223,7 @@ function CostEntries() {
                   </tr>
                 </thead>
                 <tbody>
-                  {entries.map((e: any) => (
+                  {(entries ?? []).map((e: Record<string,unknown>) => (
                     <tr key={e.id} className="border-b hover:bg-muted/50">
                       <td className="py-2">{e.costDate ? new Date(e.costDate).toLocaleDateString() : "-"}</td>
                       <td className="py-2"><Badge variant="outline">{categories.find((c: any) => c.id === e.categoryId)?.categoryName || `#${e.categoryId}`}</Badge></td>

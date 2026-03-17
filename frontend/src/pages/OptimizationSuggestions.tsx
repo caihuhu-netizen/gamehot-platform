@@ -73,9 +73,9 @@ export default function OptimizationSuggestions() {
     const list = suggestions.data ?? [];
     return {
       total: list.length,
-      pending: list.filter((s: any) => s.status === "pending").length,
-      accepted: list.filter((s: any) => s.status === "accepted").length,
-      implemented: list.filter((s: any) => s.status === "implemented" || s.status === "verified").length,
+      pending: (list ?? []).filter((s: Record<string,unknown>) => s.status === "pending").length,
+      accepted: (list ?? []).filter((s: Record<string,unknown>) => s.status === "accepted").length,
+      implemented: (list ?? []).filter((s: Record<string,unknown>) => s.status === "implemented" || s.status === "verified").length,
     };
   }, [suggestions.data]);
 
@@ -142,7 +142,7 @@ export default function OptimizationSuggestions() {
             </Card>
           ) : (
             <div className="space-y-3">
-              {(suggestions.data ?? []).map((s: any) => {
+              {(suggestions.data ?? []).map((s: Record<string,unknown>) => {
                 const cat = categoryLabels[s.category] || categoryLabels.content;
                 const CatIcon = cat.icon;
                 const pri = priorityLabels[s.priority] || priorityLabels.medium;

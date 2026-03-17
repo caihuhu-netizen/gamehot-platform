@@ -174,7 +174,7 @@ export default function DailyOverview() {
 
   function handleExport() {
     if (!sortedData.length) return;
-    const rows = sortedData.map((r: any) => {
+    const rows = sortedData.map((r: Record<string,unknown>) => {
       const dateStr = r.reportDate instanceof Date ? r.reportDate.toISOString().split("T")[0] : String(r.reportDate);
       const dod = dodMap[dateStr] || {};
       const fmtDod = (field: string) => dod[field] != null ? `${dod[field]! > 0 ? '+' : ''}${dod[field]!.toFixed(1)}%` : "";

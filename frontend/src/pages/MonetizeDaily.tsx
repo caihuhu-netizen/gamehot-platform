@@ -258,7 +258,7 @@ export default function MonetizeDaily() {
               <th className="text-right">ARPPU</th><th className="text-right">付费人数</th>
             </tr></thead>
             <tbody>
-              {overviewData.map((row: any) => (
+              {overviewData.map((row: Record<string,unknown>) => (
                 <tr key={row.reportDate} className="border-b hover:bg-muted/50">
                   <td className="py-1.5">{row.reportDate}</td>
                   <td className="text-right">${row.iapRevenue.toFixed(2)}</td>

@@ -174,7 +174,7 @@ function WebhookConfigsTab() {
         </Card>
       ) : (
         <div className="grid gap-4">
-          {configs.map((config) => (
+          {(configs ?? []).map((config) => (
             <Card key={config.id} className={config.enabled ? "" : "opacity-60"}>
               <CardContent className="py-4">
                 <div className="flex items-start justify-between">
@@ -383,7 +383,7 @@ function NotificationLogsTab() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {logs.map((log) => (
+              {(logs ?? []).map((log) => (
                 <TableRow key={log.id}>
                   <TableCell>{statusIcon(log.status)}</TableCell>
                   <TableCell className="font-medium max-w-[200px] truncate">{log.title}</TableCell>

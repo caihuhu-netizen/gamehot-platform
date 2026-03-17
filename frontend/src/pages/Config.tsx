@@ -86,7 +86,7 @@ export default function Config() {
                       ))}</TableRow>
                     ))
                   ) : regions?.length ? (
-                    regions.map((r: any) => (
+                    regions.map((r: Record<string,unknown>) => (
                       <TableRow key={r.id}>
                         <TableCell className="font-mono text-xs">{r.groupCode}</TableCell>
                         <TableCell className="text-sm">{r.groupName}</TableCell>
@@ -156,7 +156,7 @@ export default function Config() {
                       ))}</TableRow>
                     ))
                   ) : countries?.length ? (
-                    countries.map((c: any) => (
+                    countries.map((c: Record<string,unknown>) => (
                       <TableRow key={c.id}>
                         <TableCell className="font-mono text-xs">{c.countryCode}</TableCell>
                         <TableCell className="text-sm">{c.countryName}</TableCell>
@@ -215,7 +215,7 @@ export default function Config() {
                       ))}</TableRow>
                     ))
                   ) : items?.length ? (
-                    items.map((item: any) => (
+                    (items ?? []).map((item: Record<string,unknown>) => (
                       <TableRow key={item.id}>
                         <TableCell className="font-mono text-xs">{item.itemCode}</TableCell>
                         <TableCell className="text-sm">{item.itemName}</TableCell>

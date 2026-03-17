@@ -98,7 +98,7 @@ function BehaviorEventsTab() {
           <CardContent>
             {stats && stats.length > 0 ? (
               <ResponsiveContainer width="100%" height={200}>
-                <BarChart data={stats.map((s: any) => ({ name: s.eventType, count: s.count }))}>
+                <BarChart data={stats.map((s: Record<string,unknown>) => ({ name: s.eventType, count: s.count }))}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                   <XAxis dataKey="name" tick={{ fontSize: 10 }} />
                   <YAxis tick={{ fontSize: 11 }} />
@@ -154,7 +154,7 @@ function BehaviorEventsTab() {
                   <tr><td colSpan={6} className="py-8 text-center text-muted-foreground">加载中...</td></tr>
                 ) : (data?.data || []).length === 0 ? (
                   <tr><td colSpan={6} className="py-8 text-center text-muted-foreground">暂无事件数据</td></tr>
-                ) : (data?.data || []).map((e: any) => (
+                ) : (data?.data || []).map((e: Record<string,unknown>) => (
                   <tr key={e.id} className="border-b last:border-0">
                     <td className="py-2 font-mono text-xs">{e.userId}</td>
                     <td className="py-2"><Badge variant="outline" style={{ borderColor: eventColors[e.eventType] || "#94a3b8", color: eventColors[e.eventType] || "#94a3b8" }}>{e.eventType}</Badge></td>
@@ -223,7 +223,7 @@ function PredictiveLabelsTab() {
             {dist && dist.length > 0 ? (
               <ResponsiveContainer width="100%" height={220}>
                 <PieChart>
-                  <Pie data={dist.map((d: any) => ({ name: phaseLabels[d.engagementPhase] || d.engagementPhase, value: d.count, phase: d.engagementPhase }))} cx="50%" cy="50%" innerRadius={50} outerRadius={85} dataKey="value" nameKey="name" label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`} labelLine={false}>
+                  <Pie data={dist.map((d: Record<string,unknown>) => ({ name: phaseLabels[d.engagementPhase] || d.engagementPhase, value: d.count, phase: d.engagementPhase }))} cx="50%" cy="50%" innerRadius={50} outerRadius={85} dataKey="value" nameKey="name" label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`} labelLine={false}>
                     {dist.map((d: any, i: number) => (
                       <Cell key={i} fill={phaseColors[d.engagementPhase] || "#94a3b8"} />
                     ))}
@@ -276,7 +276,7 @@ function PredictiveLabelsTab() {
                   <tr><td colSpan={8} className="py-8 text-center text-muted-foreground">加载中...</td></tr>
                 ) : (data?.data || []).length === 0 ? (
                   <tr><td colSpan={8} className="py-8 text-center text-muted-foreground">暂无预测标签数据</td></tr>
-                ) : (data?.data || []).map((l: any) => (
+                ) : (data?.data || []).map((l: Record<string,unknown>) => (
                   <tr key={l.id} className="border-b last:border-0">
                     <td className="py-2 font-mono text-xs">{l.userId}</td>
                     <td className="py-2"><Badge style={{ backgroundColor: phaseColors[l.engagementPhase] + "20", color: phaseColors[l.engagementPhase], border: "none" }}>{phaseLabels[l.engagementPhase] || l.engagementPhase}</Badge></td>
@@ -364,7 +364,7 @@ function DifficultyMappingTab() {
               <tbody>
                 {isLoading ? (
                   <tr><td colSpan={9} className="py-8 text-center text-muted-foreground">加载中...</td></tr>
-                ) : (mappings || []).map((m: any) => (
+                ) : (mappings || []).map((m: Record<string,unknown>) => (
                   <tr key={m.id} className="border-b last:border-0">
                     <td className="py-2"><Badge variant="outline">Layer {m.layerId}</Badge></td>
                     <td className="py-2 font-medium">{m.layerName}</td>
@@ -402,7 +402,7 @@ function DifficultyMappingTab() {
         <CardContent>
           {mappings && mappings.length > 0 ? (
             <ResponsiveContainer width="100%" height={250}>
-              <BarChart data={mappings.map((m: any) => ({
+              <BarChart data={(mappings ?? []).map((m: Record<string,unknown>) => ({
                 name: `L${m.layerId}`,
                 难度系数: Number(m.difficultyMultiplier),
                 道具加成: Number(m.itemBoostMultiplier),
@@ -441,7 +441,7 @@ function LevelTrackingTab() {
           <CardContent>
             {summary && summary.length > 0 ? (
               <ResponsiveContainer width="100%" height={280}>
-                <BarChart data={summary.map((s: any) => ({
+                <BarChart data={summary.map((s: Record<string,unknown>) => ({
                   name: s.levelCode,
                   通过率: Number(s.totalAttempts) > 0 ? (Number(s.totalPasses) / Number(s.totalAttempts) * 100) : 0,
                   尝试次数: Number(s.totalAttempts),
@@ -468,7 +468,7 @@ function LevelTrackingTab() {
           <CardContent>
             {summary && summary.length > 0 ? (
               <ResponsiveContainer width="100%" height={280}>
-                <BarChart data={summary.filter((s: any) => Number(s.totalMonetizeTriggers) > 0).map((s: any) => ({
+                <BarChart data={summary.filter((s: Record<string,unknown>) => Number(s.totalMonetizeTriggers) > 0).map((s: Record<string,unknown>) => ({
                   name: s.levelCode,
                   触发次数: Number(s.totalMonetizeTriggers),
                   转化次数: Number(s.totalMonetizeConverts),
@@ -509,7 +509,7 @@ function LevelTrackingTab() {
               <tbody>
                 {(events || []).length === 0 ? (
                   <tr><td colSpan={9} className="py-8 text-center text-muted-foreground">暂无埋点数据</td></tr>
-                ) : (events || []).slice(0, 20).map((e: any) => {
+                ) : (events || []).slice(0, 20).map((e: Record<string,unknown>) => {
                   const passRate = e.totalAttempts > 0 ? (e.totalPasses / e.totalAttempts * 100) : 0;
                   return (
                     <tr key={e.id} className="border-b last:border-0">
@@ -575,7 +575,7 @@ function DecisionTracesTab() {
             {stats && stats.length > 0 ? (
               <ResponsiveContainer width="100%" height={200}>
                 <PieChart>
-                  <Pie data={stats.map((s: any) => ({ name: s.decisionResult, value: s.count }))} cx="50%" cy="50%" innerRadius={40} outerRadius={70} dataKey="value" nameKey="name" label>
+                  <Pie data={stats.map((s: Record<string,unknown>) => ({ name: s.decisionResult, value: s.count }))} cx="50%" cy="50%" innerRadius={40} outerRadius={70} dataKey="value" nameKey="name" label>
                     {stats.map((_: any, i: number) => (
                       <Cell key={i} fill={["#10b981", "#ef4444", "#f59e0b", "#6366f1"][i % 4]} />
                     ))}
@@ -641,7 +641,7 @@ function DecisionTracesTab() {
                   <tr><td colSpan={9} className="py-8 text-center text-muted-foreground">加载中...</td></tr>
                 ) : (data?.data || []).length === 0 ? (
                   <tr><td colSpan={9} className="py-8 text-center text-muted-foreground">暂无决策追踪数据</td></tr>
-                ) : (data?.data || []).map((t: any) => (
+                ) : (data?.data || []).map((t: Record<string,unknown>) => (
                   <tr key={t.id} className="border-b last:border-0">
                     <td className="py-2 font-mono text-xs">{t.userId}</td>
                     <td className="py-2 text-xs">{t.ruleCode || "-"}</td>
@@ -692,7 +692,7 @@ function ExperimentLinksTab() {
         <CardContent>
           {healthTrend && healthTrend.length > 0 ? (
             <ResponsiveContainer width="100%" height={250}>
-              <LineChart data={[...healthTrend].reverse().map((h: any) => ({
+              <LineChart data={[...healthTrend].reverse().map((h: Record<string,unknown>) => ({
                 date: fmtDateShort(h.metricDate),
                 健康度: Number(h.overallHealthScore),
                 分层新鲜度: Number(h.segmentFreshness) * 100,
@@ -736,7 +736,7 @@ function ExperimentLinksTab() {
                   <tr><td colSpan={8} className="py-8 text-center text-muted-foreground">加载中...</td></tr>
                 ) : (links || []).length === 0 ? (
                   <tr><td colSpan={8} className="py-8 text-center text-muted-foreground">暂无实验联动配置，可在A/B实验模块创建关联</td></tr>
-                ) : (links || []).map((l: any) => (
+                ) : (links || []).map((l: Record<string,unknown>) => (
                   <tr key={l.id} className="border-b last:border-0">
                     <td className="py-2">#{l.experimentId}</td>
                     <td className="py-2">

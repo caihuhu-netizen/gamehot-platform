@@ -73,7 +73,7 @@ export default function UserRecall() {
   const selection = useTableSelection(plans as { id: number }[]);
 
   const handleBatchActivate = async () => {
-    const pausedOrDraft = selection.selectedItems.filter((p: any) => p.status === "paused" || p.status === "draft");
+    const pausedOrDraft = selection.selectedItems.filter((p: Record<string,unknown>) => p.status === "paused" || p.status === "draft");
     if (pausedOrDraft.length === 0) { toast.error("选中的计划中没有可启用的（仅暂停/草稿可启用）"); return; }
     let success = 0, fail = 0;
     for (const item of pausedOrDraft) {
@@ -84,7 +84,7 @@ export default function UserRecall() {
   };
 
   const handleBatchPause = async () => {
-    const active = selection.selectedItems.filter((p: any) => p.status === "active");
+    const active = selection.selectedItems.filter((p: Record<string,unknown>) => p.status === "active");
     if (active.length === 0) { toast.error("选中的计划中没有运行中的计划"); return; }
     let success = 0, fail = 0;
     for (const item of active) {
@@ -95,7 +95,7 @@ export default function UserRecall() {
   };
 
   const handleBatchDelete = async () => {
-    const deletable = selection.selectedItems.filter((p: any) => p.status === "draft" || p.status === "paused");
+    const deletable = selection.selectedItems.filter((p: Record<string,unknown>) => p.status === "draft" || p.status === "paused");
     if (deletable.length === 0) { toast.error("选中的计划中没有可删除的（仅草稿/暂停可删除）"); return; }
     let success = 0, fail = 0;
     for (const item of deletable) {
@@ -138,7 +138,7 @@ export default function UserRecall() {
                   icon: <Play className="h-3 w-3" />,
                   needsConfirm: true,
                   confirmTitle: "批量启用召回计划",
-                  confirmDescription: `将启用选中的 ${selection.selectedItems.filter((p: any) => p.status === "paused" || p.status === "draft").length} 条可启用计划。`,
+                  confirmDescription: `将启用选中的 ${selection.selectedItems.filter((p: Record<string,unknown>) => p.status === "paused" || p.status === "draft").length} 条可启用计划。`,
                   onClick: handleBatchActivate,
                 },
                 {
@@ -147,7 +147,7 @@ export default function UserRecall() {
                   variant: "secondary",
                   needsConfirm: true,
                   confirmTitle: "批量暂停召回计划",
-                  confirmDescription: `将暂停选中的 ${selection.selectedItems.filter((p: any) => p.status === "active").length} 条运行中计划。`,
+                  confirmDescription: `将暂停选中的 ${selection.selectedItems.filter((p: Record<string,unknown>) => p.status === "active").length} 条运行中计划。`,
                   onClick: handleBatchPause,
                 },
                 {
@@ -156,7 +156,7 @@ export default function UserRecall() {
                   variant: "destructive",
                   needsConfirm: true,
                   confirmTitle: "批量删除召回计划",
-                  confirmDescription: `将删除选中的 ${selection.selectedItems.filter((p: any) => p.status === "draft" || p.status === "paused").length} 条可删除计划。`,
+                  confirmDescription: `将删除选中的 ${selection.selectedItems.filter((p: Record<string,unknown>) => p.status === "draft" || p.status === "paused").length} 条可删除计划。`,
                   onClick: handleBatchDelete,
                 },
               ]}
@@ -190,7 +190,7 @@ export default function UserRecall() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {plans.map((plan: any) => {
+                    {(plans ?? []).map((plan: Record<string,unknown>) => {
                       const st = statusMap[plan.status] || statusMap.draft;
                       const ChannelIcon = channelIcons[plan.channel] || Bell;
                       return (
@@ -235,7 +235,7 @@ export default function UserRecall() {
                 <p className="text-center text-muted-foreground py-8">暂无数据</p>
               ) : (
                 <div className="space-y-4">
-                  {plans.filter((p: any) => p.totalTargeted > 0).map((plan: any) => (
+                  {(plans ?? []).filter((p: Record<string,unknown>) => p.totalTargeted > 0).map((plan: Record<string,unknown>) => (
                     <div key={plan.id} className="p-4 border rounded-lg">
                       <div className="flex items-center justify-between mb-2">
                         <span className="font-medium">{plan.name}</span>
