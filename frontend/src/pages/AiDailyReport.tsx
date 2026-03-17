@@ -140,11 +140,11 @@ export default function AiDailyReport() {
                   <div>
                     <CardTitle className="flex items-center gap-2">
                       <Calendar className="h-5 w-5" />
-                      {formatDate(latestReport.reportDate)} 运营日报
+                      {formatDate(latestReport?.reportDate)} 运营日报
                     </CardTitle>
                     <CardDescription className="mt-1 flex items-center gap-2">
                       <Clock className="h-3.5 w-3.5" />
-                      生成时间: {new Date(latestReport.createdAt).toLocaleString("zh-CN")}
+                      生成时间: {new Date(latestReport?.createdAt).toLocaleString("zh-CN")}
                       <Badge variant="outline" className="text-xs ml-2">
                         <Sparkles className="h-3 w-3 mr-0.5" /> AI 生成
                       </Badge>
@@ -154,7 +154,7 @@ export default function AiDailyReport() {
               </CardHeader>
               <CardContent>
                 <div className="prose prose-sm dark:prose-invert max-w-none">
-                  <Streamdown>{latestReport.content || latestReport.summary || "暂无内容"}</Streamdown>
+                  <Streamdown>{latestReport?.content || latestReport?.summary || "暂无内容"}</Streamdown>
                 </div>
               </CardContent>
             </Card>

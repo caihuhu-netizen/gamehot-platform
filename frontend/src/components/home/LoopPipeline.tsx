@@ -19,7 +19,7 @@ export function LoopPipeline({ loopHealth }: LoopPipelineProps) {
     { icon: Gauge, label: "难度调度", sub: "心流适配", color: "bg-emerald-100 text-emerald-700", metric: loopHealth ? `${(Number(loopHealth.difficultyAdaptRate) * 100).toFixed(0)}%` : "--" },
     { icon: Crosshair, label: "埋点监控", sub: "卡点分析", color: "bg-amber-100 text-amber-700", metric: loopHealth ? `${Number(loopHealth.avgPassRate) * 100 > 0 ? (Number(loopHealth.avgPassRate) * 100).toFixed(0) : "--"}%` : "--" },
     { icon: Target, label: "变现触发", sub: "精准弹窗", color: "bg-rose-100 text-rose-700", metric: loopHealth ? `${(Number(loopHealth.triggerPrecision) * 100).toFixed(0)}%` : "--" },
-    { icon: FlaskConical, label: "A/B验证", sub: "反哺分层", color: "bg-cyan-100 text-cyan-700", metric: loopHealth ? `${loopHealth.activeExperiments}个` : "--" },
+    { icon: FlaskConical, label: "A/B验证", sub: "反哺分层", color: "bg-cyan-100 text-cyan-700", metric: loopHealth ? `${loopHealth?.activeExperiments}个` : "--" },
   ];
 
   return (

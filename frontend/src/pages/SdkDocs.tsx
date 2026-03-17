@@ -1338,7 +1338,7 @@ func _post_request(path, body, callback):
         if ok:
             var json := JSON.new()
             if json.parse(body_bytes.get_string_from_utf8()) == OK:
-                if json.data is Dictionary and json.data.has("data"): data = json.data["data"]
+                if json.data is Dictionary and json?.data?.has("data"): data = json?.data?.["data"]
         callback.call(ok, data)
         http.queue_free())
     http.request(base_url + path, headers, HTTPClient.METHOD_POST, JSON.stringify(body))
@@ -1675,10 +1675,10 @@ function SdkVerificationTool() {
               </div>
               {verifyResult.data && (
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
-                  <div><span className="text-muted-foreground">游戏名称:</span> {verifyResult.data.gameName}</div>
-                  <div><span className="text-muted-foreground">游戏代码:</span> {verifyResult.data.gameCode}</div>
-                  <div><span className="text-muted-foreground">状态:</span> <Badge variant="outline" className="text-[10px]">{verifyResult.data.status}</Badge></div>
-                  <div><span className="text-muted-foreground">API版本:</span> {verifyResult.data.apiVersion}</div>
+                  <div><span className="text-muted-foreground">游戏名称:</span> {verifyResult?.data?.gameName}</div>
+                  <div><span className="text-muted-foreground">游戏代码:</span> {verifyResult?.data?.gameCode}</div>
+                  <div><span className="text-muted-foreground">状态:</span> <Badge variant="outline" className="text-[10px]">{verifyResult?.data?.status}</Badge></div>
+                  <div><span className="text-muted-foreground">API版本:</span> {verifyResult?.data?.apiVersion}</div>
                 </div>
               )}
               {verifyResult.message && !verifyResult.data && (
@@ -1709,17 +1709,17 @@ function SdkVerificationTool() {
               {eventResult.data ? (
                 <>
                   <div className="flex items-center gap-2 mb-2">
-                    {eventResult.data.invalidCount === 0
+                    {eventResult?.data?.invalidCount === 0
                       ? <CheckCircle className="w-4 h-4 text-emerald-600" />
                       : <AlertTriangle className="w-4 h-4 text-amber-600" />}
-                    <span className="font-semibold">{eventResult.data.message}</span>
+                    <span className="font-semibold">{eventResult?.data?.message}</span>
                   </div>
                   <div className="flex gap-4 text-xs mb-2">
-                    <span>总事件: {eventResult.data.totalEvents}</span>
-                    <span className="text-emerald-600">有效: {eventResult.data.validCount}</span>
-                    {eventResult.data.invalidCount > 0 && <span className="text-red-600">无效: {eventResult.data.invalidCount}</span>}
+                    <span>总事件: {eventResult?.data?.totalEvents}</span>
+                    <span className="text-emerald-600">有效: {eventResult?.data?.validCount}</span>
+                    {eventResult?.data?.invalidCount > 0 && <span className="text-red-600">无效: {eventResult?.data?.invalidCount}</span>}
                   </div>
-                  {eventResult.data.results?.filter((r: any) => !r.valid).map((r: any, i: number) => (
+                  {eventResult?.data?.results?.filter((r: any) => !r.valid).map((r: any, i: number) => (
                     <div key={i} className="text-xs text-red-600 bg-red-100/50 dark:bg-red-900/20 rounded px-2 py-1 mt-1">
                       事件[{r.index}] {r.eventType}: {r.errors.join('; ')}
                     </div>

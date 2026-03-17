@@ -22,10 +22,10 @@ export function LoginPage() {
   useEffect(() => {
     if (autoRedirected.current) return;
     if (feishuError) return; // Don't auto-redirect if there was an error
-    if (feishuLogin.data?.configured && feishuLogin.data?.url) {
+    if (feishuLogin.data?.url) {
       autoRedirected.current = true;
       setFeishuLoading(true);
-      window.location.href = feishuLogin.data.url;
+      window.location.href = feishuLogin?.data?.url;
     }
   }, [feishuLogin.data, feishuError]);
 
@@ -63,7 +63,7 @@ export function LoginPage() {
               onClick={() => {
                 if (feishuLogin.data?.url) {
                   setFeishuLoading(true);
-                  window.location.href = feishuLogin.data.url;
+                  window.location.href = feishuLogin?.data?.url;
                 }
               }}
               size="lg"

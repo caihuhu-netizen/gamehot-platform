@@ -362,7 +362,7 @@ function DepartmentTab() {
               <div className="flex items-center justify-center py-12 text-muted-foreground">
                 <Loader2 className="h-6 w-6 animate-spin mr-2" />加载部门数据...
               </div>
-            ) : !deptTree.data || deptTree.data.length === 0 ? (
+            ) : !deptTree.data || deptTree?.data?.length === 0 ? (
               <div className="text-center py-12 text-muted-foreground">
                 <FolderTree className="h-10 w-10 mx-auto mb-3 opacity-40" />
                 <p className="font-medium">暂无部门数据</p>
@@ -370,7 +370,7 @@ function DepartmentTab() {
               </div>
             ) : (
               <div className="space-y-0.5">
-                {deptTree.data.map((root: any) => (
+                {deptTree?.data?.map((root: any) => (
                   <DepartmentTreeNode
                     key={root.departmentId}
                     node={root}

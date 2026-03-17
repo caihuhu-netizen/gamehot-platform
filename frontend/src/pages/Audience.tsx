@@ -382,14 +382,14 @@ const Audience = () => {
                 <CardContent>
                   {previewMutation.data ? (
                     <div className="space-y-4">
-                      {previewMutation.data.validationErrors && previewMutation.data.validationErrors.length > 0 ? (
+                      {previewMutation?.data?.validationErrors && previewMutation?.data?.validationErrors.length > 0 ? (
                         <div className="space-y-2">
                           <div className="flex items-center gap-2 text-destructive">
                             <AlertCircle className="h-5 w-5" />
                             <span className="font-medium">条件验证失败</span>
                           </div>
                           <ul className="text-sm text-muted-foreground space-y-1">
-                            {previewMutation.data.validationErrors.map((err, i) => (
+                            {previewMutation?.data?.validationErrors.map((err, i) => (
                               <li key={i} className="flex items-start gap-1">
                                 <span className="text-destructive mt-0.5">-</span>
                                 <span>{err}</span>
@@ -405,12 +405,12 @@ const Audience = () => {
                           </div>
                           <div className="text-center py-4">
                             <div className="text-4xl font-bold text-primary">
-                              {previewMutation.data.count.toLocaleString()}
+                              {previewMutation?.data?.count.toLocaleString()}
                             </div>
                             <div className="text-sm text-muted-foreground mt-1">匹配用户数</div>
                           </div>
                           <div className="text-xs text-muted-foreground text-center">
-                            查询耗时: {previewMutation.data.queryTime}ms
+                            查询耗时: {previewMutation?.data?.queryTime}ms
                           </div>
                         </div>
                       )}

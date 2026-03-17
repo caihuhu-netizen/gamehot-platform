@@ -44,8 +44,8 @@ export function AlertSummaryCard({ alertSummary, onViewAll }: AlertSummaryProps)
             <div>
               <h3 className="text-sm font-semibold">异常告警摘要</h3>
               <p className="text-xs text-muted-foreground">
-                {alertSummary.activeCount} 条活跃告警
-                {alertSummary.criticalCount > 0 && <span className="text-red-600 font-medium"> · {alertSummary.criticalCount} 条严重</span>}
+                {alertSummary?.activeCount} 条活跃告警
+                {alertSummary.criticalCount > 0 && <span className="text-red-600 font-medium"> · {alertSummary?.criticalCount} 条严重</span>}
               </p>
             </div>
           </div>

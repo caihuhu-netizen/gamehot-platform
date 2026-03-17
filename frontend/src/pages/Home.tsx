@@ -61,8 +61,8 @@ export default function Home() {
   })).reverse();
 
   const totalUsers = stats?.totalUsers ?? 0;
-  // Use profitData.totalRevenue (IAP+Ad) for accurate revenue; fallback to stats.totalRevenue (game_users.totalPayAmount)
-  const totalRevenue = profitData ? Number(profitData.totalRevenue ?? 0) : Number(stats?.totalRevenue ?? 0);
+  // Use profitData?.totalRevenue (IAP+Ad) for accurate revenue; fallback to stats.totalRevenue (game_users.totalPayAmount)
+  const totalRevenue = profitData ? Number(profitData?.totalRevenue ?? 0) : Number(stats?.totalRevenue ?? 0);
   const arpu = totalUsers > 0 ? (totalRevenue / totalUsers).toFixed(2) : "0.00";
 
   const loopHealth = enhanced?.loopHealth;
@@ -73,12 +73,12 @@ export default function Home() {
 
   // Radar data for loop health dimensions
   const radarData = loopHealth ? [
-    { dimension: "分层覆盖", value: Number(loopHealth.segmentCoverage) * 100, fullMark: 100 },
-    { dimension: "标签精度", value: Number(loopHealth.labelAccuracy) * 100, fullMark: 100 },
-    { dimension: "难度适配", value: Number(loopHealth.difficultyAdaptRate) * 100, fullMark: 100 },
-    { dimension: "埋点覆盖", value: Number(loopHealth.eventTrackingRate) * 100, fullMark: 100 },
-    { dimension: "触发精准", value: Number(loopHealth.triggerPrecision) * 100, fullMark: 100 },
-    { dimension: "实验覆盖", value: loopHealth.activeExperiments > 0 ? Math.min(Number(loopHealth.experimentsWithSignificance) / Number(loopHealth.activeExperiments) * 100, 100) : 0, fullMark: 100 },
+    { dimension: "分层覆盖", value: Number(loopHealth?.segmentCoverage) * 100, fullMark: 100 },
+    { dimension: "标签精度", value: Number(loopHealth?.labelAccuracy) * 100, fullMark: 100 },
+    { dimension: "难度适配", value: Number(loopHealth?.difficultyAdaptRate) * 100, fullMark: 100 },
+    { dimension: "埋点覆盖", value: Number(loopHealth?.eventTrackingRate) * 100, fullMark: 100 },
+    { dimension: "触发精准", value: Number(loopHealth?.triggerPrecision) * 100, fullMark: 100 },
+    { dimension: "实验覆盖", value: loopHealth?.activeExperiments > 0 ? Math.min(Number(loopHealth?.experimentsWithSignificance) / Number(loopHealth?.activeExperiments) * 100, 100) : 0, fullMark: 100 },
   ] : [];
 
   // Funnel data
@@ -141,9 +141,9 @@ export default function Home() {
       {/* KPI Cards */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         <KPICard title="总用户数" value={totalUsers.toLocaleString()} icon={Users} color="text-blue-600" loading={isLoading} />
-        <KPICard title="总收入" value={`$${totalRevenue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`} icon={DollarSign} color="text-emerald-600" loading={isLoading} subtitle={profitData ? `IAP $${Number(profitData.iapRevenue).toLocaleString(undefined, {maximumFractionDigits: 0})} + 广告 $${Number(profitData.adRevenue).toLocaleString(undefined, {maximumFractionDigits: 0})}` : undefined} />
-        <KPICard title="总成本" value={profitData ? `$${Number(profitData.totalCost ?? 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}` : "--"} icon={PieChartIcon} color="text-red-500" loading={isLoading} />
-        <KPICard title="净利润" value={profitData ? `$${Number(profitData.profit ?? 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}` : "--"} icon={TrendingUp} color={Number(profitData?.profit ?? 0) >= 0 ? "text-emerald-600" : "text-red-600"} loading={isLoading} subtitle={profitData?.margin != null ? `利润率 ${Number(profitData.margin).toFixed(1)}%` : undefined} />
+        <KPICard title="总收入" value={`$${totalRevenue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`} icon={DollarSign} color="text-emerald-600" loading={isLoading} subtitle={profitData ? `IAP $${Number(profitData?.iapRevenue).toLocaleString(undefined, {maximumFractionDigits: 0})} + 广告 $${Number(profitData?.adRevenue).toLocaleString(undefined, {maximumFractionDigits: 0})}` : undefined} />
+        <KPICard title="总成本" value={profitData ? `$${Number(profitData?.totalCost ?? 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}` : "--"} icon={PieChartIcon} color="text-red-500" loading={isLoading} />
+        <KPICard title="净利润" value={profitData ? `$${Number(profitData?.profit ?? 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}` : "--"} icon={TrendingUp} color={Number(profitData?.profit ?? 0) >= 0 ? "text-emerald-600" : "text-red-600"} loading={isLoading} subtitle={profitData?.margin != null ? `利润率 ${Number(profitData?.margin).toFixed(1)}%` : undefined} />
         <KPICard title="ARPU" value={`$${arpu}`} icon={DollarSign} color="text-violet-600" loading={isLoading} />
         <KPICard title="运行中实验" value={String(stats?.activeExperiments ?? 0)} icon={FlaskConical} color="text-orange-600" loading={isLoading} subtitle={`${stats?.activeMonetizeRules ?? 0} 条规则`} />
       </div>
@@ -372,12 +372,12 @@ export default function Home() {
       {/* Loop Health Detail Cards */}
       {loopHealth && (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-          <HealthMetricCard label="分层覆盖率" value={Number(loopHealth.segmentCoverage) * 100} icon={Layers} />
-          <HealthMetricCard label="标签精度" value={Number(loopHealth.labelAccuracy) * 100} icon={Brain} />
-          <HealthMetricCard label="难度适配率" value={Number(loopHealth.difficultyAdaptRate) * 100} icon={Gauge} />
-          <HealthMetricCard label="通关率" value={Number(loopHealth.avgPassRate) * 100} icon={CheckCircle2} />
-          <HealthMetricCard label="触发精准率" value={Number(loopHealth.triggerPrecision) * 100} icon={Target} />
-          <HealthMetricCard label="触发召回率" value={Number(loopHealth.triggerRecall) * 100} icon={Zap} />
+          <HealthMetricCard label="分层覆盖率" value={Number(loopHealth?.segmentCoverage) * 100} icon={Layers} />
+          <HealthMetricCard label="标签精度" value={Number(loopHealth?.labelAccuracy) * 100} icon={Brain} />
+          <HealthMetricCard label="难度适配率" value={Number(loopHealth?.difficultyAdaptRate) * 100} icon={Gauge} />
+          <HealthMetricCard label="通关率" value={Number(loopHealth?.avgPassRate) * 100} icon={CheckCircle2} />
+          <HealthMetricCard label="触发精准率" value={Number(loopHealth?.triggerPrecision) * 100} icon={Target} />
+          <HealthMetricCard label="触发召回率" value={Number(loopHealth?.triggerRecall) * 100} icon={Zap} />
         </div>
       )}
 
