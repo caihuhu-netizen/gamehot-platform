@@ -1,0 +1,47 @@
+name: Deploy game-service
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'game-service/**'
+      - 'common/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Build game-service
+        run: mvn -pl common,game-service -am clean package -DskipTests
+
+      - name: Deploy to ECS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: 8.210.161.159
+          username: root
+          key: ${{ secrets.ECS_SSH_KEY }}
+          source: game-service/target/game-service-*.jar
+          target: /opt/apps/game-service/
+          strip_components: 2
+
+      - name: Restart game-service
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 8.210.161.159
+          username: root
+          key: ${{ secrets.ECS_SSH_KEY }}
+          script: |
+            cd /opt/apps/game-service
+            mv game-service-*.jar game-service.jar 2>/dev/null || true
+            systemctl restart game-service
+            sleep 3
+            systemctl is-active game-service && echo "✅ game-service 启动成功" || echo "❌ 启动失败"
