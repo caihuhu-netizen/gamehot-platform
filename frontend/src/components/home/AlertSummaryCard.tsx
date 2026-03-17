@@ -54,9 +54,9 @@ export function AlertSummaryCard({ alertSummary, onViewAll }: AlertSummaryProps)
           </button>
         </div>
 
-        {alertSummary.typeBreakdown.length > 0 && (
+        {(alertSummary.typeBreakdown ?? []).length > 0 && (
           <div className="flex flex-wrap gap-2 mb-3">
-            {alertSummary.typeBreakdown.map((t: { alert_type: string; count: number; critical: number }) => (
+            {(alertSummary.typeBreakdown ?? []).map((t: { alert_type: string; count: number; critical: number }) => (
               <Badge key={t.alert_type} variant={Number(t.critical) > 0 ? "destructive" : "secondary"} className="text-xs">
                 {ALERT_TYPE_LABELS[t.alert_type] || t.alert_type} {t.count}
               </Badge>
@@ -64,9 +64,9 @@ export function AlertSummaryCard({ alertSummary, onViewAll }: AlertSummaryProps)
           </div>
         )}
 
-        {alertSummary.recentAlerts.length > 0 && (
+        {(alertSummary.recentAlerts ?? []).length > 0 && (
           <div className="space-y-1.5">
-            {alertSummary.recentAlerts.slice(0, 3).map((alert) => (
+            {(alertSummary.recentAlerts ?? []).slice(0, 3).map((alert) => (
               <div key={alert.id} className="flex items-center gap-2 text-xs bg-white/70 rounded px-2.5 py-1.5">
                 <CircleAlert className={`h-3.5 w-3.5 shrink-0 ${alert.severity === 'critical' ? 'text-red-500' : 'text-amber-500'}`} />
                 <span className="truncate flex-1">{alert.description || alert.metric_name}</span>
