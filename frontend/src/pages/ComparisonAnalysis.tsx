@@ -16,7 +16,7 @@ const COLORS = ["#6366f1", "#f59e0b", "#10b981", "#ef4444", "#8b5cf6", "#ec4899"
 // ==================== 版本对比 ====================
 function VersionCompare() {
   const { currentGameId } = useGame();
-  const { data: versions = [] } = trpc.comparison.listVersions.useQuery({ gameId: currentGameId ?? undefined });
+  const { data: versions = [], isLoading: vLoading } = trpc.comparison.listVersions.useQuery({ gameId: currentGameId ?? undefined });
   const [vA, setVA] = useState("");
   const [vB, setVB] = useState("");
   const vList = (Array.isArray(versions) ? versions : []) as Record<string, unknown>[];
@@ -24,10 +24,12 @@ function VersionCompare() {
   // Auto-select first two versions when data loads
   useEffect(() => {
     if (vList.length >= 2 && !vA && !vB) {
-      setVA(String(vList[0].version_code || vList[0].versionCode));
-      setVB(String(vList[1].version_code || vList[1].versionCode));
+      setVA(String(vList[0]?.version_code ?? vList[0]?.versionCode ?? ""));
+      setVB(String(vList[1]?.version_code ?? vList[1]?.versionCode ?? ""));
     }
   }, [vList, vA, vB]);
+
+  if (vLoading) return <div className="text-center py-8 text-muted-foreground">加载中...</div>;
 
   const { data: comparison } = trpc.comparison.versionComparison.useQuery(
     { gameId: 1, versionA: vA, versionB: vB },
@@ -87,8 +89,8 @@ function VersionCompare() {
           <SelectTrigger className="w-48"><SelectValue placeholder="选择版本 A" /></SelectTrigger>
           <SelectContent>
             {vList.map((v: any) => (
-              <SelectItem key={v.version_code || v.versionCode} value={v.version_code || v.versionCode}>
-                {v.version_name || v.versionName || v.version_code || v.versionCode}
+              <SelectItem key={String(v.version_code ?? v.versionCode ?? v.id ?? Math.random())} value={String(v.version_code ?? v.versionCode ?? "")}>
+                {String(v.version_name ?? v.versionName ?? v.version_code ?? v.versionCode ?? "unknown")}
               </SelectItem>
             ))}
           </SelectContent>
@@ -98,8 +100,8 @@ function VersionCompare() {
           <SelectTrigger className="w-48"><SelectValue placeholder="选择版本 B" /></SelectTrigger>
           <SelectContent>
             {vList.map((v: any) => (
-              <SelectItem key={v.version_code || v.versionCode} value={v.version_code || v.versionCode}>
-                {v.version_name || v.versionName || v.version_code || v.versionCode}
+              <SelectItem key={String(v.version_code ?? v.versionCode ?? v.id ?? Math.random())} value={String(v.version_code ?? v.versionCode ?? "")}>
+                {String(v.version_name ?? v.versionName ?? v.version_code ?? v.versionCode ?? "unknown")}
               </SelectItem>
             ))}
           </SelectContent>
