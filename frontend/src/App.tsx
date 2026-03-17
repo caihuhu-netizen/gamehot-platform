@@ -66,6 +66,7 @@ const OptimizationSuggestions = lazy(() => import("./pages/OptimizationSuggestio
 const EffectVerification = lazy(() => import("./pages/EffectVerification"));
 const DataSyncCenter = lazy(() => import("./pages/DataSyncCenter"));
 const AutoResponseApproval = lazy(() => import("./pages/AutoResponseApproval"));
+const GlobalView = lazy(() => import("./pages/GlobalView"));
 
 function PageLoader() {
   return (
@@ -133,6 +134,7 @@ function DashboardRoutes() {
           <Route path="/effect-verification" component={EffectVerification} />
           <Route path="/data-sync" component={DataSyncCenter} />
           <Route path="/auto-response-approval" component={AutoResponseApproval} />
+          <Route path="/global-view" component={GlobalView} />
           <Route path="/404" component={NotFound} />
             <Route component={NotFound} />
           </Switch>

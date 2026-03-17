@@ -28,6 +28,7 @@ export const iconMap: Record<string, LucideIcon> = {
 
 // ==================== Menu I18n Mappings ====================
 export const menuI18nMap: Record<string, string> = {
+  global_view: "menu.globalView",
   dashboard: "menu.dashboard", daily_report: "menu.aiReport", daily_overview: "menu.dailyOverview",
   version_management: "menu.versionManagement", optimization_suggestions: "menu.optimizationSuggestions",
   effect_verification: "menu.effectVerification",
@@ -97,6 +98,7 @@ export const staticMenuGroups: MenuGroup[] = [
     label: "经营数据",
     items: [
       { icon: Table2, label: "每日总览", path: "/daily-overview", menuCode: "daily_overview" },
+      { icon: Globe, label: "全球视图", path: "/global-view", menuCode: "global_view" },
       { icon: Megaphone, label: "投放管理", path: "/acquisition", menuCode: "acquisition" },
       { icon: DollarSign, label: "变现管理", path: "/monetize", menuCode: "monetize" },
       { icon: Tv, label: "广告聚合", path: "/ad-revenue", menuCode: "ad_revenue" },

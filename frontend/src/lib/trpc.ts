@@ -193,6 +193,13 @@ const ROUTE_MAP: Record<string, { method: string; path: string; type: 'query' | 
   // ===== globalSearch =====
   'globalSearch.search':          { method: 'GET',  path: '/api/ai/search',                 type: 'query' },
 
+  // ===== globalView =====
+  'globalView.summary':           { method: 'GET',  path: '/api/ai/global-view/summary',          type: 'query' },
+  'globalView.currencyRates':     { method: 'GET',  path: '/api/ai/global-view/currency-rates',    type: 'query' },
+  'globalView.regionBreakdown':   { method: 'GET',  path: '/api/ai/global-view/region-breakdown',  type: 'query' },
+  'globalView.timezoneData':      { method: 'GET',  path: '/api/ai/global-view/timezone-data',     type: 'query' },
+  'globalView.refreshRates':      { method: 'POST', path: '/api/ai/global-view/refresh-rates',     type: 'mutation' },
+
   // ===== auditLog =====
   'auditLog.list':                { method: 'GET',  path: '/api/ai/audit',                  type: 'query' },
 
