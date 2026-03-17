@@ -615,18 +615,29 @@ function createRouterProxy(routerName: string): Record<string, ReturnType<typeof
     get(_target, procedureName: string | symbol) {
       if (typeof procedureName !== 'string') return undefined;
       const routeKey = `${routerName}.${procedureName}`;
-      // 如果 ROUTE_MAP 里有直接映射，正常返回
-      if (ROUTE_MAP[routeKey]) return createProcedureProxy(routeKey);
-      // 否则返回一个支持三层访问的 Proxy（如 trpc.productOptimization.versions.list）
-      // 先创建两层的 procedure proxy（作为 fallback）
+      
+      // 检查是否存在以 routeKey. 开头的三层路由
+      // 如果有，必须返回支持三层访问的 Proxy，不能直接返回两层 procedure
+      const hasThreeLayerChildren = Object.keys(ROUTE_MAP).some(k => k.startsWith(routeKey + '.'));
+      
+      if (!hasThreeLayerChildren) {
+        // 没有三层子路由，直接返回两层 procedure proxy
+        return createProcedureProxy(routeKey);
+      }
+      
+      // 有三层子路由：返回既能作为两层调用（fallback），又能继续访问第三层的 Proxy
       const twoLayerProxy = createProcedureProxy(routeKey);
       return new Proxy(twoLayerProxy as Record<string, unknown>, {
         get(target, subProcedure: string | symbol) {
-          if (typeof subProcedure !== 'string') return (target as Record<string, unknown>)[subProcedure as unknown as string];
-          // 三层 key: routerName.procedureName.subProcedure
+          if (typeof subProcedure !== 'string') {
+            return (target as Record<string, unknown>)[subProcedure as unknown as string];
+          }
+          // 如果访问的是 useQuery/useMutation/query/mutate/refetch 等 procedure 自身方法，走两层
+          if (['useQuery','useMutation','query','mutate','refetch','isLoading','data','error','isPending','isError','isSuccess'].includes(subProcedure)) {
+            return (target as Record<string, unknown>)[subProcedure];
+          }
+          // 否则是第三层路由名
           const threeLayerKey = `${routeKey}.${subProcedure}`;
-          if (ROUTE_MAP[threeLayerKey]) return createProcedureProxy(threeLayerKey);
-          // 三层也没有映射，尝试两层+sub拼接
           return createProcedureProxy(threeLayerKey);
         },
       });
