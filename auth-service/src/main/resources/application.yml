@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: auth-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/gamehot?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: ${DB_USER:gamehot}
+    password: ${DB_PASS:GameHot@2026!}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASS:HuHuDiDi@2026!}
+
+server:
+  port: 8081
+
+jwt:
+  secret: ${JWT_SECRET:GameHot-JWT-Secret-Key-2026-MustBe32C}
+  expiration-ms: 2592000000
+
+feishu:
+  app-id: ${FEISHU_APP_ID:cli_a93387deb8b85cb3}
+  app-secret: ${FEISHU_APP_SECRET:ELDkZsewO0pAdErIeIoJxcQ6aWUjpiac}
+  redirect-uri: ${FEISHU_REDIRECT_URI:https://c.easejoy.com/api/auth/feishu/callback}
+
+app:
+  frontend-url: ${FRONTEND_URL:https://c.easejoy.com}
+
+logging:
+  level:
+    com.gamehot: INFO
