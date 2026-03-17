@@ -6,7 +6,7 @@ import {
   Undo2, ShoppingCart, FileBarChart, MousePointerClick, Activity,
   AlertTriangle, GitCompare, Wrench, ClipboardList, UserCheck, GitBranch,
   Rocket, ListChecks, FileCheck2, Zap, Bot, Brain, Download, FileSearch,
-  Archive, CalendarClock, Table2, ShieldCheck,
+  Archive, CalendarClock, Table2, ShieldCheck, ShieldAlert,
   type LucideIcon,
 } from "lucide-react";
 import { LayoutGrid, Globe } from "lucide-react";
@@ -119,6 +119,7 @@ export const staticMenuGroups: MenuGroup[] = [
       { icon: Target, label: "探针关卡", path: "/probes", menuCode: "probes" },
       { icon: TrendingUp, label: "难度调度", path: "/difficulty", menuCode: "difficulty" },
       { icon: Undo2, label: "用户召回", path: "/user-recall", menuCode: "user_recall" },
+      { icon: ShieldAlert, label: "流失预测", path: "/churn-prediction", menuCode: "churn_prediction" },
       { icon: Bell, label: "推送中心", path: "/push-center", menuCode: "push_center" },
       { icon: History, label: "配置版本", path: "/config-versions", menuCode: "config_versions" },
       { icon: Settings, label: "系统配置", path: "/config", menuCode: "config" },

@@ -62,6 +62,7 @@ const FeishuNotification = lazy(() => import("./pages/FeishuNotification"));
 const ApiDocs = lazy(() => import("./pages/ApiDocs"));
 const SchedulerCenter = lazy(() => import("./pages/SchedulerCenter"));
 const VersionManagement = lazy(() => import("./pages/VersionManagement"));
+const ChurnPrediction = lazy(() => import("./pages/ChurnPrediction"));
 const OptimizationSuggestions = lazy(() => import("./pages/OptimizationSuggestions"));
 const EffectVerification = lazy(() => import("./pages/EffectVerification"));
 const DataSyncCenter = lazy(() => import("./pages/DataSyncCenter"));
@@ -130,6 +131,7 @@ function DashboardRoutes() {
           <Route path="/api-docs" component={ApiDocs} />
           <Route path="/scheduler" component={SchedulerCenter} />
           <Route path="/version-management" component={VersionManagement} />
+          <Route path="/churn-prediction" component={ChurnPrediction} />
           <Route path="/optimization-suggestions" component={OptimizationSuggestions} />
           <Route path="/effect-verification" component={EffectVerification} />
           <Route path="/data-sync" component={DataSyncCenter} />

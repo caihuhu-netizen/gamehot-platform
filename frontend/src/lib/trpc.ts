@@ -532,6 +532,14 @@ const ROUTE_MAP: Record<string, { method: string; path: string; type: 'query' | 
   'userProfiles.getProfile': { method: 'GET', path: '/api/ai/user-profiles/get-profile', type: 'query' },
   'userProfiles.getSegmentHistory': { method: 'GET', path: '/api/ai/user-profiles/get-segment-history', type: 'query' },
   'userProfiles.listGameUsers': { method: 'GET', path: '/api/ai/user-profiles/list-game-users', type: 'query' },
+
+  // 流失预测
+  'churn.overview':             { method: 'GET',  path: '/api/ai/churn/overview',             type: 'query' },
+  'churn.highRiskUsers':        { method: 'GET',  path: '/api/ai/churn/high-risk-users',       type: 'query' },
+  'churn.riskTrend':            { method: 'GET',  path: '/api/ai/churn/risk-trend',             type: 'query' },
+  'churn.regionRisk':           { method: 'GET',  path: '/api/ai/churn/region-risk',            type: 'query' },
+  'churn.interventionStats':    { method: 'GET',  path: '/api/ai/churn/intervention-stats',     type: 'query' },
+  'churn.triggerIntervention':  { method: 'POST', path: '/api/ai/churn/trigger-intervention',   type: 'mutation' },
   'userProfiles.listSegments': { method: 'GET', path: '/api/ai/user-profiles/list-segments', type: 'query' },
 };
 
