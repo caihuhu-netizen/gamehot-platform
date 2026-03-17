@@ -10,6 +10,9 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
   data:
     redis:
       host: ${REDIS_HOST:localhost}
@@ -26,6 +29,11 @@ server:
 
 jwt:
   secret: ${JWT_SECRET:GameHot-JWT-Secret-Key-2026-MustBe32C}
+
+feishu:
+  app-id: ${FEISHU_APP_ID:}
+  app-secret: ${FEISHU_APP_SECRET:}
+  webhook-url: ${FEISHU_WEBHOOK_URL:}
 
 logging:
   level:
