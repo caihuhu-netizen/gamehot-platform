@@ -26,14 +26,16 @@ public class ProductOptimizationController {
 
     @Operation(summary = "获取优化建议列表")
     @GetMapping("/suggestions")
-    public ApiResponse<Page<OptimizationSuggestion>> listSuggestions(
+    public ApiResponse<List<OptimizationSuggestion>> listSuggestions(
             @RequestParam(required = false) Long gameId,
             @RequestParam(required = false) String category,
             @RequestParam(required = false) String priority,
             @RequestParam(required = false) String status,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+            @RequestParam(defaultValue = "50") int size,
+            @RequestParam(required = false) Integer limit) {
+        int pageSize = limit != null ? limit : size;
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.by(Sort.Direction.DESC, "createdAt"));
         Page<OptimizationSuggestion> result;
         if (gameId != null && category != null) {
             result = suggestionRepository.findByGameIdAndCategory(gameId, category, pageable);
@@ -44,7 +46,7 @@ public class ProductOptimizationController {
         } else {
             result = suggestionRepository.findAll(pageable);
         }
-        return ApiResponse.ok(result);
+        return ApiResponse.ok(result.getContent());
     }
 
     @Operation(summary = "获取建议详情")
