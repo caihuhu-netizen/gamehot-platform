@@ -453,6 +453,15 @@ const ROUTE_MAP: Record<string, { method: string; path: string; type: 'query' | 
   'productOptimization.effects': { method: 'GET', path: '/api/ai/product-optimization/effects', type: 'query' },
   'productOptimization.suggestions': { method: 'GET', path: '/api/ai/product-optimization/suggestions', type: 'query' },
   'productOptimization.versions': { method: 'GET', path: '/api/ai/product-optimization/versions', type: 'query' },
+  // 三层路由：productOptimization.versions.xxx
+  'productOptimization.versions.list':    { method: 'GET',  path: '/api/ai/product-optimization/versions',          type: 'query' },
+  'productOptimization.versions.create':  { method: 'POST', path: '/api/ai/product-optimization/versions',          type: 'mutation' },
+  'productOptimization.versions.metrics': { method: 'GET',  path: '/api/ai/product-optimization/versions/metrics',  type: 'query' },
+  'productOptimization.suggestions.list':       { method: 'GET',  path: '/api/ai/product-optimization/suggestions',            type: 'query' },
+  'productOptimization.suggestions.generateAI': { method: 'POST', path: '/api/ai/product-optimization/suggestions/generate-ai', type: 'mutation' },
+  'productOptimization.suggestions.update':     { method: 'PUT',  path: '/api/ai/product-optimization/suggestions/update',      type: 'mutation' },
+  'productOptimization.effects.list':           { method: 'GET',  path: '/api/ai/product-optimization/effects',                 type: 'query' },
+  'productOptimization.effects.analyzeVersion': { method: 'POST', path: '/api/ai/product-optimization/effects/analyze',         type: 'mutation' },
   'pushCenter.create': { method: 'POST', path: '/api/ops/push-center/create', type: 'mutation' },
   'pushCenter.delete': { method: 'DELETE', path: '/api/ops/push-center/delete', type: 'mutation' },
   'pushCenter.list': { method: 'GET', path: '/api/ops/push-center/list', type: 'query' },
@@ -606,7 +615,21 @@ function createRouterProxy(routerName: string): Record<string, ReturnType<typeof
     get(_target, procedureName: string | symbol) {
       if (typeof procedureName !== 'string') return undefined;
       const routeKey = `${routerName}.${procedureName}`;
-      return createProcedureProxy(routeKey);
+      // 如果 ROUTE_MAP 里有直接映射，正常返回
+      if (ROUTE_MAP[routeKey]) return createProcedureProxy(routeKey);
+      // 否则返回一个支持三层访问的 Proxy（如 trpc.productOptimization.versions.list）
+      // 先创建两层的 procedure proxy（作为 fallback）
+      const twoLayerProxy = createProcedureProxy(routeKey);
+      return new Proxy(twoLayerProxy as Record<string, unknown>, {
+        get(target, subProcedure: string | symbol) {
+          if (typeof subProcedure !== 'string') return (target as Record<string, unknown>)[subProcedure as unknown as string];
+          // 三层 key: routerName.procedureName.subProcedure
+          const threeLayerKey = `${routeKey}.${subProcedure}`;
+          if (ROUTE_MAP[threeLayerKey]) return createProcedureProxy(threeLayerKey);
+          // 三层也没有映射，尝试两层+sub拼接
+          return createProcedureProxy(threeLayerKey);
+        },
+      });
     },
   });
 }
