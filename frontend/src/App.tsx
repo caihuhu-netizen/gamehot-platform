@@ -58,13 +58,9 @@ const AlertRulesConfig = lazy(() => import("./pages/AlertRulesConfig"));
 const AiDailyReport = lazy(() => import("./pages/AiDailyReport"));
 const AiAssistant = lazy(() => import("./pages/AiAssistant"));
 const AuditLog = lazy(() => import("./pages/AuditLog"));
-const PerfMonitor = lazy(() => import("./pages/PerfMonitor"));
-const DataArchive = lazy(() => import("./pages/DataArchive"));
 const FeishuNotification = lazy(() => import("./pages/FeishuNotification"));
-const InspectionReport = lazy(() => import("./pages/InspectionReport"));
 const ApiDocs = lazy(() => import("./pages/ApiDocs"));
 const SchedulerCenter = lazy(() => import("./pages/SchedulerCenter"));
-const ArchRoadmap = lazy(() => import("./pages/ArchRoadmap"));
 const VersionManagement = lazy(() => import("./pages/VersionManagement"));
 const OptimizationSuggestions = lazy(() => import("./pages/OptimizationSuggestions"));
 const EffectVerification = lazy(() => import("./pages/EffectVerification"));
@@ -129,13 +125,9 @@ function DashboardRoutes() {
           <Route path="/pricing-engine" component={PricingEngine} />
           <Route path="/data-export" component={DataExport} />
           <Route path="/audit-log" component={AuditLog} />
-          <Route path="/perf-monitor" component={PerfMonitor} />
-          <Route path="/data-archive" component={DataArchive} />
           <Route path="/feishu-notification" component={FeishuNotification} />
-          <Route path="/inspection" component={InspectionReport} />
           <Route path="/api-docs" component={ApiDocs} />
           <Route path="/scheduler" component={SchedulerCenter} />
-          <Route path="/arch-roadmap" component={ArchRoadmap} />
           <Route path="/version-management" component={VersionManagement} />
           <Route path="/optimization-suggestions" component={OptimizationSuggestions} />
           <Route path="/effect-verification" component={EffectVerification} />

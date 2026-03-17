@@ -136,10 +136,7 @@ export const staticMenuGroups: MenuGroup[] = [
       { icon: FileSearch, label: "审计日志", path: "/audit-log", menuCode: "audit_log" },
       { icon: BookOpen, label: "SDK文档", path: "/sdk-docs", menuCode: "sdk_docs" },
       { icon: FileSearch, label: "API文档中心", path: "/api-docs", menuCode: "api_docs" },
-      { icon: Activity, label: "性能监控", path: "/perf-monitor", menuCode: "perf_monitor" },
       { icon: CalendarClock, label: "任务调度", path: "/scheduler", menuCode: "scheduler" },
-      { icon: Archive, label: "数据归档", path: "/data-archive", menuCode: "data_archive" },
-      { icon: Shield, label: "系统巡检", path: "/inspection", menuCode: "inspection" },
     ],
   },
 ];
