@@ -420,7 +420,7 @@ export default function Experiments() {
                     <div>
                       <h3 className="text-lg font-semibold">{expDetail?.experimentName}</h3>
                       <p className="text-sm text-muted-foreground">
-                        运行 {analysis.daysRunning} 天 | 总样本 {analysis.totalSampleSize.toLocaleString()} | 
+                        运行 {analysis.daysRunning ?? 0} 天 | 总样本 {(analysis.totalSampleSize ?? 0).toLocaleString()} | 
                         主指标: {METRIC_OPTIONS.find(m => m.value === expDetail?.primaryMetric)?.label || expDetail?.primaryMetric}
                       </p>
                     </div>
@@ -499,7 +499,7 @@ export default function Experiments() {
                           </span>
                         </div>
                         <p className="text-xs mt-1 text-muted-foreground">
-                          需要每组约 {analysis.significance.requiredSampleSize.toLocaleString()} 样本达到 80% 统计功效
+                          需要每组约 {(analysis.significance.requiredSampleSize ?? 0).toLocaleString()} 样本达到 80% 统计功效
                         </p>
                       </div>
                     </CardContent>
@@ -523,16 +523,16 @@ export default function Experiments() {
                                 </Badge>
                                 <span className="text-sm font-medium">{v.variantName}</span>
                               </div>
-                              <span className="text-xs text-muted-foreground">n={v.sampleSize.toLocaleString()}</span>
+                              <span className="text-xs text-muted-foreground">n={(v.sampleSize ?? 0).toLocaleString()}</span>
                             </div>
                             <div className="grid grid-cols-2 gap-2">
                               <div>
                                 <p className="text-xs text-muted-foreground">转化率</p>
-                                <p className="text-lg font-bold">{(v.conversionRate * 100).toFixed(2)}%</p>
+                                <p className="text-lg font-bold">{((v.conversionRate ?? 0) * 100).toFixed(2)}%</p>
                               </div>
                               <div>
                                 <p className="text-xs text-muted-foreground">转化数</p>
-                                <p className="text-lg font-bold">{v.conversions.toLocaleString()}</p>
+                                <p className="text-lg font-bold">{(v.conversions ?? 0).toLocaleString()}</p>
                               </div>
                             </div>
                           </div>
@@ -610,7 +610,7 @@ export default function Experiments() {
                           <p className="text-sm text-muted-foreground">{graduationCheck.reason}</p>
                           <div className="flex gap-4 mt-2 text-xs text-muted-foreground">
                             <span>运行天数: {graduationCheck.daysRunning}</span>
-                            <span>置信度: {graduationCheck.confidence.toFixed(1)}%</span>
+                            <span>置信度: {(graduationCheck.confidence ?? 0).toFixed(1)}%</span>
                           </div>
                         </div>
                         {graduationCheck.canGraduate && (
@@ -677,7 +677,7 @@ export default function Experiments() {
                           <div className="flex items-center gap-2">
                             <div className="text-right text-xs text-muted-foreground mr-2">
                               <p>运行 {check.daysRunning} 天</p>
-                              <p>置信度 {check.confidence.toFixed(1)}%</p>
+                              <p>置信度 {(check.confidence ?? 0).toFixed(1)}%</p>
                             </div>
                             {check.canGraduate && (
                               <Button size="sm" onClick={() => graduateExp.mutate({ experimentId: check.experimentId })} disabled={graduateExp.isPending} className="bg-violet-600 hover:bg-violet-700">

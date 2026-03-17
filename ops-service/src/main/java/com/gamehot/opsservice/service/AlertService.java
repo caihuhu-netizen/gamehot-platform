@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -100,10 +101,47 @@ public class AlertService {
         List<AnomalyAlert> recentAlerts = listAlerts(gameId, null, "open", 10);
         long open = anomalyAlertRepository.countOpen();
         long critical = anomalyAlertRepository.countBySeverity("critical");
-        Map<String, Object> summary = new LinkedHashMap<>();
-        summary.put("openAlerts", open);
-        summary.put("criticalAlerts", critical);
-        summary.put("recentAlerts", recentAlerts);
+
+        // Build typeBreakdown: group recentAlerts by alert_type
+        Map<String, long[]> typeMap = new java.util.LinkedHashMap<>();
+        for (AnomalyAlert a : recentAlerts) {
+            String t = a.getAlertType();
+            if (t == null) continue;
+            typeMap.computeIfAbsent(t, k -> new long[]{0, 0});
+            typeMap.get(t)[0]++;
+            if ("critical".equals(a.getSeverity())) typeMap.get(t)[1]++;
+        }
+        List<Map<String, Object>> typeBreakdown = typeMap.entrySet().stream().map(e -> {
+            Map<String, Object> m = new java.util.LinkedHashMap<>();
+            m.put("alert_type", e.getKey());
+            m.put("count", e.getValue()[0]);
+            m.put("critical", e.getValue()[1]);
+            return m;
+        }).collect(java.util.stream.Collectors.toList());
+
+        // Map recentAlerts to expected frontend fields
+        List<Map<String, Object>> mappedAlerts = recentAlerts.stream().map(a -> {
+            Map<String, Object> m = new java.util.LinkedHashMap<>();
+            m.put("id", a.getId());
+            m.put("severity", a.getSeverity());
+            m.put("description", a.getDescription() != null ? a.getDescription() : a.getMetricName());
+            m.put("metric_name", a.getMetricName());
+            m.put("alert_date", a.getAlertDate() != null ? a.getAlertDate().toString() : null);
+            // deviation_percent stored as string in DB - convert to number for frontend
+            String devStr = a.getDeviationPercent();
+            double devNum = 0;
+            if (devStr != null && !devStr.isEmpty()) {
+                try { devNum = Double.parseDouble(devStr); } catch (NumberFormatException ignored) {}
+            }
+            m.put("deviation_percent", devNum);
+            return m;
+        }).collect(java.util.stream.Collectors.toList());
+
+        Map<String, Object> summary = new java.util.LinkedHashMap<>();
+        summary.put("activeCount", open);
+        summary.put("criticalCount", critical);
+        summary.put("typeBreakdown", typeBreakdown);
+        summary.put("recentAlerts", mappedAlerts);
         return summary;
     }
 

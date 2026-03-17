@@ -82,7 +82,19 @@ public class DashboardService {
             "FROM user_segments WHERE deleted = 0");
         if (gameId != null) segSql.append(" AND game_id = ").append(gameId);
         segSql.append(" GROUP BY segment_level");
-        List<Map<String, Object>> segmentDist = jdbc.queryForList(segSql.toString());
+        List<Map<String, Object>> segmentDistRaw = jdbc.queryForList(segSql.toString());
+        // Convert snake_case keys to camelCase for frontend compatibility
+        List<Map<String, Object>> segmentDist = segmentDistRaw.stream().map(row -> {
+            Map<String, Object> m = new java.util.LinkedHashMap<>();
+            m.put("segmentLevel", row.get("segment_level"));
+            m.put("count", row.get("cnt"));
+            m.put("avgPayScore", row.get("avg_pay_score"));
+            m.put("avgAdScore", row.get("avg_ad_score"));
+            m.put("avgSkillScore", row.get("avg_skill_score"));
+            m.put("avgChurnRisk", row.get("avg_churn_risk"));
+            m.put("avgConfidence", row.get("avg_confidence"));
+            return m;
+        }).collect(java.util.stream.Collectors.toList());
 
         // Total users
         StringBuilder userSql = new StringBuilder("SELECT COUNT(*) as cnt FROM game_users WHERE deleted = 0");
@@ -136,7 +148,18 @@ public class DashboardService {
         if (endDate != null) sql.append(" AND stat_date <= '").append(endDate).append("'");
         sql.append(" GROUP BY stat_date ORDER BY stat_date DESC LIMIT ").append(days);
 
-        List<Map<String, Object>> result = jdbc.queryForList(sql.toString());
+        List<Map<String, Object>> rawResult = jdbc.queryForList(sql.toString());
+        // Convert snake_case keys to camelCase for frontend compatibility
+        List<Map<String, Object>> result = rawResult.stream().map(row -> {
+            Map<String, Object> m = new java.util.LinkedHashMap<>();
+            m.put("statDate", row.get("stat_date"));
+            m.put("totalRevenue", row.get("total_revenue"));
+            m.put("totalPayCount", row.get("total_pay_count"));
+            m.put("totalAdWatch", row.get("total_ad_watch"));
+            m.put("totalSessions", row.get("total_sessions"));
+            m.put("uniqueUsers", row.get("unique_users"));
+            return m;
+        }).collect(java.util.stream.Collectors.toList());
         redisTemplate.opsForValue().set(cacheKey, result, TTL_MEDIUM);
         return result;
     }

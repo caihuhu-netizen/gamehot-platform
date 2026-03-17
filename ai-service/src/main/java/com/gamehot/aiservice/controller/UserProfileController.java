@@ -7,9 +7,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Tag(name = "用户画像", description = "用户画像相关接口")
 @RestController
@@ -18,6 +20,7 @@ import java.util.*;
 public class UserProfileController {
 
     private final UserProfileRepository userProfileRepository;
+    private final JdbcTemplate jdbc;
 
     @Operation(summary = "获取用户画像列表")
     @GetMapping
@@ -38,6 +41,70 @@ public class UserProfileController {
         } else {
             result = userProfileRepository.findAll(pageable);
         }
+        return ApiResponse.ok(result);
+    }
+
+    /**
+     * 分群用户列表（从 user_segments 表查询，含分层分数字段）
+     * 前端 Segments.tsx 通过 userProfiles.listSegments 调用
+     * 期望字段：id, userId, segmentLevel, payScore, adScore, skillScore, churnRisk,
+     *           confidence, probeCompletedCount, isInRecovery
+     */
+    @Operation(summary = "获取分群用户列表（含分层分数）")
+    @GetMapping("/list-segments")
+    public ApiResponse<Map<String, Object>> listSegments(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "20") int pageSize,
+            @RequestParam(required = false) Long gameId,
+            @RequestParam(required = false) String segmentLevel) {
+        int offset = (page - 1) * pageSize;
+        StringBuilder sql = new StringBuilder(
+            "SELECT id, user_id, segment_level, pay_score, ad_score, skill_score, churn_risk, " +
+            "confidence, probe_completed_count, is_in_recovery, game_id " +
+            "FROM user_segments WHERE deleted = 0");
+        StringBuilder countSql = new StringBuilder(
+            "SELECT COUNT(*) FROM user_segments WHERE deleted = 0");
+        if (gameId != null) {
+            sql.append(" AND game_id = ").append(gameId);
+            countSql.append(" AND game_id = ").append(gameId);
+        }
+        if (segmentLevel != null && !segmentLevel.isBlank()) {
+            sql.append(" AND segment_level = '").append(segmentLevel.replace("'", "")).append("'");
+            countSql.append(" AND segment_level = '").append(segmentLevel.replace("'", "")).append("'");
+        }
+        sql.append(" ORDER BY churn_risk DESC LIMIT ").append(pageSize).append(" OFFSET ").append(offset);
+
+        List<Map<String, Object>> rawRows;
+        long total = 0;
+        try {
+            rawRows = jdbc.queryForList(sql.toString());
+            Long cnt = jdbc.queryForObject(countSql.toString(), Long.class);
+            total = cnt != null ? cnt : 0;
+        } catch (Exception e) {
+            rawRows = List.of();
+        }
+        List<Map<String, Object>> items = rawRows.stream().map(row -> {
+            Map<String, Object> m = new LinkedHashMap<>();
+            m.put("id", row.get("id"));
+            m.put("userId", row.get("user_id"));
+            m.put("segmentLevel", row.get("segment_level"));
+            m.put("payScore", row.get("pay_score"));
+            m.put("adScore", row.get("ad_score"));
+            m.put("skillScore", row.get("skill_score"));
+            m.put("churnRisk", row.get("churn_risk"));
+            m.put("confidence", row.get("confidence"));
+            m.put("probeCompletedCount", row.get("probe_completed_count"));
+            m.put("isInRecovery", row.get("is_in_recovery"));
+            m.put("gameId", row.get("game_id"));
+            return m;
+        }).collect(Collectors.toList());
+
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("items", items);
+        result.put("total", total);
+        result.put("page", page);
+        result.put("pageSize", pageSize);
+        result.put("totalPages", (int) Math.ceil((double) total / pageSize));
         return ApiResponse.ok(result);
     }
 
