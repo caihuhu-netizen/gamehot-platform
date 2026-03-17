@@ -14,11 +14,11 @@ import Home from "./pages/Home";
 import Config from "./pages/Config";
 import Permissions from "./pages/Permissions";
 import GameProjects from "./pages/GameProjects";
-import ConfigVersions from "./pages/ConfigVersions";
-import SdkDocs from "./pages/SdkDocs";
-import FeishuSync from "./pages/FeishuSync";
-import Levels from "./pages/Levels";
-import DecisionLogs from "./pages/DecisionLogs";
+const ConfigVersions = lazy(() => import("./pages/ConfigVersions"));
+const SdkDocs = lazy(() => import("./pages/SdkDocs"));
+const FeishuSync = lazy(() => import("./pages/FeishuSync"));
+const Levels = lazy(() => import("./pages/Levels"));
+const DecisionLogs = lazy(() => import("./pages/DecisionLogs"));
 
 // Lazy loaded: heavy pages with recharts, Streamdown (mermaid/shiki), or complex UI
 const Segments = lazy(() => import("./pages/Segments"));

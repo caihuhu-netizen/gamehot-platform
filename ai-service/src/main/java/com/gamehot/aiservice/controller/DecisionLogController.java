@@ -25,13 +25,15 @@ public class DecisionLogController {
 
     @Operation(summary = "获取决策日志列表")
     @GetMapping
-    public ApiResponse<Page<DecisionLog>> list(
+    public ApiResponse<List<DecisionLog>> list(
             @RequestParam(required = false) String sourceType,
             @RequestParam(required = false) String humanAction,
             @RequestParam(required = false) Long gameId,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+            @RequestParam(defaultValue = "100") int size,
+            @RequestParam(required = false) Integer limit) {
+        int pageSize = limit != null ? limit : size;
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.by(Sort.Direction.DESC, "createdAt"));
         Page<DecisionLog> result;
         if (gameId != null) {
             result = decisionLogRepository.findByGameId(gameId, pageable);
@@ -42,7 +44,7 @@ public class DecisionLogController {
         } else {
             result = decisionLogRepository.findAll(pageable);
         }
-        return ApiResponse.ok(result);
+        return ApiResponse.ok(result.getContent());
     }
 
     @Operation(summary = "获取决策日志详情")
