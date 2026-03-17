@@ -100,7 +100,7 @@ public class DashboardService {
 
         // Active experiments
         StringBuilder expSql = new StringBuilder("SELECT COUNT(*) as cnt FROM ab_experiments WHERE status = 'RUNNING' AND deleted = 0");
-        if (gameId != null) expSql.append(" AND game_id = ").append(gameId);
+        if (gameId != null) expSql.append(" AND scope_id = ").append(gameId);
         Long activeExperiments = jdbc.queryForObject(expSql.toString(), Long.class);
 
         // Active monetize rules
@@ -188,13 +188,11 @@ public class DashboardService {
     private Map<String, Object> getEnhancedDashboardStats(Integer gameId, String startDate, String endDate) {
         Map<String, Object> base = getDashboardStats(gameId, startDate, endDate);
 
-        // Loop health (latest)
+        // Loop health (latest) - no game_id filter
         Object loopHealth = null;
         try {
-            StringBuilder lhSql = new StringBuilder("SELECT * FROM loop_health_metrics WHERE 1=1");
-            if (gameId != null) lhSql.append(" AND game_id = ").append(gameId);
-            lhSql.append(" ORDER BY metric_date DESC LIMIT 1");
-            List<Map<String, Object>> lhRows = jdbc.queryForList(lhSql.toString());
+            List<Map<String, Object>> lhRows = jdbc.queryForList(
+                "SELECT * FROM loop_health_metrics ORDER BY metric_date DESC LIMIT 1");
             loopHealth = lhRows.isEmpty() ? null : lhRows.get(0);
         } catch (Exception e) {
             log.warn("loop_health_metrics query failed: {}", e.getMessage());
@@ -249,13 +247,11 @@ public class DashboardService {
             log.warn("trigger_decision_traces query failed: {}", e.getMessage());
         }
 
-        // Health trend (last 7 days)
+        // Health trend (last 7 days) - no game_id filter
         List<Map<String, Object>> healthTrend = List.of();
         try {
-            StringBuilder htSql = new StringBuilder("SELECT * FROM loop_health_metrics WHERE 1=1");
-            if (gameId != null) htSql.append(" AND game_id = ").append(gameId);
-            htSql.append(" ORDER BY metric_date DESC LIMIT 7");
-            healthTrend = jdbc.queryForList(htSql.toString());
+            healthTrend = jdbc.queryForList(
+                "SELECT * FROM loop_health_metrics ORDER BY metric_date DESC LIMIT 7");
         } catch (Exception e) {
             log.warn("loop_health_metrics trend query failed: {}", e.getMessage());
         }
