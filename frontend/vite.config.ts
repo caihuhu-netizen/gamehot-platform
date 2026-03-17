@@ -16,6 +16,7 @@ export default defineConfig({
     outDir: path.resolve(import.meta.dirname, "dist"),
     emptyOutDir: true,
     reportCompressedSize: false,
+    sourcemap: false,
   },
   server: {
     host: true,
