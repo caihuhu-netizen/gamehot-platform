@@ -99,12 +99,12 @@ public class DashboardService {
         Object totalRevenue = jdbc.queryForObject(revSql.toString(), Object.class);
 
         // Active experiments
-        StringBuilder expSql = new StringBuilder("SELECT COUNT(*) as cnt FROM ab_experiments WHERE status = 'RUNNING' AND deleted = 0");
+        StringBuilder expSql = new StringBuilder("SELECT COUNT(*) as cnt FROM ab_experiments WHERE status = 'RUNNING'");
         if (gameId != null) expSql.append(" AND scope_id = ").append(gameId);
         Long activeExperiments = jdbc.queryForObject(expSql.toString(), Long.class);
 
         // Active monetize rules
-        StringBuilder ruleSql = new StringBuilder("SELECT COUNT(*) as cnt FROM monetize_trigger_rules WHERE is_active = 1 AND deleted = 0");
+        StringBuilder ruleSql = new StringBuilder("SELECT COUNT(*) as cnt FROM monetize_trigger_rules WHERE is_active = 1");
         if (gameId != null) ruleSql.append(" AND game_id = ").append(gameId);
         Long activeRules = jdbc.queryForObject(ruleSql.toString(), Long.class);
 
