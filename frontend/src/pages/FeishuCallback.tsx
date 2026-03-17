@@ -18,7 +18,8 @@ export default function FeishuCallback() {
           if (stateStr) {
             const state = JSON.parse(decodeURIComponent(stateStr));
             if (state.returnPath && state.returnPath !== "/api/feishu/callback") {
-              window.location.href = state.returnPath;
+              const safeReturn = state.returnPath && state.returnPath.startsWith('/') && !state.returnPath.startsWith('//') ? state.returnPath : '/';
+      window.location.href = safeReturn;
               return;
             }
           }

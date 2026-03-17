@@ -126,7 +126,7 @@ public class JourneyController {
         String sql = "SELECT e.*, g.country_code, g.total_pay_amount " +
             "FROM journey_enrollments e " +
             "LEFT JOIN game_users g ON e.user_id = g.user_id " +
-            "WHERE e.journey_id = ? ORDER BY e.enrolled_at DESC LIMIT " + limit;
+            "WHERE e.journey_id = ? ORDER BY e.enrolled_at DESC LIMIT " + Math.min(Math.abs(limit), 1000);
         return ApiResponse.ok(jdbc.queryForList(sql, id));
     }
 

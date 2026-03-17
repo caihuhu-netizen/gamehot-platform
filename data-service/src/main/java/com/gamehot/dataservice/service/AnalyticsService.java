@@ -88,7 +88,7 @@ public class AnalyticsService {
                 "FROM game_users gu " +
                 "LEFT JOIN user_behavior_stats ubs ON gu.user_id = ubs.user_id " +
                 "LEFT JOIN (SELECT DISTINCT user_id FROM user_payment_records WHERE status = 'COMPLETED') upr ON gu.user_id = upr.user_id " +
-                "WHERE gu.deleted = 0 AND gu.install_time >= DATE_SUB(NOW(), INTERVAL " + days + " DAY) " +
+                "WHERE gu.deleted = 0 AND gu.install_time >= DATE_SUB(NOW(), INTERVAL " + Math.min(Math.abs(days), 365) + " DAY) " +
                 "GROUP BY CASE WHEN upr.user_id IS NOT NULL THEN 'PAYING' ELSE 'NON_PAYING' END";
 
             List<Map<String, Object>> result = jdbc.queryForList(sql);

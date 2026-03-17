@@ -227,7 +227,7 @@ public class GlobalViewController {
                 "ard.currency, SUM(ard.revenue) AS totalRevenue " +
                 "FROM ad_revenue_daily ard " +
                 "LEFT JOIN countries c ON ard.country_code = c.country_code " +
-                "WHERE ard.revenue_date >= CURDATE() - INTERVAL " + Math.min(days, 365) + " DAY " +
+                "WHERE ard.revenue_date >= CURDATE() - INTERVAL " + Math.min(Math.abs(days), 365) + " DAY " +
                 " GROUP BY ard.revenue_date, c.region_group_id, ard.currency " +
                 " ORDER BY ard.revenue_date DESC";
             adTrend = jdbc.queryForList(sql);
@@ -243,7 +243,7 @@ public class GlobalViewController {
                 "FROM user_payment_records upr " +
                 "JOIN game_users gu ON upr.user_id = gu.user_id " +
                 "WHERE upr.status = 'COMPLETED' " +
-                "AND upr.created_at >= NOW() - INTERVAL " + Math.min(days, 365) + " DAY " +
+                "AND upr.created_at >= NOW() - INTERVAL " + Math.min(Math.abs(days), 365) + " DAY " +
                 (regionCode != null && !regionCode.isBlank()
                     ? " AND gu.region_group_code = '" + regionCode.replace("'", "") + "'"
                     : "") +
