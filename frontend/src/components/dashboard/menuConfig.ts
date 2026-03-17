@@ -121,6 +121,7 @@ export const staticMenuGroups: MenuGroup[] = [
       { icon: Undo2, label: "用户召回", path: "/user-recall", menuCode: "user_recall" },
       { icon: ShieldAlert, label: "流失预测", path: "/churn-prediction", menuCode: "churn_prediction" },
       { icon: Bell, label: "推送中心", path: "/push-center", menuCode: "push_center" },
+      { icon: GitBranch, label: "用户旅程", path: "/journey-builder", menuCode: "journey_builder" },
       { icon: History, label: "配置版本", path: "/config-versions", menuCode: "config_versions" },
       { icon: Settings, label: "系统配置", path: "/config", menuCode: "config" },
     ],

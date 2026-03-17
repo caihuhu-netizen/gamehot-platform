@@ -533,6 +533,17 @@ const ROUTE_MAP: Record<string, { method: string; path: string; type: 'query' | 
   'userProfiles.getSegmentHistory': { method: 'GET', path: '/api/ai/user-profiles/get-segment-history', type: 'query' },
   'userProfiles.listGameUsers': { method: 'GET', path: '/api/ai/user-profiles/list-game-users', type: 'query' },
 
+  // 用户旅程
+  'journey.list':         { method: 'GET',  path: '/api/ops/journey/list',     type: 'query' },
+  'journey.detail':       { method: 'GET',  path: '/api/ops/journey',           type: 'query' },
+  'journey.create':       { method: 'POST', path: '/api/ops/journey/create',    type: 'mutation' },
+  'journey.saveCanvas':   { method: 'PUT',  path: '/api/ops/journey',           type: 'mutation' },
+  'journey.updateStatus': { method: 'PUT',  path: '/api/ops/journey',           type: 'mutation' },
+  'journey.stats':        { method: 'GET',  path: '/api/ops/journey/stats',     type: 'query' },
+  'journey.nodeTypes':    { method: 'GET',  path: '/api/ops/journey/node-types',type: 'query' },
+  'journey.activate':     { method: 'POST', path: '/api/ops/journey',           type: 'mutation' },
+  'journey.pause':        { method: 'POST', path: '/api/ops/journey',           type: 'mutation' },
+
   // 流失预测
   'churn.overview':             { method: 'GET',  path: '/api/ai/churn/overview',             type: 'query' },
   'churn.highRiskUsers':        { method: 'GET',  path: '/api/ai/churn/high-risk-users',       type: 'query' },
