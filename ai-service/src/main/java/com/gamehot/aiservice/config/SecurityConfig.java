@@ -1,5 +1,6 @@
 package com.gamehot.aiservice.config;
 
+import lombok.extern.slf4j.Slf4j;
 import com.gamehot.common.util.JwtUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -23,6 +24,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
 
+@Slf4j
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -66,7 +68,7 @@ public class SecurityConfig {
                                 List.of(new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()))
                         );
                         SecurityContextHolder.getContext().setAuthentication(auth);
-                    } catch (Exception ignored) {}
+                    } catch (Exception ignored) { log.warn("Caught exception: {}", ignored.getMessage()); }
                 }
                 chain.doFilter(request, response);
             }

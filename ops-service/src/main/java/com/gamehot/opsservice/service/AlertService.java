@@ -131,7 +131,7 @@ public class AlertService {
             String devStr = a.getDeviationPercent();
             double devNum = 0;
             if (devStr != null && !devStr.isEmpty()) {
-                try { devNum = Double.parseDouble(devStr); } catch (NumberFormatException ignored) {}
+                try { devNum = Double.parseDouble(devStr); } catch (NumberFormatException ignored) { log.warn("Caught exception: {}", ignored.getMessage()); }
             }
             m.put("deviation_percent", devNum);
             return m;

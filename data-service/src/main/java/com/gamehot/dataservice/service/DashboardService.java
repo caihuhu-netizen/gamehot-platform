@@ -299,7 +299,7 @@ public class DashboardService {
         try {
             Object v = jdbc.queryForObject(iapSql.toString(), Object.class);
             if (v != null) iapRevenue = Double.parseDouble(v.toString());
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) { log.warn("Caught exception: {}", ignored.getMessage()); }
 
         // ad revenue
         StringBuilder adSql = new StringBuilder(
@@ -311,7 +311,7 @@ public class DashboardService {
         try {
             Object v = jdbc.queryForObject(adSql.toString(), Object.class);
             if (v != null) adRevenue = Double.parseDouble(v.toString());
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) { log.warn("Caught exception: {}", ignored.getMessage()); }
 
         // acq cost
         StringBuilder acqSql = new StringBuilder(
@@ -323,7 +323,7 @@ public class DashboardService {
         try {
             Object v = jdbc.queryForObject(acqSql.toString(), Object.class);
             if (v != null) acquisitionCost = Double.parseDouble(v.toString());
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) { log.warn("Caught exception: {}", ignored.getMessage()); }
 
         // other cost
         StringBuilder otherSql = new StringBuilder(
@@ -335,7 +335,7 @@ public class DashboardService {
         try {
             Object v = jdbc.queryForObject(otherSql.toString(), Object.class);
             if (v != null) otherCost = Double.parseDouble(v.toString());
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) { log.warn("Caught exception: {}", ignored.getMessage()); }
 
         double totalRevenue = iapRevenue + adRevenue;
         double totalCost = acquisitionCost + otherCost;

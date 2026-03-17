@@ -56,7 +56,7 @@ public class AudienceService {
         if (updates.containsKey("conditions")) {
             try {
                 group.setConditions(objectMapper.writeValueAsString(updates.get("conditions")));
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) { log.warn("Caught exception: {}", ignored.getMessage()); }
         }
         audienceGroupRepository.save(group);
     }

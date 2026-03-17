@@ -995,8 +995,6 @@ export class GameHotSDK {
 
         // 游戏切后台/退出时 flush
         game.on(Game.EVENT_HIDE, () => this.flushEvents());
-
-        console.log('[GameHotSDK] Initialized:', this.baseUrl);
     }
 
     /** 设置当前用户ID */
@@ -1043,7 +1041,6 @@ export class GameHotSDK {
         eventData?: Record<string, unknown>
     ): void {
         if (!this.userId) {
-            console.warn('[GameHotSDK] userId not set.');
             return;
         }
         this.eventBuffer.push({
@@ -1069,7 +1066,6 @@ export class GameHotSDK {
         } catch {
             // 失败重入队列
             this.eventBuffer.unshift(...batch);
-            console.warn('[GameHotSDK] Flush failed, re-queued', batch.length);
         }
     }
 
@@ -1199,17 +1195,14 @@ export class GameScene extends Component {
         const { success, isNew } = await GameHotSDK.instance.registerUser(
             playerId, 'CN', 'IOS'
         );
-        console.log(isNew ? '新用户' : '老用户');
 
         // 3. 开始会话
         GameHotSDK.instance.trackSessionStart();
 
         // 4. 获取分层 & 难度
         const segment = await GameHotSDK.instance.getSegment();
-        console.log(\`分层: L\${segment?.layer} - \${segment?.layerName}\`);
 
         const difficulty = await GameHotSDK.instance.getDifficulty();
-        console.log(\`难度系数: \${difficulty?.difficultyMultiplier}\`);
     }
 
     // 关卡开始
@@ -1224,7 +1217,6 @@ export class GameScene extends Component {
         // 检查变现触发
         const result = await GameHotSDK.instance.checkMonetize('LEVEL_PASS');
         if (result?.shouldTrigger) {
-            console.log(\`触发变现: \${result.matchedRule?.popupType}\`);
             this.showMonetizePopup(result.matchedRule?.popupType || 'AD');
         }
     }
@@ -1244,7 +1236,6 @@ export class GameScene extends Component {
         const ok = await GameHotSDK.instance.reportIAP({
             orderId, productName: product, amount, currency: 'USD'
         });
-        console.log('内购上报:', ok ? '成功' : '失败');
     }
 
     private showMonetizePopup(type: string) {

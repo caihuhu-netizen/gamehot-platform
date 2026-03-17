@@ -1,5 +1,6 @@
 package com.gamehot.gameservice.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import com.gamehot.common.response.ApiResponse;
 import com.gamehot.gameservice.entity.GameServiceConfig;
 import com.gamehot.gameservice.repository.GameServiceConfigRepository;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Tag(name = "GameServiceConfig", description = "游戏第三方服务配置（AppFlyer/AppLovin等）")
 @RestController
 @RequestMapping("/api/game/service-configs")
@@ -77,8 +79,7 @@ public class GameServiceConfigController {
             // Extract user id from authentication if available
             try {
                 body.setCreatedBy(Long.parseLong(auth.getName()));
-            } catch (NumberFormatException ignored) {
-            }
+            } catch (NumberFormatException ignored) { log.warn("Caught exception: {}", ignored.getMessage()); }
         }
         GameServiceConfig saved = configRepository.save(body);
         Map<String, Object> result = new HashMap<>();

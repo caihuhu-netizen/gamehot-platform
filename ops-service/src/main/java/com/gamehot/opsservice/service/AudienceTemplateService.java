@@ -70,12 +70,12 @@ public class AudienceTemplateService {
         if (updates.containsKey("conditions")) {
             try {
                 template.setConditions(objectMapper.writeValueAsString(updates.get("conditions")));
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) { log.warn("Caught exception: {}", ignored.getMessage()); }
         }
         if (updates.containsKey("tags")) {
             try {
                 template.setTags(objectMapper.writeValueAsString(updates.get("tags")));
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) { log.warn("Caught exception: {}", ignored.getMessage()); }
         }
         audienceTemplateRepository.save(template);
     }

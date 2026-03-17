@@ -249,7 +249,7 @@ function CountryCompare() {
   })), [rawData]);
 
   if (isLoading) return <div className="text-center py-8 text-muted-foreground">加载中...</div>;
-  if (data.length === 0) return (
+  if ((data ?? []).length === 0) return (
     <Card><CardContent className="py-12 text-center text-muted-foreground">
       <Globe className="h-12 w-12 mx-auto mb-3 opacity-30" /><p>暂无地区对比数据</p>
     </CardContent></Card>
@@ -259,7 +259,7 @@ function CountryCompare() {
     <div className="space-y-4">
       <div className="flex justify-end">
         <Button variant="outline" size="sm" onClick={() => {
-          exportToCsv("国家对比", data.map(d => ({
+          exportToCsv("国家对比", (data ?? []).map(d => ({
             "国家": d.country, "用户数": d.users,
             "付费评分": d.avgPayScore, "广告评分": d.avgAdScore,
             "技能评分": d.avgSkillScore, "流失风险": d.avgChurnRisk,
@@ -319,7 +319,7 @@ function CountryCompare() {
               <th className="text-right">总收入</th>
             </tr></thead>
             <tbody>
-              {data.map((row) => (
+              {(data ?? []).map((row) => (
                 <tr key={row.country} className="border-b hover:bg-muted/50">
                   <td className="py-1.5 font-medium">{row.country}</td>
                   <td className="text-right">{row.users.toLocaleString()}</td>
@@ -357,7 +357,7 @@ function CreativeCompare() {
   })), [rawData]);
 
   if (isLoading) return <div className="text-center py-8 text-muted-foreground">加载中...</div>;
-  if (data.length === 0) return (
+  if ((data ?? []).length === 0) return (
     <Card><CardContent className="py-12 text-center text-muted-foreground">
       <Image className="h-12 w-12 mx-auto mb-3 opacity-30" /><p>暂无素材追踪数据</p>
       <p className="text-xs mt-1">数据将从投放平台自动同步</p>
@@ -368,7 +368,7 @@ function CreativeCompare() {
     <div className="space-y-4">
       <div className="flex justify-end">
         <Button variant="outline" size="sm" onClick={() => {
-          exportToCsv("素材追踪", data.map(d => ({
+          exportToCsv("素材追踪", (data ?? []).map(d => ({
             "素材名称": d.creativeName, "类型": d.creativeType,
             "渠道": d.channelName, "展示量": d.impressions,
             "点击量": d.clicks, "安装量": d.installs,
@@ -433,7 +433,7 @@ function CreativeCompare() {
               <th className="text-right">花费</th><th className="text-right">CTR</th><th className="text-right">CVR</th><th className="text-right">CPI</th>
             </tr></thead>
             <tbody>
-              {data.map((row) => (
+              {(data ?? []).map((row) => (
                 <tr key={row.creativeId} className="border-b hover:bg-muted/50">
                   <td className="py-1.5 font-medium max-w-[150px] truncate">{row.creativeName}</td>
                   <td><Badge variant="outline" className="text-[10px]">{row.creativeType}</Badge></td>
@@ -472,7 +472,7 @@ function SegmentCompare() {
   })), [rawData]);
 
   if (isLoading) return <div className="text-center py-8 text-muted-foreground">加载中...</div>;
-  if (data.length === 0) return (
+  if ((data ?? []).length === 0) return (
     <Card><CardContent className="py-12 text-center text-muted-foreground">
       <Layers className="h-12 w-12 mx-auto mb-3 opacity-30" /><p>暂无分层对比数据</p>
     </CardContent></Card>
@@ -482,7 +482,7 @@ function SegmentCompare() {
     <div className="space-y-4">
       <div className="flex justify-end">
         <Button variant="outline" size="sm" onClick={() => {
-          exportToCsv("分层对比", data.map(d => ({
+          exportToCsv("分层对比", (data ?? []).map(d => ({
             "分层": d.layerName, "用户数": d.userCount,
             "付费评分": d.avgPayScore, "广告评分": d.avgAdScore,
             "技能评分": d.avgSkillScore, "流失风险": d.avgChurnRisk,
@@ -542,7 +542,7 @@ function SegmentCompare() {
               <YAxis tick={{ fontSize: 11 }} />
               <Tooltip />
               <Bar dataKey="userCount" name="用户数" radius={[4, 4, 0, 0]}>
-                {data.map((_, i) => (
+                {(data ?? []).map((_, i) => (
                   <Cell key={i} fill={COLORS[i % COLORS.length]} />
                 ))}
               </Bar>
@@ -561,7 +561,7 @@ function SegmentCompare() {
               <th className="text-right">付费率</th><th className="text-right">平均LTV</th>
             </tr></thead>
             <tbody>
-              {data.map((row) => (
+              {(data ?? []).map((row) => (
                 <tr key={row.layerId} className="border-b hover:bg-muted/50">
                   <td className="py-1.5">
                     <div className="flex items-center gap-2">

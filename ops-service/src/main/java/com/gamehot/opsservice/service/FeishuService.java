@@ -96,7 +96,7 @@ public class FeishuService {
         if (req.getEventTypes() != null) {
             try {
                 config.setEventTypes(objectMapper.writeValueAsString(req.getEventTypes()));
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) { log.warn("Caught exception: {}", ignored.getMessage()); }
         }
         webhookConfigRepository.save(config);
     }
@@ -172,7 +172,7 @@ public class FeishuService {
         } catch (Exception e) {
             try {
                 saveNotificationLog(config.getId(), eventType, title, null, null, null, "failed", e.getMessage());
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) { log.warn("Caught exception: {}", ignored.getMessage()); }
             throw new RuntimeException(e);
         }
     }
