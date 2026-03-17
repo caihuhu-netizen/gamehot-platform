@@ -198,16 +198,16 @@ function AdDailyReport() {
               {data.map((row: any) => (
                 <tr key={row.reportDate} className="border-b hover:bg-muted/50">
                   <td className="py-1.5">{row.reportDate}</td>
-                  <td className="text-right">{row.dau.toLocaleString()}</td>
-                  <td className="text-right">{row.newUsers.toLocaleString()}</td>
-                  <td className="text-right">{row.retentionD1.toFixed(1)}%</td>
-                  <td className="text-right">{row.retentionD7.toFixed(1)}%</td>
-                  <td className="text-right">${row.iapRevenue.toFixed(2)}</td>
-                  <td className="text-right text-red-600">${row.adSpend.toFixed(2)}</td>
-                  <td className="text-right text-green-600">${row.adRevenue.toFixed(2)}</td>
-                  <td className="text-right font-medium">${row.totalRevenue.toFixed(2)}</td>
-                  <td className={`text-right font-medium ${row.roi >= 0 ? 'text-green-600' : 'text-red-600'}`}>{row.roi.toFixed(1)}%</td>
-                  <td className="text-right">{row.avgSessionMinutes.toFixed(1)}</td>
+                  <td className="text-right">{(row.dau ?? 0).toLocaleString()}</td>
+                  <td className="text-right">{(row.newUsers ?? 0).toLocaleString()}</td>
+                  <td className="text-right">{(row.retentionD1 ?? 0).toFixed(1)}%</td>
+                  <td className="text-right">{(row.retentionD7 ?? 0).toFixed(1)}%</td>
+                  <td className="text-right">${(row.iapRevenue ?? 0).toFixed(2)}</td>
+                  <td className="text-right text-red-600">${(row.adSpend ?? 0).toFixed(2)}</td>
+                  <td className="text-right text-green-600">${(row.adRevenue ?? 0).toFixed(2)}</td>
+                  <td className="text-right font-medium">${(row.totalRevenue ?? 0).toFixed(2)}</td>
+                  <td className={`text-right font-medium ${(row.roi ?? 0) >= 0 ? 'text-green-600' : 'text-red-600'}`}>{(row.roi ?? 0).toFixed(1)}%</td>
+                  <td className="text-right">{(row.avgSessionMinutes ?? 0).toFixed(1)}</td>
                 </tr>
               ))}
             </tbody>
@@ -403,13 +403,13 @@ function ROIAnalysis() {
                         <div className="text-xs text-muted-foreground">{ch.channelCode}</div>
                       </td>
                       <td className="text-right">{formatCurrency(ch.totalSpend)}</td>
-                      <td className="text-right">{ch.totalInstalls.toLocaleString()}</td>
+                      <td className="text-right">{(ch.totalInstalls ?? 0).toLocaleString()}</td>
                       <td className="text-right">{formatCurrency(ch.cpi)}</td>
                       <td className="text-right">{formatCurrency(ch.totalRevenue)}</td>
                       <td className="text-right">
-                        <span className={`inline-flex items-center gap-0.5 ${ch.roas >= 1 ? "text-green-600" : "text-red-500"}`}>
-                          {ch.roas >= 1 ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
-                          {(ch.roas * 100).toFixed(0)}%
+                        <span className={`inline-flex items-center gap-0.5 ${(ch.roas ?? 0) >= 1 ? "text-green-600" : "text-red-500"}`}>
+                          {(ch.roas ?? 0) >= 1 ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
+                          {((ch.roas ?? 0) * 100).toFixed(0)}%
                         </span>
                       </td>
                       <td className="text-right">{formatCurrency(ch.avgLtv7)}</td>

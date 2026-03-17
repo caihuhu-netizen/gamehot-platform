@@ -377,7 +377,7 @@ export default function AuditLog() {
               {/* 分页 */}
               <div className="flex items-center justify-between mt-4">
                 <p className="text-sm text-muted-foreground">
-                  共 {logsData.total} 条记录，第 {page + 1}/{totalPages || 1} 页
+                  共 {logsData?.total ?? 0} 条记录，第 {page + 1}/{totalPages || 1} 页
                 </p>
                 <div className="flex items-center gap-2">
                   <Button

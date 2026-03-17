@@ -188,4 +188,76 @@ public class ProductOptimizationController {
 
         return ApiResponse.ok(Map.of("suggestions", mockSuggestions, "createdIds", createdIds));
     }
+
+// ==================== Versions ====================
+
+    @Operation(summary = "版本列表")
+    @GetMapping("/versions")
+    public ApiResponse<List<Map<String, Object>>> listVersions(
+            @RequestParam(required = false) Long gameId,
+            @RequestParam(defaultValue = "50") int limit) {
+        // TODO: 接入真实版本表
+        return ApiResponse.ok(java.util.Collections.emptyList());
+    }
+
+    @Operation(summary = "创建版本")
+    @PostMapping("/versions")
+    public ApiResponse<Map<String, Object>> createVersion(@RequestBody Map<String, Object> body) {
+        Map<String, Object> result = new java.util.LinkedHashMap<>();
+        result.put("id", System.currentTimeMillis());
+        result.put("versionCode", body.get("versionCode"));
+        result.put("releaseNotes", body.get("changeLog"));
+        result.put("changeType", body.get("changeType"));
+        result.put("releaseDate", body.get("releaseDate"));
+        result.put("verificationStatus", "pending");
+        result.put("createdAt", java.time.LocalDateTime.now().toString());
+        return ApiResponse.ok(result);
+    }
+
+    @Operation(summary = "版本指标")
+    @GetMapping("/versions/metrics")
+    public ApiResponse<List<Map<String, Object>>> getVersionMetrics(
+            @RequestParam(required = false) Long gameId,
+            @RequestParam(required = false) String versionCode) {
+        return ApiResponse.ok(java.util.Collections.emptyList());
+    }
+
+    // ==================== Effects ====================
+
+    @Operation(summary = "效果验证列表")
+    @GetMapping("/effects")
+    public ApiResponse<List<Map<String, Object>>> listEffects(
+            @RequestParam(required = false) Long gameId) {
+        return ApiResponse.ok(java.util.Collections.emptyList());
+    }
+
+    @Operation(summary = "分析版本效果")
+    @PostMapping("/effects/analyze")
+    public ApiResponse<Map<String, Object>> analyzeVersionEffect(@RequestBody Map<String, Object> body) {
+        Map<String, Object> result = new java.util.LinkedHashMap<>();
+        result.put("status", "analyzing");
+        result.put("message", "效果分析已提交，预计1-2分钟完成");
+        return ApiResponse.ok(result);
+    }
+
+    // ==================== Suggestions (别名) ====================
+
+    @Operation(summary = "AI生成建议（别名）")
+    @PostMapping("/suggestions/generate-ai")
+    public ApiResponse<Map<String, Object>> generateAiSuggestionsAlias(
+            @RequestBody GenerateAiSuggestionRequest req, Authentication auth) {
+        return generateAiSuggestions(req, auth);
+    }
+
+    @Operation(summary = "更新建议状态（别名）")
+    @PutMapping("/suggestions/update")
+    public ApiResponse<Void> updateSuggestionAlias(@RequestBody Map<String, Object> body) {
+        Object idObj = body.get("id");
+        if (idObj == null) return ApiResponse.fail("id is required");
+        Long id = Long.valueOf(idObj.toString());
+        UpdateSuggestionRequest req = new UpdateSuggestionRequest();
+        if (body.get("status") != null) req.setStatus((String) body.get("status"));
+        if (body.get("priority") != null) req.setPriority((String) body.get("priority"));
+        return updateSuggestion(id, req);
+    }
 }
