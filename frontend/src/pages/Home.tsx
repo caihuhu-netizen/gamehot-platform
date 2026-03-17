@@ -395,7 +395,7 @@ export default function Home() {
                   <Clock className="h-4 w-4 text-amber-500" />
                   <span className="text-xs text-muted-foreground">待审批</span>
                 </div>
-                <p className="text-2xl font-bold text-amber-600">{approvalStats.pendingCount}</p>
+                <p className="text-2xl font-bold text-amber-600">{approvalStats?.pendingCount}</p>
               </CardContent>
             </Card>
             <Card>
@@ -404,7 +404,7 @@ export default function Home() {
                   <ShieldCheck className="h-4 w-4 text-blue-500" />
                   <span className="text-xs text-muted-foreground">总审批数</span>
                 </div>
-                <p className="text-2xl font-bold">{approvalStats.totalApprovals}</p>
+                <p className="text-2xl font-bold">{approvalStats?.totalApprovals}</p>
               </CardContent>
             </Card>
             <Card>
@@ -413,7 +413,7 @@ export default function Home() {
                   <ThumbsUp className="h-4 w-4 text-emerald-500" />
                   <span className="text-xs text-muted-foreground">通过率</span>
                 </div>
-                <p className="text-2xl font-bold text-emerald-600">{approvalStats.approvalRate}%</p>
+                <p className="text-2xl font-bold text-emerald-600">{approvalStats?.approvalRate}%</p>
               </CardContent>
             </Card>
             <Card>
@@ -422,7 +422,7 @@ export default function Home() {
                   <Clock className="h-4 w-4 text-indigo-500" />
                   <span className="text-xs text-muted-foreground">平均审批时长</span>
                 </div>
-                <p className="text-2xl font-bold text-indigo-600">{approvalStats.avgApprovalHours}<span className="text-sm font-normal text-muted-foreground">h</span></p>
+                <p className="text-2xl font-bold text-indigo-600">{approvalStats?.avgApprovalHours}<span className="text-sm font-normal text-muted-foreground">h</span></p>
               </CardContent>
             </Card>
             <Card>
@@ -431,7 +431,7 @@ export default function Home() {
                   <TrendingUp className="h-4 w-4 text-teal-500" />
                   <span className="text-xs text-muted-foreground">效果改善率</span>
                 </div>
-                <p className="text-2xl font-bold text-teal-600">{approvalStats.improvementRate}%</p>
+                <p className="text-2xl font-bold text-teal-600">{approvalStats?.improvementRate}%</p>
               </CardContent>
             </Card>
             <Card>
@@ -441,7 +441,7 @@ export default function Home() {
                   <span className="text-xs text-muted-foreground">操作类型</span>
                 </div>
                 <div className="flex flex-wrap gap-1 mt-1">
-                  {Object.entries(approvalStats.typeDistribution || {}).map(([type, cnt]) => (
+                  {Object.entries(approvalStats?.typeDistribution || {}).map(([type, cnt]) => (
                     <span key={type} className="text-xs bg-muted px-1.5 py-0.5 rounded">
                       {type === "create_experiment" ? "实验" : type === "adjust_difficulty" ? "难度" : type}: {cnt as number}
                     </span>
@@ -452,7 +452,7 @@ export default function Home() {
           </div>
 
           {/* Approval Trend Chart */}
-          {approvalStats.trend && approvalStats.trend.length > 0 && (
+          {approvalStats?.trend && approvalStats?.trend.length > 0 && (
             <Card>
               <CardHeader className="pb-2">
                 <CardTitle className="text-base font-semibold flex items-center gap-2">
@@ -462,7 +462,7 @@ export default function Home() {
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={200}>
-                  <AreaChart data={approvalStats.trend}>
+                  <AreaChart data={approvalStats?.trend}>
                     <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                     <XAxis dataKey="day" tick={{ fontSize: 11 }} tickFormatter={(v: string) => v.slice(5)} />
                     <YAxis tick={{ fontSize: 11 }} allowDecimals={false} />
@@ -479,22 +479,22 @@ export default function Home() {
 
           {/* Status Distribution Bar */}
           <div className="flex gap-1 h-3 rounded-full overflow-hidden bg-muted">
-            {approvalStats.totalApprovals > 0 && (
+            {approvalStats?.totalApprovals > 0 && (
               <>
-                {approvalStats.statusDistribution.approved > 0 && (
-                  <div className="bg-emerald-500 transition-all" style={{ width: `${(approvalStats.statusDistribution.approved / approvalStats.totalApprovals) * 100}%` }} title={`已通过: ${approvalStats.statusDistribution.approved}`} />
+                {approvalStats?.statusDistribution.approved > 0 && (
+                  <div className="bg-emerald-500 transition-all" style={{ width: `${(approvalStats?.statusDistribution.approved / approvalStats?.totalApprovals) * 100}%` }} title={`已通过: ${approvalStats?.statusDistribution.approved}`} />
                 )}
-                {approvalStats.statusDistribution.auto_approved > 0 && (
-                  <div className="bg-teal-400 transition-all" style={{ width: `${(approvalStats.statusDistribution.auto_approved / approvalStats.totalApprovals) * 100}%` }} title={`自动通过: ${approvalStats.statusDistribution.auto_approved}`} />
+                {approvalStats?.statusDistribution.auto_approved > 0 && (
+                  <div className="bg-teal-400 transition-all" style={{ width: `${(approvalStats?.statusDistribution.auto_approved / approvalStats?.totalApprovals) * 100}%` }} title={`自动通过: ${approvalStats?.statusDistribution.auto_approved}`} />
                 )}
-                {approvalStats.statusDistribution.pending > 0 && (
-                  <div className="bg-amber-500 transition-all" style={{ width: `${(approvalStats.statusDistribution.pending / approvalStats.totalApprovals) * 100}%` }} title={`待审批: ${approvalStats.statusDistribution.pending}`} />
+                {approvalStats?.statusDistribution.pending > 0 && (
+                  <div className="bg-amber-500 transition-all" style={{ width: `${(approvalStats?.statusDistribution.pending / approvalStats?.totalApprovals) * 100}%` }} title={`待审批: ${approvalStats?.statusDistribution.pending}`} />
                 )}
-                {approvalStats.statusDistribution.rejected > 0 && (
-                  <div className="bg-red-500 transition-all" style={{ width: `${(approvalStats.statusDistribution.rejected / approvalStats.totalApprovals) * 100}%` }} title={`已拒绝: ${approvalStats.statusDistribution.rejected}`} />
+                {approvalStats?.statusDistribution.rejected > 0 && (
+                  <div className="bg-red-500 transition-all" style={{ width: `${(approvalStats?.statusDistribution.rejected / approvalStats?.totalApprovals) * 100}%` }} title={`已拒绝: ${approvalStats?.statusDistribution.rejected}`} />
                 )}
-                {approvalStats.statusDistribution.expired > 0 && (
-                  <div className="bg-gray-400 transition-all" style={{ width: `${(approvalStats.statusDistribution.expired / approvalStats.totalApprovals) * 100}%` }} title={`已过期: ${approvalStats.statusDistribution.expired}`} />
+                {approvalStats?.statusDistribution.expired > 0 && (
+                  <div className="bg-gray-400 transition-all" style={{ width: `${(approvalStats?.statusDistribution.expired / approvalStats?.totalApprovals) * 100}%` }} title={`已过期: ${approvalStats?.statusDistribution.expired}`} />
                 )}
               </>
             )}

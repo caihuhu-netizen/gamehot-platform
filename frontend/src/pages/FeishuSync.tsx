@@ -508,13 +508,13 @@ function AssignRoleButton({ userId, userName }: { userId: number | null; userNam
     <Dialog open={open} onOpenChange={(v) => {
       setOpen(v);
       if (v && userRoles.data) {
-        setSelectedRoles(userRoles.data.map((r: any) => r.roleId));
+        setSelectedRoles(userRoles?.data?.map((r: any) => r.roleId));
       }
     }}>
       <DialogTrigger asChild>
         <Button variant="ghost" size="sm" className="h-7 text-xs gap-1">
           <UserPlus className="h-3 w-3" />
-          {userRoles.data?.length ? userRoles.data.map((r: any) => r.roleName).join(", ") : "分配角色"}
+          {userRoles.data?.length ? userRoles?.data?.map((r: any) => r.roleName).join(", ") : "分配角色"}
         </Button>
       </DialogTrigger>
       <DialogContent>
@@ -679,7 +679,7 @@ function PermissionConfigTab() {
     if (!rolePerms.data || !menus.data) return;
     const map = new Map<number, string[]>();
     for (const perm of rolePerms.data) {
-      const menu = menus.data.find((m: any) => m.menuCode === perm.menuCode);
+      const menu = menus?.data?.find((m: any) => m.menuCode === perm.menuCode);
       if (menu) {
         map.set((menu as Record<string, unknown>).id as number, perm.actions as string[]);
       }

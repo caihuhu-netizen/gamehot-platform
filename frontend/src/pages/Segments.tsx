@@ -1223,7 +1223,7 @@ function UserSegmentDataTab() {
                   ))}</TableRow>
                 ))
               ) : segmentData?.data?.length ? (
-                segmentData.data.map((seg: any) => (
+                segmentData?.data?.map((seg: any) => (
                   <TableRow key={seg.id}>
                     <TableCell className="font-mono text-xs">{seg.userId.substring(0, 16)}...</TableCell>
                     <TableCell><Badge variant="secondary" className="text-xs">{seg.segmentLevel}</Badge></TableCell>

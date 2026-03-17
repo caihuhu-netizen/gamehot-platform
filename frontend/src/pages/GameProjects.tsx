@@ -624,7 +624,7 @@ function SdkAccessStats({ gameId }: { gameId: number }) {
         )}
       </div>
 
-      {logs && logs.data.length > 0 && (
+      {logs && logs?.data?.length > 0 && (
         <div>
           <h3 className="font-semibold text-sm mb-2">最近访问日志</h3>
           <div className="rounded-lg border overflow-hidden">
@@ -639,7 +639,7 @@ function SdkAccessStats({ gameId }: { gameId: number }) {
                 </tr>
               </thead>
               <tbody>
-                {logs.data.map((log: any) => (
+                {logs?.data?.map((log: any) => (
                   <tr key={log.id} className="border-t">
                     <td className="px-3 py-2 font-mono text-xs">{log.endpoint}</td>
                     <td className="px-3 py-2 text-xs">{log.userId || '-'}</td>

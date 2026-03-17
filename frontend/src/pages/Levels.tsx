@@ -86,7 +86,7 @@ export default function Levels() {
                   ))}</TableRow>
                 ))
               ) : data?.data?.length ? (
-                data.data.map((level: any) => (
+                data?.data?.map((level: any) => (
                   <TableRow key={level.id}>
                     <TableCell className="font-mono text-xs">{level.levelCode}</TableCell>
                     <TableCell className="text-sm">{level.levelName}</TableCell>

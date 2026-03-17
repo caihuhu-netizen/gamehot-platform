@@ -75,10 +75,10 @@ export default function ConfigVersions() {
 
   const nextVersion = useMemo(() => {
     if (!snapshots?.data?.length) return 'v1.0.0';
-    const latest = snapshots.data[0];
+    const latest = snapshots?.data?.[ 0];
     const match = latest.snapshotVersion.match(/v(\d+)\.(\d+)\.(\d+)/);
     if (match) return `v${match[1]}.${match[2]}.${parseInt(match[3]) + 1}`;
-    return `v1.0.${snapshots.data.length}`;
+    return `v1.0.${snapshots?.data?.length}`;
   }, [snapshots]);
 
   return (
@@ -89,7 +89,7 @@ export default function ConfigVersions() {
           <p className="text-muted-foreground mt-1 text-sm">管理所有运营配置的版本快照，支持发布、回滚、版本对比和变更审计</p>
         </div>
         <div className="flex gap-2 flex-wrap">
-          <Button variant="outline" size="sm" onClick={() => setShowCompare(true)} disabled={!snapshots?.data?.length || snapshots.data.length < 2}>
+          <Button variant="outline" size="sm" onClick={() => setShowCompare(true)} disabled={!snapshots?.data?.length || snapshots?.data?.length < 2}>
             <GitCompare className="w-4 h-4 mr-1.5" />版本对比
           </Button>
           <Dialog open={showCreate} onOpenChange={setShowCreate}>
@@ -184,7 +184,7 @@ export default function ConfigVersions() {
                     <div className="flex items-start gap-4">
                       <div className="flex flex-col items-center mt-1">
                         {statusIcon(snap.status)}
-                        {idx < (snapshots.data.length - 1) && <div className="w-px h-8 bg-border mt-1" />}
+                        {idx < (snapshots?.data?.length - 1) && <div className="w-px h-8 bg-border mt-1" />}
                       </div>
                       <div>
                         <div className="flex items-center gap-2 flex-wrap">

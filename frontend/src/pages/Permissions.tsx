@@ -449,7 +449,7 @@ export default function Permissions() {
                         ))}</TableRow>
                       ))
                     ) : logs?.data?.length ? (
-                      logs.data.map((log: any) => (
+                      logs?.data?.map((log: any) => (
                         <TableRow key={log.id}>
                           <TableCell className="text-xs whitespace-nowrap">{log.createdAt ? new Date(log.createdAt).toLocaleString() : "-"}</TableCell>
                           <TableCell className="text-sm">{log.userName || `User #${log.userId}`}</TableCell>

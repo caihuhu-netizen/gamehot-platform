@@ -688,15 +688,15 @@ function ServicePreparationTab() {
             {healthQuery.data && (
               <div className="flex items-center gap-2">
                 <Badge className={`text-xs ${
-                  healthQuery.data.overall === "healthy" ? "bg-green-100 text-green-700 border-green-200" :
-                  healthQuery.data.overall === "degraded" ? "bg-yellow-100 text-yellow-700 border-yellow-200" :
+                  healthQuery?.data?.overall === "healthy" ? "bg-green-100 text-green-700 border-green-200" :
+                  healthQuery?.data?.overall === "degraded" ? "bg-yellow-100 text-yellow-700 border-yellow-200" :
                   "bg-red-100 text-red-700 border-red-200"
                 }`}>
-                  {healthQuery.data.overall === "healthy" ? "全部健康" :
-                   healthQuery.data.overall === "degraded" ? "部分降级" : "异常"}
+                  {healthQuery?.data?.overall === "healthy" ? "全部健康" :
+                   healthQuery?.data?.overall === "degraded" ? "部分降级" : "异常"}
                 </Badge>
                 <span className="text-[10px] text-muted-foreground">
-                  {healthQuery.data.totalLatencyMs}ms
+                  {healthQuery?.data?.totalLatencyMs}ms
                 </span>
                 <button
                   onClick={() => healthQuery.refetch()}
@@ -716,7 +716,7 @@ function ServicePreparationTab() {
             <div className="text-xs text-red-500 text-center py-4">健康检查失败，请登录后重试</div>
           ) : healthQuery.data ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
-              {healthQuery.data.domains.map((domain) => (
+              {healthQuery?.data?.domains.map((domain) => (
                 <div key={domain.service} className={`rounded-lg border p-2.5 ${
                   domain.status === "healthy" ? "border-green-200 bg-green-50/50" :
                   domain.status === "degraded" ? "border-yellow-200 bg-yellow-50/50" :

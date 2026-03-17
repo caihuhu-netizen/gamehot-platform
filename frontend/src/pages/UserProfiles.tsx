@@ -633,7 +633,7 @@ export default function UserProfiles() {
                       ))}</TableRow>
                     ))
                   ) : usersData?.data?.length ? (
-                    usersData.data.map((user: any) => (
+                    usersData?.data?.map((user: any) => (
                       <TableRow key={user.id} className={selectedUserId === user.userId ? "bg-accent" : ""}>
                         <TableCell className="font-mono text-xs">{user.userId.substring(0, 16)}...</TableCell>
                         <TableCell className="text-sm">{user.deviceType || "-"}</TableCell>
