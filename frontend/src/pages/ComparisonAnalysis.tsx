@@ -19,7 +19,7 @@ function VersionCompare() {
   const { data: versions = [] } = trpc.comparison.listVersions.useQuery({ gameId: currentGameId ?? undefined });
   const [vA, setVA] = useState("");
   const [vB, setVB] = useState("");
-  const vList = versions as unknown as unknown as Record<string, unknown>[];
+  const vList = (Array.isArray(versions) ? versions : []) as Record<string, unknown>[];
 
   // Auto-select first two versions when data loads
   useEffect(() => {
@@ -47,8 +47,8 @@ function VersionCompare() {
     payingRate: Number(d.paying_rate || 0),
   }));
 
-  const metricsA = comparison ? parseMetrics(comparison.versionA as unknown as unknown as Record<string, unknown>[]) : [];
-  const metricsB = comparison ? parseMetrics(comparison.versionB as unknown as unknown as Record<string, unknown>[]) : [];
+  const metricsA = comparison && Array.isArray((comparison as any).versionA) ? parseMetrics((comparison as any).versionA) : [];
+  const metricsB = comparison && Array.isArray((comparison as any).versionB) ? parseMetrics((comparison as any).versionB) : [];
 
   // Build combined chart data
   const combinedData = metricsA.map((a, i) => ({
@@ -238,7 +238,7 @@ function VersionCompare() {
 function CountryCompare() {
   const { currentGameId } = useGame();
   const { data: rawData = [], isLoading } = trpc.comparison.countryComparison.useQuery({ gameId: currentGameId ?? undefined });
-  const data = useMemo(() => (rawData as unknown as unknown as Record<string, unknown>[]).map((d: any) => ({
+  const data = useMemo(() => (Array.isArray(rawData) ? rawData : []).map((d: any) => ({
     country: d.country || "Unknown",
     users: Number(d.users || 0),
     avgPayScore: Number(d.avg_pay_score || 0),
@@ -342,7 +342,7 @@ function CountryCompare() {
 function CreativeCompare() {
   const { currentGameId } = useGame();
   const { data: rawData = [], isLoading } = trpc.comparison.creativeComparison.useQuery({ gameId: currentGameId ?? undefined });
-  const data = useMemo(() => (rawData as unknown as unknown as Record<string, unknown>[]).map((d: any) => ({
+  const data = useMemo(() => (Array.isArray(rawData) ? rawData : []).map((d: any) => ({
     creativeId: d.creative_id || d.creativeId,
     creativeName: d.creative_name || d.creativeName,
     creativeType: d.creative_type || d.creativeType,
@@ -459,7 +459,7 @@ function CreativeCompare() {
 function SegmentCompare() {
   const { currentGameId } = useGame();
   const { data: rawData = [], isLoading } = trpc.comparison.segmentComparison.useQuery({ gameId: currentGameId ?? undefined });
-  const data = useMemo(() => (rawData as unknown as unknown as Record<string, unknown>[]).map((d: any) => ({
+  const data = useMemo(() => (Array.isArray(rawData) ? rawData : []).map((d: any) => ({
     layerId: Number(d.layer_id || 0),
     layerName: `L${d.layer_name || d.layer_id}`,
     userCount: Number(d.user_count || 0),
