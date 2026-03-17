@@ -289,7 +289,8 @@ function createProcedureProxy(routeKey: string) {
 
 function createRouterProxy(routerName: string): Record<string, ReturnType<typeof createProcedureProxy>> {
   return new Proxy({} as Record<string, ReturnType<typeof createProcedureProxy>>, {
-    get(_target, procedureName: string) {
+    get(_target, procedureName: string | symbol) {
+      if (typeof procedureName !== 'string') return undefined;
       const routeKey = `${routerName}.${procedureName}`;
       return createProcedureProxy(routeKey);
     },
@@ -298,7 +299,36 @@ function createRouterProxy(routerName: string): Record<string, ReturnType<typeof
 
 // ==================== trpc 对象（兼容原 API）====================
 export const trpc = new Proxy({} as Record<string, ReturnType<typeof createRouterProxy>>, {
-  get(_target, routerName: string) {
+  get(_target, routerName: string | symbol) {
+    // 忽略 Symbol 属性访问（React DevTools / toString 等）
+    if (typeof routerName !== 'string') return undefined;
+    // useUtils() —— 原 tRPC 的缓存工具，这里用 QueryClient 模拟
+    if (routerName === 'useUtils' || routerName === 'useContext') {
+      return () => {
+        const queryClient = useQueryClient();
+        // 返回一个 Proxy，任意 router.procedure.setData/invalidate 都能调
+        return new Proxy({}, {
+          get(_t, router: string) {
+            return new Proxy({}, {
+              get(_t2, procedure: string) {
+                const routeKey = `${router}.${procedure}`;
+                return {
+                  setData: (_input: unknown, data: unknown) => {
+                    queryClient.setQueryData([routeKey], data);
+                  },
+                  invalidate: () => {
+                    queryClient.invalidateQueries({ queryKey: [routeKey] });
+                  },
+                  getData: () => {
+                    return queryClient.getQueryData([routeKey]);
+                  },
+                };
+              },
+            });
+          },
+        });
+      };
+    }
     return createRouterProxy(routerName);
   },
 }) as unknown as ReturnType<typeof createTRPCProxy>;
